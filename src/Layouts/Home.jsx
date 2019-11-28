@@ -1,7 +1,7 @@
 import React from 'react'
 
-const Home = () => (
+const HomeApp = () => (
     <div>Home</div>
 )
 
-export { Home }
+export { HomeApp }

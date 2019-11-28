@@ -2,8 +2,8 @@ import React from 'react'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import Button from '@material-ui/core/Button'
 import { LoadApp } from '../Layouts/Load'
-import { Home } from '../Layouts/Home'
-import { About } from '../Layouts/About'
+import { HomeApp } from '../Layouts/Home'
+import { AboutApp } from '../Layouts/About'
 
 const NavList = () => (
     <ul>
@@ -28,9 +28,9 @@ const NavList = () => (
 const RouterList = () => (
     <Router>
         <NavList />
-        <Route exact path="/" component={Home} />
+        <Route exact path="/" component={HomeApp} />
         <Route path="/load" component={LoadApp} />
-        <Route path="/about" component={About} />
+        <Route path="/about" component={AboutApp} />
     </Router>
 )
 
