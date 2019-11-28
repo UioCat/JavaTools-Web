@@ -1,0 +1,45 @@
+@import '../Styles/default.less';
+
+@black        : rgba(0, 0, 0, 0.87);
+@black-outline: rgba(0, 0, 0, 0.23);
+@black-ripple : rgba(0, 0, 0, 0.08);
+@blue         : #1976d2;
+@blue-outline : rgba(25, 118, 210, 0.5);
+@blue-ripple  : rgba(25, 118, 210, 0.8);
+@red          : rgb(220, 0, 78);
+@red-outline  : rgba(220, 0, 78, 0.5);
+@red-ripple   : rgba(220, 0, 78, 0.08);
+
+button {
+    margin : 8px;
+    border : 1px solid @blue;
+    padding: 5px 15px;
+
+    .btn-outline {
+        border: 1px solid @blue-outline;
+
+        span .btn-label {
+            width          : 100%;
+            display        : inherit;
+            align-items    : inherit;
+            justify-content: inherit;
+        }
+
+        span .btn-ripple {
+            top           : 0;
+            left          : 0;
+            right         : 0;
+            bottom        : 0;
+            z-index       : 0;
+            overflow      : hidden;
+            position      : absolute;
+            border-radius : inherit;
+            pointer-events: none;
+        }
+    }
+}
+
+button:hover {
+    text-decoration : none;
+    background-color: @blue-ripple;
+}

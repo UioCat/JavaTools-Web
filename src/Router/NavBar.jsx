@@ -60,18 +60,18 @@ const NavBar = () => {
         <div className={classes.root}>
             <AppBar position="static">
                 <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
-                    <Tab label="App" {...a11yProps(0)} />
-                    <Tab label="Home" {...a11yProps(1)} />
+                    <Tab label="App" {...a11yProps(1)} />
+                    <Tab label="Home" {...a11yProps(0)} />
                     <Tab label="Document" {...a11yProps(2)} />
                     <Tab label="About" {...a11yProps(3)} />
                 </Tabs>
             </AppBar>
 
             {/* Add Tab */}
-            <TabPanel value={value} index={0}>
+            <TabPanel value={value} index={1}>
                 <HomeApp />
             </TabPanel>
-            <TabPanel value={value} index={1}>
+            <TabPanel value={value} index={0}>
                 <SideBar />
             </TabPanel>
             <TabPanel value={value} index={2}>
