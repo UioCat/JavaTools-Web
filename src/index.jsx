@@ -1,9 +1,12 @@
-import React from 'react'
-import { render } from 'react-dom'
-import { RouterList } from './Router/Router'
-import { NavBar } from './Router/NavBar'
+import React from 'react';
+import { render } from 'react-dom';
+import { Provider } from 'mobx-react';
+import { NavBar } from './Router/NavBar';
+import { storeTree } from "./Mobx/store";
 
 render(
-    <NavBar />,
+    <Provider store={storeTree}>
+        <NavBar />
+    </Provider>,
     document.getElementById('root')
 )

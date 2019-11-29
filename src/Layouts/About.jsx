@@ -1,9 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 const AboutApp = () => (
-    <div>
-        About
-    </div>
+    <div>About</div>
 )
 
 export { AboutApp }
