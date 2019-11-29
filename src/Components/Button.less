@@ -11,21 +11,25 @@
 @red-ripple   : rgba(220, 0, 78, 0.08);
 
 button {
-    margin        : 8px;
-    padding       : 5px 15px;
-    border-radius : 4px;
-    text-transform: uppercase;
-    font-size     : 16px;
-    font-weight   : 400;
-    border        : 1px solid @blue-outline;
-    outline       : none;
+    margin            : 6px 0px;
+    width             : 100%;
+    padding           : 7px 15px;
+    border-radius     : 2px;
+    text-transform    : uppercase;
+    font-size         : 16px;
+    font-weight       : 400;
+    outline           : none;
+    border            : 1px solid @blue-outline;
+    // display        : flex;
+    // justify-content: center;
+    // align-items    : center;
 
     &.btn-outline {
         &:hover {
-            text-decoration : none;
-            border          : 1px solid @blue;
-            background-color: @blue-ripple;
             cursor          : pointer;
+            border          : 1px solid @blue;
+            text-decoration : none;
+            background-color: @blue-ripple;
         }
     }
 }

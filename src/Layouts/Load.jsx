@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
 import { Memory } from '../Components/Memory';
 import { METHOD } from "../Config/config";
 import { data } from "../Config/data";
@@ -19,7 +20,7 @@ class LoadApp extends Component {
     render() {
         return (
             <div>
-                <Grid container spacing={9}>
+                <Grid container spacing={5}>
                     <Grid item xs={7}>
                         <Paper>
                             <Memory>
@@ -62,7 +63,8 @@ class LoadApp extends Component {
                                     动态装载
                                 </div>
                             </Btn>
-                            <input value={this.state.base || ''}
+                            <TextField id="standard-basic" label="基地址"
+                                value={this.state.base || ''}
                                 onChange={(e) => (
                                     this.setState(Object.assign({}, this.state, { base: e.target.value }))
                                 )}
