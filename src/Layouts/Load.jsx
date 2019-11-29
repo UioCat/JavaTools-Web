@@ -40,28 +40,33 @@ class LoadApp extends Component {
                                     绝对装载
                                 </div>
                             </Btn>
-                            <div value="reload"
-                                onClick={
-                                    (e) => (this.setState({
-                                        type: e.target.value,
-                                        code: data(0x00400000),
-                                    }))}
-                            >
-                                重定位装载
-                            </div>
-                            <div value="dynamic"
-                                onClick={
-                                    (e) => (this.setState({
-                                        type: e.target.value,
-                                        code: data(Number(this.state.base)),
-                                    }))}
-                            >
-                                动态装载
-                            </div>
+                            <Btn>
+                                <div value="reload"
+                                    onClick={
+                                        (e) => (this.setState({
+                                            type: e.target.value,
+                                            code: data(0x00400000),
+                                        }))}
+                                >
+                                    重定位装载
+                                </div>
+                            </Btn>
+                            <Btn>
+                                <div value="dynamic"
+                                    onClick={
+                                        (e) => (this.setState({
+                                            type: e.target.value,
+                                            code: data(Number(this.state.base)),
+                                        }))}
+                                >
+                                    动态装载
+                                </div>
+                            </Btn>
                             <input value={this.state.base || ''}
                                 onChange={(e) => (
                                     this.setState(Object.assign({}, this.state, { base: e.target.value }))
                                 )}
+                                style={{ outline: 'none' }}
                             />
                         </Paper>
                     </Grid>
