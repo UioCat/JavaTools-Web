@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { observer, inject } from 'mobx-react';
+import { inject } from 'mobx-react';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import { Memory } from '../Components/Memory';
@@ -10,9 +10,8 @@ import { Btn } from '../Components/Button';
 class LoadApp extends Component {
     constructor(props) {
         super(props);
-        props = props['store'];
-        console.log(props.Proc_1);
-        this.props.Proc_1.getCode = this.props.Proc_1.getCode.bind(this);
+        console.log(props.store);
+        // this.props.store.getCode = this.props.store.getCode.bind(this);
     }
     render() {
         return (
@@ -20,14 +19,14 @@ class LoadApp extends Component {
                 <Grid item xs={7}>
                     <Paper>
                         <Memory>
-                            {this.props.Proc_1.getCode()}
+                            {console.log(this.props.store.Proc.proc)}
                         </Memory>
                     </Paper>
                 </Grid>
                 <Grid item xs={4}>
                     <Paper>
                         <Btn>
-                            <div onClick={this.props.Proc_1.changeBase(0x0)}>
+                            <div onClick={this.props.changeBase(0x0)}>
                                 绝对装载
                         </div>
                         </Btn>

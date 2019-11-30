@@ -1,12 +1,21 @@
-import { process_1, process_2 } from "./data";
+import { process_1 } from "./data";
+import { relocate } from '../Config/config'
+import { observable, computed } from "mobx";
 
-class Store {
-    constructor() {
-        this.Proc_1 = new process_1();
-        this.Proc_2 = new process_2();
+class storeTree {
+    constructor(proc, base = 0x0) {
+        this.Proc = new proc();
+        this.Base = this.Proc.base || base;
+        for (let index in this.Proc.addr) {
+            this.Proc.proc[index] += relocate(this.Proc.addr[index], this.Base)
+        }
+    }
+
+    getCode() {
+        return this.Proc
     }
 }
 
-const storeTree = new Store()
+const store = new storeTree(process_1)
 
-export { storeTree }
+export { store }
