@@ -1,21 +1,46 @@
-import { process_1 } from "./data";
+import { data } from "./data";
 import { relocate } from '../Config/config'
 import { observable, computed } from "mobx";
 
-class storeTree {
-    constructor(proc, base = 0x0) {
-        this.Proc = new proc();
-        this.Base = this.Proc.base || base;
-        for (let index in this.Proc.addr) {
-            this.Proc.proc[index] += relocate(this.Proc.addr[index], this.Base)
-        }
+class storeLoad {
+    constructor() {
+        this.changeCode = this.changeCode();
     }
 
-    getCode() {
-        return this.Proc
+    @observable
+    storeState = {
+        id: '',     // 程序标识符
+        base: 0x0,  // 程序的基址
+        code: '',   // 二维数组
+    };
+
+    @computed
+    get getStore() {
+        return this.storeState;
+    }
+
+    /**
+     * 更换程序，或初始化
+     * @param {Number} id - 可待加载的程序标识符，类型未定
+     * @returns {void} 无返回值
+     */
+    changeCode = (id = 0) => {
+        let tmpProc = data[id];
+        for (let index in tmpProc.addr) {
+            tmpProc.code[index] += relocate(tmpProc.addr[index], tmpProc.base);
+        }
+        this.storeState.id = id;
+        this.storeState.base = tmpProc.base;
+        this.storeState.code = tmpProc.code;
+    }
+
+    changeBase = (base = 0x0) => {
+        this.storeState.base = base;
     }
 }
 
-const store = new storeTree(process_1)
+const storeTree = {
+    storeLoad: new storeLoad(),
+}
 
-export { store }
+export { storeTree }
