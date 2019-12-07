@@ -1,8 +1,7 @@
-import { data } from "./data";
-import { relocate, addrFix, METHOD, METHOD_CN } from '../Config/config';
+import { relocate, METHOD, METHOD_CN } from '../Config/config';
 import { observable, action } from "mobx";
 
-class storeLoad {
+class StoreLoad {
     'use strict';
     constructor() {
         this.getStore = this.getStore.bind(this);
@@ -55,8 +54,4 @@ class storeLoad {
     }
 }
 
-const storeTree = {
-    storeLoad: new storeLoad(),
-}
-
-export { storeTree }
+export { StoreLoad };

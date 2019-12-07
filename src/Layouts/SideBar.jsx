@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import { LoadApp } from '../Layouts/Load';
+import { LoadApp } from '../Pages/Load';
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 
 const TabPanel = (props) => {
     const { children, value, index, ...other } = props;
@@ -22,7 +22,7 @@ const TabPanel = (props) => {
             <Box p={3}>{children}</Box>
         </Typography>
     );
-}
+};
 
 TabPanel.propTypes = {
     children: PropTypes.node,
@@ -35,7 +35,7 @@ const a11yProps = (index) => {
         id: `vertical-tab-${index}`,
         'aria-controls': `vertical-tabpanel-${index}`,
     };
-}
+};
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -77,13 +77,13 @@ const SideBar = () => {
             </Tabs>
 
             <TabPanel value={value} index={0}>
-                <LoadApp />
-            </TabPanel>
-            <TabPanel value={value} index={1}>
                 Item Two
             </TabPanel>
-            <TabPanel value={value} index={2}>
+            <TabPanel value={value} index={1}>
                 Item Three
+            </TabPanel>
+            <TabPanel value={value} index={2}>
+                <LoadApp />
             </TabPanel>
             <TabPanel value={value} index={3}>
                 Item Four
@@ -96,6 +96,6 @@ const SideBar = () => {
             </TabPanel>
         </div>
     );
-}
+};
 
-export { SideBar }
+export { SideBar };

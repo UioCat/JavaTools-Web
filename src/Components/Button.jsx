@@ -8,6 +8,6 @@ const Btn = (props) => {
             <span className="btn-ripple"></span>
         </button>
     )
-}
+};
 
-export { Btn }
+export { Btn };

@@ -5,9 +5,9 @@
  * @returns {String} ` 0x` 形式字符串
  */
 const relocate = (addr, offset) => {
-    let new_addr = ' 0x'
-    new_addr += String((addr + offset).toString(16)).padStart(8, '0')
-    return new_addr
+    let new_addr = ' 0x';
+    new_addr += String((addr + offset).toString(16)).padStart(8, '0');
+    return new_addr;
 };
 
 /**
@@ -16,16 +16,16 @@ const relocate = (addr, offset) => {
  * @returns {String} - `0x` 形式字符串
  */
 const addrFix = (addr) => {
-    let new_addr = '0x'
-    new_addr += (addr).toString(16).padStart(8, '0')
-    return new_addr
-}
+    let new_addr = '0x';
+    new_addr += (addr).toString(16).padStart(8, '0');
+    return new_addr;
+};
 
-const METHOD = ["absolute", "reload", "dynamic"]
+const METHOD = ["absolute", "reload", "dynamic"];
 const METHOD_CN = {
     "absolute": "绝对装载",
     "reload": "可重定位装载",
     "dynamic": "动态装载"
-}
+};
 
-export { METHOD, METHOD_CN, relocate, addrFix }
+export { METHOD, METHOD_CN, relocate, addrFix };

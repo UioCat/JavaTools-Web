@@ -7,7 +7,7 @@ const Paper = (props) => {
             <div className="paper-grid" {...props}>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export { Paper }
+export { Paper };

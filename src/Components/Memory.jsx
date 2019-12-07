@@ -3,7 +3,6 @@ import './Memory.less';
 
 let id = 0;
 const Memory = (props) => {
-    console.log(props);
     let proc = props['children'];
 
     const Li = proc.map((arr_1) => (
@@ -18,7 +17,7 @@ const Memory = (props) => {
         <div className="memory-Box">
             <ul>{Li}</ul>
         </div>
-    )
-}
+    );
+};
 
-export { Memory }
+export { Memory };
