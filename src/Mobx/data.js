@@ -1,6 +1,5 @@
 
 const process_1 = {
-    base: 0x00008000,
     addr: {
         1: 0x00005C07,
         3: 0x0000AC03,
