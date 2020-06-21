@@ -2,7 +2,7 @@
   <div id="app">
     <Layout style="box-shadow: 0px -3px 10px #2776bb; z-index:9999; position: relative">
       <Header style="background-color: #ffffff; font-size: 18px; font-weight: 500">
-        <Icon type="ios-paper" />UIO 的工具箱
+        <Icon type="md-hammer" /> UIO 的工具箱
       </Header>
     </Layout>
 
