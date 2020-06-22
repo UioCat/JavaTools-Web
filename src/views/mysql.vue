@@ -11,7 +11,9 @@
 
     <Row :gutter="16" class="operate">
       <i-col span="8">
-        <Card></Card>
+        <Card>
+          <Tag size="large">Large Tag</Tag>
+        </Card>
       </i-col>
       <i-col span="8">
         <Card>

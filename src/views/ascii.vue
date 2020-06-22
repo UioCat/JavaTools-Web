@@ -3,26 +3,28 @@
     <Row style="margin: 10px 0">
       <Card>
         <i-input
-          v-model="input"
+          v-model="string"
           type="textarea"
           placeholder="输入"
           size="large"
           clearable
-          :autosize="{minRows: 2, maxRows: 5}"
-          @on-change="handleChange"
+          :autosize="{minRows: 4, maxRows: 6}"
+          @on-focus="handleCopy"
+          @on-change="handleString"
         />
       </Card>
     </Row>
     <Row style="margin: 10px 0">
       <Card>
         <Input
-          v-model="output"
+          v-model="number"
           type="textarea"
           placeholder="输出"
           size="large"
           clearable
-          :autosize="{minRows: 2, maxRows: 5}"
+          :autosize="{minRows: 4, maxRows: 6}"
           @on-focus="handleCopy"
+          @on-change="handleNumber"
         />
       </Card>
     </Row>
@@ -34,24 +36,29 @@ export default {
   name: "ascii",
   data: function() {
     return {
-      input: "",
-      output: ""
+      string: "",
+      number: ""
     };
   },
   methods: {
-    handleChange: function() {
-      this.output = "";
-      switch (typeof this.input) {
-        case Number:
-          break;
-        case String:
-          break;
-        default:
-          this.$Message.error("数据有误");
-          break;
+    handleString: function() {
+      if (this.string !== "" || this.string !== " ") {
+        this.number = this.string
+          .split("")
+          .map(i => i.charCodeAt())
+          .join(" ");
+      } else {
+        this.$Message.error("无法转换");
       }
     },
-    handleCopy: function() {
+    handleNumber: function() {
+      let pre = this.number.split("");
+      pre.filter(i => (i >= "a" && i <= "z") || (i >= "A" && i <= "Z"));
+      this.string = pre.map(i => i.charCodeAt()).join(" ");
+    },
+    handleCopy: function(e) {
+      e.target.select();
+      document.execCommand("Copy");
       this.$Message.success("成功复制到剪切板");
     }
   }
