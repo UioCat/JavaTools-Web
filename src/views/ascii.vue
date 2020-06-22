@@ -14,7 +14,7 @@
         />
       </Card>
     </Row>
-    <Row style="margin: 10px 0">
+    <Row>
       <Card>
         <Input
           v-model="number"
@@ -32,6 +32,8 @@
 </template>
 
 <script>
+import { copy } from "../utils/tools";
+
 export default {
   name: "ascii",
   data: function() {
@@ -57,9 +59,8 @@ export default {
       this.string = pre.map(i => i.charCodeAt()).join(" ");
     },
     handleCopy: function(e) {
-      e.target.select();
-      document.execCommand("Copy");
       this.$Message.success("成功复制到剪切板");
+      copy(e, this);
     }
   }
 };

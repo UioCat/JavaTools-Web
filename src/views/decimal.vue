@@ -21,7 +21,7 @@
         />
       </Card>
     </Row>
-    <Row :gutter="16" style="margin: 10px 0">
+    <Row :gutter="16">
       <i-col span="8">
         <Card>
           <Input
@@ -66,11 +66,13 @@
 </template>
 
 <script>
+import { copy } from "../utils/tools";
+
 export default {
   name: "decimal",
   data: function() {
     return {
-      dec: "2",
+      dec: "10",
       input: "",
       output_B: "",
       output_D: "",
@@ -134,9 +136,7 @@ export default {
       }
     },
     handleCopy: function(e) {
-      e.target.select();
-      document.execCommand("Copy");
-      this.$Message.success("成功复制到剪切板");
+      copy(e, this);
     }
   }
 };

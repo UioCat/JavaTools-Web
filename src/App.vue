@@ -2,7 +2,7 @@
   <div id="app">
     <Layout style="box-shadow: 0px -3px 10px #2776bb; z-index:9999; position: relative">
       <Header style="background-color: #ffffff; font-size: 18px; font-weight: 500">
-        <Icon type="md-hammer" /> UIO 的工具箱
+        <Icon type="md-hammer" />UIO 的工具箱
       </Header>
     </Layout>
 
@@ -29,7 +29,7 @@
           flexDirection: 'column',
       }"
       >
-        <h1 style="margin: 28px">{{toolSet[curTool].name}}</h1>
+        <h1 style="margin: 25px">{{toolSet[curTool].name}}</h1>
         <div>
           <component :is="curTool" :option="toolSet[curTool].option"></component>
         </div>
@@ -81,9 +81,14 @@ label {
   font-size: 16px;
 }
 
+.code {
+  font-family: Courier, "Courier New", monospace;
+  font-weight: 600;
+}
+
 .operate {
   div.ivu-card-body {
-    height: calc(90vh - 250px);
+    height: calc(90vh - 330px);
   }
 }
 

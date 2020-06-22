@@ -1,18 +1,15 @@
 <template>
-  <Layout style="margin: 5px 50px">
+  <Layout style="margin: 3px 50px">
     <Row style="margin: 5px 0">
-      <Upload type="drag" action accept=".java">
-        <div style="padding: 20px 0">
-          <Icon type="ios-cloud-upload" size="30" style="color: #3399ff"></Icon>
-          <p>拖拽或点击此处以上传</p>
-        </div>
-      </Upload>
+      <Card>
+        <textarea style="padding: 4px 7px; font-size: 15px; height: 22vh" class="code" />
+      </Card>
     </Row>
 
     <Row :gutter="16" class="operate">
       <i-col span="8">
         <Card>
-          <Tag size="large">Large Tag</Tag>
+          <Check :item="fields" />
         </Card>
       </i-col>
       <i-col span="8">
@@ -22,7 +19,7 @@
       </i-col>
       <i-col span="8">
         <Card>
-          <textarea style="padding: 4px 7px; font-size: 16px;" />
+          <textarea style="padding: 4px 7px; font-size: 15px;" @focus="handleCopy" />
         </Card>
       </i-col>
     </Row>
@@ -30,11 +27,22 @@
 </template>
 
 <script>
+import { copy } from "../utils/tools";
+import Check from "../components/Check";
+
 export default {
   name: "mysql",
   props: ["option"],
+  components: { Check },
   data: function() {
-    return {};
+    return {
+      fields: ["Label", "Tag"]
+    };
+  },
+  methods: {
+    handleCopy: function(e) {
+      copy(e, this);
+    }
   }
 };
 </script>
