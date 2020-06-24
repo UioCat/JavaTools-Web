@@ -39,10 +39,10 @@
 </template>
 
 <script>
-import decimal from "./views/decimal.vue";
-import ascii from "./views/ascii.vue";
-import mysql from "./views/mysql.vue";
-import mybatis from "./views/mybatis.vue";
+import decimal from "./views/decimal";
+import ascii from "./views/ascii";
+import mysql from "./views/mysql";
+import mybatis from "./views/mybatis";
 import toolSet from "./utils/config";
 
 export default {
