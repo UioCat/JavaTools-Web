@@ -24,10 +24,11 @@
     <Row :gutter="16">
       <i-col span="8">
         <Card>
+          <label>二进制</label>
           <Input
             v-model="output_B"
             type="textarea"
-            placeholder="二进制"
+            placeholder="二进制输出"
             size="large"
             clearable
             :autosize="{minRows: 8, maxRows: 10}"
@@ -37,10 +38,11 @@
       </i-col>
       <i-col span="8">
         <Card>
+          <label>十进制</label>
           <Input
             v-model="output_D"
             type="textarea"
-            placeholder="十进制"
+            placeholder="十进制输出"
             size="large"
             clearable
             :autosize="{minRows: 8, maxRows: 10}"
@@ -50,10 +52,11 @@
       </i-col>
       <i-col span="8">
         <Card>
+          <label>十六进制</label>
           <Input
             v-model="output_H"
             type="textarea"
-            placeholder="十六进制"
+            placeholder="十六进制输出"
             size="large"
             clearable
             :autosize="{minRows: 8, maxRows: 10}"
@@ -101,7 +104,7 @@ export default {
           val = Number.parseInt(this.input, 2);
           this.output_B = this.input;
           this.output_D = val.toString(10);
-          this.output_H = val.toString(16);
+          this.output_H = val.toString(16).toUpperCase();
           break;
         case "10":
           pre = this.input
@@ -115,7 +118,7 @@ export default {
           val = Number.parseInt(this.input, 10);
           this.output_B = val.toString(2);
           this.output_D = this.input;
-          this.output_H = val.toString(16);
+          this.output_H = val.toString(16).toUpperCase();
           break;
         case "16":
           pre = this.input
@@ -131,7 +134,7 @@ export default {
           val = Number.parseInt(pre, 16);
           this.output_B = val.toString(2);
           this.output_D = val.toString(10);
-          this.output_H = this.input;
+          this.output_H = this.input.toUpperCase();
           break;
       }
     },
@@ -143,4 +146,8 @@ export default {
 </script>
 
 <style scoped lang="less">
+label {
+  margin-top: -6px;
+  margin-bottom: 5px;
+}
 </style>

@@ -3,7 +3,7 @@
     <Row style="margin: 5px 0">
       <Card>
         <textarea
-          style="padding: 4px 7px; font-size: 15px; height: 22vh"
+          style="padding: 4px 7px; font-size: 15px; height: 20vh"
           placeholder="粘贴代码到此处"
           class="code"
         />
@@ -62,13 +62,13 @@ export default {
   },
   methods: {
     handleAll: function(flag) {
-      if (flag === 0) {
+      if (flag === Object.keys(this.fields.length)) {
         for (let key in this.fields) {
-          this.fields[key] = true;
+          this.fields[key] = false;
         }
       } else {
         for (let key in this.fields) {
-          this.fields[key] = false;
+          this.fields[key] = true;
         }
       }
     },

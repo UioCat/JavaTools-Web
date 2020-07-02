@@ -2,7 +2,9 @@
   <div id="app">
     <Layout style="box-shadow: 0px -3px 10px #2776bb; z-index:9999; position: relative">
       <Header style="background-color: #ffffff; font-size: 18px; font-weight: 500">
-        <Icon type="md-hammer" />UIO 的工具箱
+        <a href="/">
+          <Icon type="md-hammer" />UIO 的工具箱
+        </a>
       </Header>
     </Layout>
 
@@ -24,15 +26,30 @@
 
       <Content
         :style="{
-          marginLeft: '200px',
+          left: '200px',
           display: 'flex',
           flexDirection: 'column',
+          position: 'fixed',
+          height: 'calc(100% - 65px)',
+          width: 'calc(100% - 200px)'
       }"
       >
         <h1 style="margin: 25px">{{toolSet[curTool].name}}</h1>
         <div>
           <component :is="curTool" :option="toolSet[curTool].option"></component>
         </div>
+        <p
+          :style="{
+          bottom: '10px',
+          position: 'absolute',
+          left: '50%',
+          transform: 'translateX(-50%)',
+        }"
+        >
+          <span>工信部备案号 浙 ICP 备 20005026 号</span>
+          <br />
+          <span>联网备案号 33060202000774</span>
+        </p>
       </Content>
     </Layout>
   </div>
@@ -75,6 +92,12 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  height: 100vh;
+  background-color: #f5f7f9;
+
+  a {
+    color: unset;
+  }
 }
 
 label {
@@ -88,7 +111,7 @@ label {
 
 .operate {
   div.ivu-card-body {
-    height: calc(90vh - 330px);
+    height: calc(90vh - 330px - 42px);
   }
 }
 
