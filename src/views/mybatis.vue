@@ -20,7 +20,7 @@
               :class="i ? 'checked' : 'uncheck'"
             >{{j}}</div>
           </div>
-          <Button @click="handleAll(isAll)" style="cursor: pointer;">全选</Button>
+          <Button @click="handleAll()" style="cursor: pointer;">全选</Button>
         </Card>
       </i-col>
       <i-col span="8">
@@ -41,7 +41,7 @@
 import { copy } from "../utils/tools";
 
 export default {
-  name: "mysql",
+  name: "mybatis",
   props: ["option"],
   data: function() {
     return {
@@ -52,17 +52,13 @@ export default {
         MariaDB: false,
         Postgre: false,
         Redis: false
-      }
+      },
+      selected: 0
     };
   },
-  computed: {
-    isAll: function() {
-      return Object.values(this.fields).filter(i => i).length;
-    }
-  },
   methods: {
-    handleAll: function(flag) {
-      if (flag === Object.keys(this.fields.length)) {
+    handleAll: function() {
+      if (this.selected === Object.keys(this.fields).length) {
         for (let key in this.fields) {
           this.fields[key] = false;
         }
@@ -71,9 +67,11 @@ export default {
           this.fields[key] = true;
         }
       }
+      this.selected = Object.values(this.fields).filter(i => i).length;
     },
     handleCheck: function(name) {
       this.fields[name] = !this.fields[name];
+      this.selected = Object.values(this.fields).filter(i => i).length;
     },
     handleCopy: function(e) {
       copy(e, this);
