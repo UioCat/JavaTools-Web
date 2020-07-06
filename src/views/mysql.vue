@@ -6,12 +6,14 @@
           style="padding: 4px 7px; font-size: 15px; height: 20vh"
           placeholder="粘贴代码到此处"
           class="code"
+          :value="code"
+          @change="handleCode($event)"
         />
       </Card>
     </Row>
 
     <Row :gutter="16" class="operate">
-      <i-col span="8">
+      <i-col span="6">
         <Card>
           <div v-for="(i, j, k) in fields" :key="k" style="cursor: pointer">
             <div
@@ -23,12 +25,20 @@
           <Button @click="handleAll()" style="cursor: pointer;">全选</Button>
         </Card>
       </i-col>
-      <i-col span="8">
+      <i-col span="6">
+        <Card>
+          <div v-for="(i, j, k) in fields" :key="k" style="cursor: pointer">
+            <div class="check-option" :class="i ? 'checked' : 'uncheck'">{{j}}</div>
+          </div>
+          <Button @click="handleAll()" style="cursor: pointer;">全选</Button>
+        </Card>
+      </i-col>
+      <i-col span="6">
         <Card>
           <Button :key="i" v-for="(v, k, i) of option" long>{{v}}</Button>
         </Card>
       </i-col>
-      <i-col span="8">
+      <i-col span="6">
         <Card>
           <textarea style="padding: 4px 7px; font-size: 15px;" @focus="handleCopy" />
         </Card>
@@ -38,25 +48,30 @@
 </template>
 
 <script>
-import { copy } from "../utils/tools";
+import { parse, copy } from "../utils/tools";
+import toolSet from "../utils/config";
+import { post } from "../utils/request";
 
 export default {
   name: "mysql",
   props: ["option"],
   data: function() {
     return {
+      code: "",
       fields: {
-        MongoDB: false,
-        Oracle: false,
-        MySQL: false,
-        MariaDB: false,
-        Postgre: false,
-        Redis: false
+        "字段 1": false,
+        "字段 2": false,
+        "字段 3": false,
+        "字段 4": false
       },
       selected: 0
     };
   },
   methods: {
+    handleCode: function(e) {
+      this.code = e.target.value;
+      parse(toolSet.mysql.api.parse, { data: e.target.value }, this);
+    },
     handleAll: function() {
       if (this.selected === Object.keys(this.fields).length) {
         for (let key in this.fields) {
