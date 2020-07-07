@@ -1,5 +1,5 @@
 /**
- * 常用工具
+ * 将可复用的工具函数抽离出来
  */
 
 import { post } from "./request";
@@ -23,10 +23,11 @@ function copy(e, that) {
  * @param {Object} that this 指针
  */
 function parse(path, param, that) {
-	return post(path, param)
+	let rtn = "";
+	post(path, param)
 		.then((res) => {
 			if (res.code === 12) {
-				that.fields = res.info;
+				rtn = res.info;
 			} else {
 				that.$Message.error("解析失败：" + res.message);
 			}
@@ -35,6 +36,7 @@ function parse(path, param, that) {
 			that.$Message.error("发送失败");
 			console.error(err);
 		});
+	return rtn;
 }
 
 export { parse, copy };

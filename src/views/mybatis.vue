@@ -5,7 +5,7 @@
         <textarea
           style="padding: 4px 7px; font-size: 15px; height: 20vh"
           placeholder="粘贴代码到此处"
-          class="code"
+          class="uio-code"
         />
       </Card>
     </Row>
@@ -83,7 +83,6 @@ export default {
 <style lang="less">
 .operate {
   div.ivu-card-body {
-    height: calc(90vh - 250px);
   }
 }
 

@@ -1,7 +1,19 @@
 <template>
   <div id="app">
-    <Layout style="box-shadow: 0px -3px 10px #2776bb; z-index:9999; position: relative">
-      <Header style="background-color: #ffffff; font-size: 18px; font-weight: 500">
+    <Layout
+      :style="{
+        boxShadow: '0px -3px 10px #2776bb',
+        zIndex: '9999',
+        position: 'relative'
+      }"
+    >
+      <Header
+        :style="{
+        backgroundColor: '#ffffff',
+        fontSize: '18px',
+        fontWeight: '500'
+        }"
+      >
         <a href="/">
           <Icon type="md-hammer" />UIO 的工具箱
         </a>
@@ -19,7 +31,7 @@
           fontWeight: '500'
         }"
       >
-        <Menu :active-name="curTool" width="auto" style="height: 100vh;" @on-select="select">
+        <Menu :active-name="curTool" width="auto" style="height: 100vh" @on-select="select">
           <MenuItem v-for="(value, name, key) of toolSet" :key="key" :name="name">{{value.name}}</MenuItem>
         </Menu>
       </Sider>
@@ -30,7 +42,7 @@
           display: 'flex',
           flexDirection: 'column',
           position: 'fixed',
-          height: 'calc(100% - 65px)',
+          height: 'calc(100% - 64px)',
           width: 'calc(100% - 200px)'
       }"
       >
@@ -40,10 +52,10 @@
         </div>
         <p
           :style="{
-          bottom: '10px',
-          position: 'absolute',
-          left: '50%',
-          transform: 'translateX(-50%)',
+            bottom: '12px',
+            position: 'absolute',
+            left: '50%',
+            transform: 'translateX(-50%)',
         }"
         >
           <span>工信部备案号 浙 ICP 备 20005026 号</span>
@@ -102,17 +114,6 @@ export default {
 
 label {
   font-size: 16px;
-}
-
-.code {
-  font-family: Courier, "Courier New", monospace;
-  font-weight: 600;
-}
-
-.operate {
-  div.ivu-card-body {
-    height: calc(90vh - 330px - 42px);
-  }
 }
 
 textarea {
