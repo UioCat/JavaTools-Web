@@ -48,7 +48,7 @@
       >
         <h1 style="margin: 25px">{{toolSet[curTool].name}}</h1>
         <div>
-          <component :is="curTool" :option="toolSet[curTool].option"></component>
+          <component :is="curTool" :type="curTool"></component>
         </div>
         <p
           :style="{
@@ -72,7 +72,7 @@ import decimal from "./views/decimal";
 import ascii from "./views/ascii";
 import mysql from "./views/mysql";
 import mybatis from "./views/mybatis";
-import toolSet from "./utils/config";
+import { toolSet } from "./utils/config";
 
 export default {
   name: "app",

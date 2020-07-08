@@ -13,16 +13,18 @@
         </Card>
       </i-col>
       <!-- 字段列表 -->
-      <i-col span="6">
+      <i-col span="6" class="uio-fields">
         <Card>
-          <div style="cursor: pointer" v-for="(i, j, k) in fields" :key="k">
-            <div
-              class="uio-check-option"
-              :class="i ? 'uio-checked' : 'uio-uncheck'"
-              @click="handleCheck(j)"
-            >{{j}}</div>
-          </div>
-          <Button style="cursor: pointer" @click="handleAll()">全选</Button>
+          <section>
+            <div style="cursor: pointer" v-for="(i, j, k) in fields" :key="k">
+              <div
+                class="uio-check-option"
+                :class="i ? 'uio-checked' : 'uio-uncheck'"
+                @click="handleCheck(j)"
+              >{{j}}</div>
+            </div>
+          </section>
+          <Button @click="handleAll()">全选</Button>
         </Card>
       </i-col>
 
@@ -36,9 +38,24 @@
             </label>
           </section>
           <!-- 参数列表 -->
-          <section>
-            <div style="cursor: pointer" v-for="(i, j, k) in fields" :key="k">
-              <div>{{j}}</div>
+          <section class="uio-input-group">
+            <div>
+              <label>填写表名</label>
+              <i-input
+                v-if="operate === 'create' && isMyBatis"
+                v-model="namespace"
+                placeholder="命名空间"
+              >
+                <span slot="prepend">com.</span>
+              </i-input>
+              <i-input v-else v-model="tbName" placeholder="表  名   "></i-input>
+            </div>
+
+            <div>
+              <label>指定主键</label>
+              <Select v-model="keyParameter">
+                <Option v-for="(v,k,i) in fields" :value="k" :key="i">{{ k }}</Option>
+              </Select>
             </div>
           </section>
           <Button style="cursor: pointer" @click="handleSubmit()">提交</Button>
@@ -46,9 +63,9 @@
           <textarea
             class="uio-code uio-textarea"
             placeholder="命令输出"
-            style="height: 8em"
+            style="height: 14em"
             :v-model="outputCode"
-            @focus="handleCopy"
+            @focus="handleCopy($event)"
           />
         </Card>
       </i-col>
@@ -57,34 +74,46 @@
 </template>
 
 <script>
-import { parse, copy } from "../utils/tools";
+import { copy, parse, generate } from "../utils/tools";
 import { post } from "../utils/request";
-import toolSet from "../utils/config";
+import { toolSet } from "../utils/config";
 
 export default {
   name: "mysql",
-  props: ["option"],
+  props: ["type"],
   data: function() {
     return {
       inputCode: "",
       outputCode: "",
       selected: 0,
       fields: {
-        "字段 1": false,
+        "字段 1": true,
         "字段 2": false,
         "字段 3": false,
         "字段 4": true,
-        "字段 5": true,
+        "字段 5": false,
         "字段 6": false
       },
-      operate: "query"
+      operate: "query",
+      keyParameter: "",
+      tbName: "",
+      namespace: "",
+      isMyBatis: false,
+      option: null
     };
+  },
+  created: function() {
+    this.isMyBatis = this.type === "mybatis";
+    this.option = toolSet[this.type].option;
   },
   methods: {
     handleCode: function(e) {
-      this.code = e.target.value;
-      let res = parse(toolSet.mysql.api.parse, { data: e.target.value }, this);
-      if (res) this.fields = res;
+      this.inputCode = e.target.value;
+      parse({ data: e.target.value }, this).then(info => {
+        const res = {};
+        if (info) info.map(i => (res[i] = false));
+        this.fields = res;
+      });
     },
     handleAll: function() {
       if (this.selected === Object.keys(this.fields).length) {
@@ -102,7 +131,22 @@ export default {
       this.fields[name] = !this.fields[name];
       this.selected = Object.values(this.fields).filter(i => i).length;
     },
-    handleSubmit: function() {},
+    handleSubmit: function() {
+      const params = { parameter: Object.keys(this.fields).filter(i => i) };
+      if (this.isMyBatis) {
+        params["namespace"] = this.namespace;
+      } else {
+        params["tbName"] = this.tbName;
+      }
+      if ("updatequery".indexOf(this.operate) !== -1) {
+        params["keyParameter"] = [this.keyParameter];
+      }
+      generate(toolSet[this.type].api[this.operate], params, this).then(
+        info => {
+          if (info) this.outputCode = info;
+        }
+      );
+    },
     handleCopy: function(e) {
       copy(e, this);
     }
@@ -112,11 +156,35 @@ export default {
 
 <style lang="less">
 @out-color: #2d8cf0;
+@in-color: #e3f5ff;
+
+.uio-operate {
+  div.ivu-card-body {
+    height: calc(100vh - 64px - 52px - 16 * 2px - 25 * 2px - 42px);
+    //         视口高度 - 导航栏 - 备案信息 - 内边距 - 标题
+  }
+}
+
+.uio-fields div.ivu-card-body {
+  width: 100%;
+
+  & > section {
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: calc(100% - 32px - 16px * 2);
+  }
+}
+
+div.ivu-col-span-12 > div.ivu-card-bordered > div.ivu-card-body {
+  justify-content: space-between;
+}
 
 .uio-code {
   font-family: Courier, "Courier New", monospace;
   font-weight: 600;
-  line-height: 1em;
+  line-height: 1.1em;
 }
 
 .uio-textarea {
@@ -126,34 +194,17 @@ export default {
   margin: 0;
 }
 
-.uio-operate {
-  div.ivu-card-body {
-    height: calc(100vh - 64px - 52px - 16 * 2px - 25 * 2px - 42px);
-    //         视口高度 - 导航栏 - 备案信息 - 内边距 - 标题
-  }
-}
-
-.ivu-card-body {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-}
-
-div.ivu-col-span-12 > div.ivu-card-bordered > div.ivu-card-body {
-  justify-content: space-between;
-}
-
 .uio-check-option {
   width: 100%;
   font-weight: bold;
-  line-height: 1.9em;
   border-radius: 2px;
+  font-family: Courier, "Courier New", monospace;
   border: solid 1px @out-color;
 }
 
 .uio-checked {
-  color: white;
-  background-color: @out-color;
+  color: @out-color;
+  background-color: @in-color;
 }
 
 .uio-uncheck {
@@ -161,15 +212,15 @@ div.ivu-col-span-12 > div.ivu-card-bordered > div.ivu-card-body {
   background-color: white;
 }
 
-.uio-radio-group {
+section.uio-radio-group {
   display: flex;
   justify-content: space-around;
 
   .uio-radio {
     cursor: pointer;
     min-height: 4em;
-    max-height: 8em;
-    font-weight: bold;
+    max-height: 7em;
+    font-weight: 500;
     line-height: 1.5em;
 
     & > input {
@@ -186,8 +237,22 @@ div.ivu-col-span-12 > div.ivu-card-bordered > div.ivu-card-body {
     }
 
     & > input:checked + span {
-      background-color: #f0faff;
+      background-color: @in-color;
     }
+  }
+}
+
+section.uio-input-group {
+  label {
+    margin: 8px 0;
+  }
+
+  label + div {
+    margin-bottom: 10px;
+  }
+
+  input {
+    text-align: center;
   }
 }
 </style>

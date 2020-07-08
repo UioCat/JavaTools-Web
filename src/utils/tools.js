@@ -3,6 +3,7 @@
  */
 
 import { post } from "./request";
+import { toolSet } from "./config";
 
 /**
  * 提示复制成功的全局消息
@@ -18,25 +19,44 @@ function copy(e, that) {
 
 /**
  * 在防抖的前提下实时解析代码
- * @param {String} path 路径
  * @param {Object} param 数据载荷
  * @param {Object} that this 指针
  */
-function parse(path, param, that) {
-	let rtn = "";
-	post(path, param)
+function parse(param, that) {
+	return post(toolSet.mysql.api.parse, param)
 		.then((res) => {
 			if (res.code === 12) {
-				rtn = res.info;
+				that.$Message.success(`解析成功`);
+				return res.info;
 			} else {
-				that.$Message.error("解析失败：" + res.message);
+				that.$Message.error(`解析失败: ${res.message}`);
 			}
 		})
 		.catch((err) => {
 			that.$Message.error("发送失败");
 			console.error(err);
 		});
-	return rtn;
 }
 
-export { parse, copy };
+/**
+ * 生成代码
+ * @param {String} path 路径
+ * @param {Object} param 数据在和
+ * @param {Object} that this 指针
+ */
+function generate(path, param, that) {
+	return post(path, param)
+		.then((res) => {
+			if (res.code === 12) {
+				return res.info;
+			} else {
+				that.$Message.error(`操作失败: ${res.message}`);
+			}
+		})
+		.catch((err) => {
+			that.$Message.error("发送失败");
+			console.error(err);
+		});
+}
+
+export { parse, copy, generate };

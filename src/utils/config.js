@@ -2,7 +2,7 @@
  * 工具列表及其选项
  */
 
-export default {
+export const toolSet = {
 	decimal: {
 		name: "进制转换",
 		option: null,
@@ -17,7 +17,7 @@ export default {
 			create: ["创建表", "tbName"],
 			update: ["更新表", "tbName", "keyParameter"],
 			insert: ["插入记录", "tbName"],
-			delete: ["删除记录"],
+			delete: ["删除记录", "tbName"],
 			query: ["查询记录", "tbName", "keyParameter"],
 		},
 		api: {
