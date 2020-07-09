@@ -17,7 +17,7 @@ export const toolSet = {
 			create: ["创建表", "tbName"],
 			update: ["更新表", "tbName", "keyParameter"],
 			insert: ["插入记录", "tbName"],
-			delete: ["删除记录", "tbName"],
+			delete: ["删除记录", "tbName", "keyParameter"],
 			query: ["查询记录", "tbName", "keyParameter"],
 		},
 		api: {

@@ -15,7 +15,7 @@
         }"
       >
         <a href="/">
-          <Icon type="md-hammer" />UIO 的工具箱
+          <Icon type="md-hammer" /> UIO 的工具箱
         </a>
       </Header>
     </Layout>
