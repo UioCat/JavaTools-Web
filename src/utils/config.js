@@ -14,11 +14,12 @@ export const toolSet = {
 	mysql: {
 		name: "MySQL 生成",
 		option: {
-			create: ["创建表", "tbName"],
-			update: ["更新表", "tbName", "keyParameter"],
-			insert: ["插入记录", "tbName"],
-			delete: ["删除记录", "tbName", "keyParameter"],
-			query: ["查询记录", "tbName", "keyParameter"],
+			// 操作: [操作名称, 需要字段, 需要表名, 关键参数]
+			create: ["创建表", true, true, false],
+			update: ["更新表", true, true, true],
+			insert: ["插入记录", true, true, false],
+			delete: ["删除记录", false, true, true],
+			query: ["查询记录", true, true, true],
 		},
 		api: {
 			parse: "wordIdentify",
@@ -32,11 +33,11 @@ export const toolSet = {
 	mybatis: {
 		name: "MyBatis 生成",
 		option: {
-			create: ["创建命令", "namespace"],
-			update: ["更新命令", "tbName", "keyParameter"],
-			insert: ["插入命令", "tbName"],
-			delete: ["删除命令", "tbName"],
-			query: ["查询记录", "tbName", "keyParameter"],
+			create: ["创建命令", false, true, false],
+			update: ["更新命令", true, true, true],
+			insert: ["插入命令", true, true, false],
+			delete: ["删除命令", false, true, true],
+			query: ["查询记录", true, true, true],
 		},
 		api: {
 			parse: "wordIdentify",

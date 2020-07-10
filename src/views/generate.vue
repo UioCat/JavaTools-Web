@@ -5,7 +5,7 @@
       <i-col span="6">
         <Card>
           <textarea
-            class="uio-code uio-textarea"
+            class="uio-textarea"
             placeholder="粘贴代码到此处"
             :value="inputCode"
             @change="handleCode($event)"
@@ -25,7 +25,7 @@
             </div>
           </section>
           <Button shape="circle" @click="handleAll()">
-            <Icon type="md-list" />全 选
+            <Icon type="md-list" /> 全 选
           </Button>
         </Card>
       </i-col>
@@ -34,7 +34,7 @@
         <Card>
           <!-- 操作列表 -->
           <section class="uio-radio-group">
-            <label class="uio-radio" v-for="(v, k, i) of option" :key="i">
+            <label class="uio-radio" v-for="(v, k, i) of options" :key="i">
               <input type="radio" v-model="operate" :value="k" />
               <span>{{v[0]}}</span>
             </label>
@@ -44,26 +44,26 @@
             <div>
               <label>填写信息</label>
               <i-input
-                v-if="operate === 'create' && isMyBatis"
-                v-model="namespace"
+                v-if="isMyBatis && operate === 'create'"
+                v-model="tableName"
                 placeholder="命名空间"
               ></i-input>
-              <i-input v-else v-model="tbName" placeholder="表  名   "></i-input>
+              <i-input v-else v-model="tableName" placeholder="表  名   "></i-input>
             </div>
 
-            <div v-if="isNeedKey">
+            <div v-if="needKey">
               <label>指定主键</label>
-              <Select v-model="keyParameter">
+              <Select v-model="keyField">
                 <Option v-for="(v,k,i) in fields" :value="k" :key="i">{{ k }}</Option>
               </Select>
             </div>
           </section>
           <Button type="primary" shape="circle" @click="handleSubmit()">
-            <Icon type="md-checkbox-outline" />提 交
+            <Icon type="md-checkbox-outline" /> 提 交
           </Button>
           <!-- 输出 -->
           <textarea
-            class="uio-code uio-textarea"
+            class="uio-textarea"
             placeholder="命令输出"
             style="height: 20vh"
             :value="outputCode"
@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import { copy, parse, generate } from "../utils/tools";
+import { copy, generate } from "../utils/tools";
 import { post } from "../utils/request";
 import { toolSet } from "../utils/config";
 
@@ -87,39 +87,48 @@ export default {
     return {
       inputCode: "",
       outputCode: "",
+      options: {},
+      operate: "query",
       selected: 0,
       fields: {
-        "字段 1": true,
-        "字段 2": false,
+        "字段 1": false,
+        "字段 2": true,
         "字段 3": false,
         "字段 4": true,
         "字段 5": false,
         "字段 6": false
       },
-      operate: "query",
-      keyParameter: "",
-      tbName: "",
-      namespace: "",
-      isMyBatis: false,
-      option: null
+      keyField: "",
+      tableName: "",
+      isMyBatis: false
     };
   },
   created: function() {
     this.isMyBatis = this.type === "mybatis";
-    this.option = toolSet[this.type].option;
+    this.options = toolSet[this.type].option;
   },
   computed: {
-    isNeedKey: function() {
-      return "updatequery".indexOf(this.operate) !== -1;
+    needFields: function() {
+      return this.options[this.operate][1];
+    },
+    needKey: function() {
+      return this.options[this.operate][3];
     }
   },
   methods: {
     handleCode: function(e) {
       this.inputCode = e.target.value;
-      parse({ data: e.target.value }, this).then(info => {
-        const res = {};
-        if (info) info.map(i => (res[i] = false));
-        this.fields = res;
+      generate(
+        toolSet[this.type].api.parse,
+        { data: e.target.value },
+        this,
+        "解析"
+      ).then(info => {
+        if (info.length) {
+          const res = {};
+          info.map(i => (res[i] = false));
+          this.fields = res;
+        }
       });
     },
     handleAll: function() {
@@ -139,14 +148,22 @@ export default {
       this.selected = Object.values(this.fields).filter(i => i).length;
     },
     handleSubmit: function() {
-      const params = { parameter: Object.keys(this.fields).filter(i => i) };
-      if (this.isMyBatis) {
-        params["namespace"] = this.namespace;
-      } else {
-        params["tbName"] = this.tbName;
+      const params = {};
+      // 字段
+      if (this.needFields) {
+        params["parameter"] = Object.keys(this.fields).filter(
+          i => this.fields[i]
+        );
       }
-      if (this.isNeedKey) {
-        params["keyParameter"] = [this.keyParameter];
+      // 表名或命名空间
+      if (this.isMyBatis) {
+        params["namespace"] = this.tableName;
+      } else {
+        params["tbName"] = this.tableName;
+      }
+      // 关键参数
+      if (this.needKey) {
+        params["keyParameter"] = [this.keyField];
       }
       generate(toolSet[this.type].api[this.operate], params, this).then(
         info => {
@@ -164,6 +181,7 @@ export default {
 <style lang="less">
 @out-color: #2d8cf0;
 @in-color: #e3f5ff;
+@code-style: Courier, "Courier New", monospace;
 
 div.ivu-layout-content {
   min-height: 600px;
@@ -203,24 +221,11 @@ button.ivu-btn-circle {
   margin: 5px 0;
 }
 
-.uio-code {
-  font-family: Courier, "Courier New", monospace;
-  font-weight: 600;
-  line-height: 1.1em;
-}
-
-.uio-textarea {
-  padding: 6px;
-  font-size: 15px;
-  resize: none;
-  margin: 0;
-}
-
 .uio-check-option {
   width: 100%;
-  font-weight: bold;
   border-radius: 2px;
-  font-family: Courier, "Courier New", monospace;
+  font-weight: bold;
+  font-family: @code-style;
   border: solid 1px @out-color;
 }
 
@@ -276,6 +281,12 @@ section.uio-input-group {
 
   input {
     text-align: center;
+  }
+
+  input.ivu-input,
+  div.ivu-select span,
+  div.ivu-select-dropdown > ul {
+    font-family: @code-style;
   }
 }
 </style>

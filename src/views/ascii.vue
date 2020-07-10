@@ -2,29 +2,25 @@
   <Layout style="margin: 10px 60px">
     <Row style="margin: 10px 0">
       <Card>
-        <i-input
-          v-model="string"
-          type="textarea"
+        <textarea
+          style="height: 25vh"
+          class="uio-textarea"
           placeholder="输入"
-          size="large"
-          clearable
-          :autosize="{minRows: 4, maxRows: 6}"
-          @on-focus="handleCopy"
-          @on-change="handleString"
+          v-model="string"
+          @focus="handleCopy($event)"
+          @keypress="handleString()"
         />
       </Card>
     </Row>
     <Row>
       <Card>
-        <Input
-          v-model="number"
-          type="textarea"
+        <textarea
+          style="height: 25vh"
+          class="uio-textarea"
           placeholder="输出"
-          size="large"
-          clearable
-          :autosize="{minRows: 4, maxRows: 6}"
-          @on-focus="handleCopy"
-          @on-change="handleNumber"
+          v-model="number"
+          @focus="handleCopy($event)"
+          @keypress="handleNumber()"
         />
       </Card>
     </Row>
@@ -59,7 +55,6 @@ export default {
       this.string = pre.map(i => i.charCodeAt()).join(" ");
     },
     handleCopy: function(e) {
-      this.$Message.success("成功复制到剪切板");
       copy(e, this);
     }
   }

@@ -11,13 +11,13 @@
     <Row style="margin: 10px 0">
       <Card>
         <i-input
-          v-model="input"
           type="textarea"
           placeholder="输入"
           size="large"
           clearable
-          :autosize="{minRows: 6, maxRows: 8}"
-          @on-change="handleChange"
+          v-model="input"
+          :autosize="{minRows: 10, maxRows: 12}"
+          @on-change="handleChange($event)"
         />
       </Card>
     </Row>
@@ -26,13 +26,13 @@
         <Card>
           <label>二进制</label>
           <Input
-            v-model="output_B"
             type="textarea"
             placeholder="二进制输出"
             size="large"
             clearable
-            :autosize="{minRows: 8, maxRows: 10}"
-            @on-focus="handleCopy"
+            v-model="output_B"
+            :autosize="{minRows: 10, maxRows: 12}"
+            @on-focus="handleCopy($event)"
           />
         </Card>
       </i-col>
@@ -40,13 +40,13 @@
         <Card>
           <label>十进制</label>
           <Input
-            v-model="output_D"
             type="textarea"
             placeholder="十进制输出"
             size="large"
             clearable
-            :autosize="{minRows: 8, maxRows: 10}"
-            @on-focus="handleCopy"
+            v-model="output_D"
+            :autosize="{minRows: 10, maxRows: 12}"
+            @on-focus="handleCopy($event)"
           />
         </Card>
       </i-col>
@@ -54,13 +54,13 @@
         <Card>
           <label>十六进制</label>
           <Input
-            v-model="output_H"
             type="textarea"
             placeholder="十六进制输出"
             size="large"
             clearable
-            :autosize="{minRows: 8, maxRows: 10}"
-            @on-focus="handleCopy"
+            v-model="output_H"
+            :autosize="{minRows: 10, maxRows: 12}"
+            @on-focus="handleCopy($event)"
           />
         </Card>
       </i-col>
@@ -146,8 +146,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-label {
-  margin-top: -6px;
-  margin-bottom: 5px;
+div.ivu-input-wrapper {
+  margin-top: 5px;
 }
 </style>

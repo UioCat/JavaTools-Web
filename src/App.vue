@@ -10,8 +10,8 @@
       <Header
         :style="{
         backgroundColor: '#ffffff',
-        fontSize: '18px',
-        fontWeight: '500'
+        fontSize: '20px',
+        fontWeight: '700'
         }"
       >
         <a href="/">
@@ -110,10 +110,45 @@ export default {
   a {
     color: unset;
   }
+
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #8fafff;
+    opacity: 0.7;
+    transition: opacity ease-in-out 200ms;
+  }
+
+  label {
+    font-size: 16px;
+  }
 }
 
-label {
-  font-size: 16px;
+li.ivu-menu-item-active {
+  font-weight: 800;
+}
+
+@code-style: Courier, "Courier New", monospace;
+
+textarea.uio-textarea {
+  resize: none;
+  padding: 6px;
+  margin: 0;
+  font-family: @code-style;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.1em;
+  word-break: normal;
+}
+
+textarea.ivu-input {
+  font-weight: 600;
+  line-height: 1.1em;
+  font-size: 1.2em;
+  font-family: @code-style;
 }
 
 textarea {
