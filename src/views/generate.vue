@@ -25,7 +25,7 @@
             </div>
           </section>
           <Button shape="circle" @click="handleAll()">
-            <Icon type="md-list" /> 全 选
+            <Icon type="md-list" />全 选
           </Button>
         </Card>
       </i-col>
@@ -59,7 +59,7 @@
             </div>
           </section>
           <Button type="primary" shape="circle" @click="handleSubmit()">
-            <Icon type="md-checkbox-outline" /> 提 交
+            <Icon type="md-checkbox-outline" />提 交
           </Button>
           <!-- 输出 -->
           <textarea
@@ -156,7 +156,7 @@ export default {
         );
       }
       // 表名或命名空间
-      if (this.isMyBatis) {
+      if (this.isMyBatis && this.operate === "create") {
         params["namespace"] = this.tableName;
       } else {
         params["tbName"] = this.tableName;
