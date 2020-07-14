@@ -52,8 +52,8 @@
             </div>
 
             <div v-if="needKey">
-              <label>指定主键</label>
-              <Select v-model="keyField">
+              <label>关键参数</label>
+              <Select v-model="keyField" multiple>
                 <Option v-for="(v,k,i) in fields" :value="k" :key="i">{{ k }}</Option>
               </Select>
             </div>
@@ -98,7 +98,7 @@ export default {
         "字段 5": false,
         "字段 6": false
       },
-      keyField: "",
+      keyField: [],
       tableName: "",
       isMyBatis: false
     };
@@ -163,7 +163,7 @@ export default {
       }
       // 关键参数
       if (this.needKey) {
-        params["keyParameter"] = [this.keyField];
+        params["keyParameter"] = this.keyField;
       }
       generate(toolSet[this.type].api[this.operate], params, this).then(
         info => {

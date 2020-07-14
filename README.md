@@ -28,7 +28,7 @@ $ yarn install
 
 - 构建
     ```
-    yarn build
+    $ yarn build
     ```
     `/docs` 文件夹下生成目标文件
 - 开发

@@ -16,7 +16,7 @@
           size="large"
           clearable
           v-model="input"
-          :autosize="{minRows: 10, maxRows: 12}"
+          :autosize="{minRows: 9, maxRows: 12}"
           @on-change="handleChange($event)"
         />
       </Card>
@@ -31,7 +31,7 @@
             size="large"
             clearable
             v-model="output_B"
-            :autosize="{minRows: 10, maxRows: 12}"
+            :autosize="{minRows: 9, maxRows: 12}"
             @on-focus="handleCopy($event)"
           />
         </Card>
@@ -45,7 +45,7 @@
             size="large"
             clearable
             v-model="output_D"
-            :autosize="{minRows: 10, maxRows: 12}"
+            :autosize="{minRows: 9, maxRows: 12}"
             @on-focus="handleCopy($event)"
           />
         </Card>
@@ -59,7 +59,7 @@
             size="large"
             clearable
             v-model="output_H"
-            :autosize="{minRows: 10, maxRows: 12}"
+            :autosize="{minRows: 9, maxRows: 12}"
             @on-focus="handleCopy($event)"
           />
         </Card>
