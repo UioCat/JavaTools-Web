@@ -2,7 +2,7 @@
   <Layout style="margin: 3px 50px">
     <Row class="uio-operate" type="flex" :gutter="16">
       <!-- 代码 -->
-      <i-col span="6">
+      <Col span="6">
         <Card>
           <textarea
             class="uio-textarea"
@@ -11,9 +11,9 @@
             @change="handleCode($event)"
           />
         </Card>
-      </i-col>
+      </Col>
       <!-- 字段列表 -->
-      <i-col span="6" class="uio-fields">
+      <Col span="6" class="uio-fields">
         <Card>
           <section>
             <div style="cursor: pointer" v-for="(i, j, k) in fields" :key="k">
@@ -28,9 +28,9 @@
             <Icon type="md-list" />全 选
           </Button>
         </Card>
-      </i-col>
+      </Col>
 
-      <i-col span="12">
+      <Col span="12">
         <Card>
           <!-- 操作列表 -->
           <section class="uio-radio-group">
@@ -43,12 +43,12 @@
           <section class="uio-input-group">
             <div>
               <label>填写信息</label>
-              <i-input
+              <Input
                 v-if="isMyBatis && operate === 'create'"
                 v-model="tableName"
                 placeholder="命名空间"
-              ></i-input>
-              <i-input v-else v-model="tableName" placeholder="表  名   "></i-input>
+              />
+              <Input v-else v-model="tableName" placeholder="表  名   " />
             </div>
 
             <div v-if="needKey">
@@ -70,7 +70,7 @@
             @focus="handleCopy($event)"
           />
         </Card>
-      </i-col>
+      </Col>
     </Row>
   </Layout>
 </template>

@@ -10,7 +10,7 @@
     </Row>
     <Row style="margin: 10px 0">
       <Card>
-        <i-input
+        <Input
           type="textarea"
           placeholder="输入"
           size="large"
@@ -22,7 +22,7 @@
       </Card>
     </Row>
     <Row :gutter="16">
-      <i-col span="8">
+      <Col span="8">
         <Card>
           <label>二进制</label>
           <Input
@@ -35,8 +35,8 @@
             @on-focus="handleCopy($event)"
           />
         </Card>
-      </i-col>
-      <i-col span="8">
+      </Col>
+      <Col span="8">
         <Card>
           <label>十进制</label>
           <Input
@@ -49,8 +49,8 @@
             @on-focus="handleCopy($event)"
           />
         </Card>
-      </i-col>
-      <i-col span="8">
+      </Col>
+      <Col span="8">
         <Card>
           <label>十六进制</label>
           <Input
@@ -63,7 +63,7 @@
             @on-focus="handleCopy($event)"
           />
         </Card>
-      </i-col>
+      </Col>
     </Row>
   </Layout>
 </template>
