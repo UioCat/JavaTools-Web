@@ -1,5 +1,7 @@
 # uio-tools
 
+![](https://img.shields.io/badge/Vue-inner-green) ![](https://img.shields.io/badge/Build-pass-orange)
+
 - [uio-tools](#uio-tools)
     - [使用](#使用)
     - [接口](#接口)
@@ -16,8 +18,6 @@
             - [insert](#insert-1)
             - [delete](#delete-1)
             - [query](#query-1)
-
-![](https://img.shields.io/badge/Vue-inner-green) ![](https://img.shields.io/badge/Build-pass-orange)
 
 ## 使用
 部署环境
