@@ -30,10 +30,10 @@ function generate(path, param, that, msg = "操作") {
 		.then((res) => {
 			if (res.code === 12) {
 				that.$Message.success(`${msg}成功`);
-				return res.info;
 			} else {
 				that.$Message.error(`${msg}失败: ${res.message}`);
 			}
+			return res.info;
 		})
 		.catch((err) => {
 			that.$Message.error("发送失败");
