@@ -1,14 +1,14 @@
 <template>
-  <generate :type="type" />
+	<generate :type="type" />
 </template>
 
 <script>
-import generate from "./generate";
+import generate from "../components/generate";
 export default {
-  name: "mybatis",
-  props: ["type"],
-  components: {
-    generate
-  }
+	name: "mybatis",
+	props: ["type"],
+	components: {
+		generate,
+	},
 };
 </script>
