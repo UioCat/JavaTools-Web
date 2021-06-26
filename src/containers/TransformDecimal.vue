@@ -1,6 +1,6 @@
 <template>
   <el-row>
-    <el-col :span="18" :push="3">
+    <el-col :span="20" :push="2">
       <el-card>
         <label>选择输入的进制：</label>
         <el-radio-group v-model="desc" size="small">

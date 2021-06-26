@@ -79,18 +79,23 @@ export default defineComponent({
   height: 100%;
 
   li {
-    width: 100%;
     font-weight: 500;
-    text-align: right;
     font-size: 15px;
+    text-align: right;
+
+    &.is-active {
+      padding-right: 18px;
+      border-right: 2px solid #409eff;
+      background-color: #ecf5ff;
+    }
   }
 
   .java-sidebar-title {
     font-weight: bolder;
     font-size: 1.4em;
     cursor: pointer;
-    height: 56px;
-    line-height: 56px;
+    height: 60px;
+    line-height: 60px;
   }
 
   .java-sidebar-record {

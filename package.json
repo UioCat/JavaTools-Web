@@ -1,6 +1,7 @@
 {
   "name": "javatools-fe",
   "version": "0.0.1",
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

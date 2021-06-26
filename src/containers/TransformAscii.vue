@@ -1,6 +1,6 @@
 <template>
   <el-row>
-    <el-col :span="8" :push="3">
+    <el-col :span="9" :push="2">
       <el-card>
         <label>输入字符：</label>
         <el-input
@@ -14,7 +14,7 @@
       </el-card>
     </el-col>
 
-    <el-col :span="8" :push="5">
+    <el-col :span="9" :push="4">
       <el-card>
         <label>输出 ASCII：</label>
         <el-input
