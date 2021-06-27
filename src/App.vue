@@ -1,21 +1,21 @@
 <template>
   <el-container class="java-wrapper">
-    <el-aside width="160px">
-      <el-menu mode="vertical" :default-active="`/${defaultActive}`" router>
-        <div class="java-sidebar-title">
-          <i class="el-icon-takeaway-box" />
-          JavaTools
-        </div>
+    <el-aside width="160px" class="java-sidebar">
+      <div class="java-sidebar-title">
+        <i class="el-icon-takeaway-box" />
+        JavaTools
+      </div>
 
+      <el-menu mode="vertical" :default-active="`/${defaultActive}`" router>
         <el-menu-item v-for="(i, k) in navList" :key="k" :index="i.index">
           {{ i.title }}
         </el-menu-item>
-
-        <div class="java-sidebar-record">
-          <el-tag size="mini">浙 ICP 备 20005026 号</el-tag>
-          <el-tag size="mini">33060202000774</el-tag>
-        </div>
       </el-menu>
+
+      <div class="java-sidebar-record">
+        <el-tag size="mini">浙 ICP 备 20005026 号</el-tag>
+        <el-tag size="mini">33060202000774</el-tag>
+      </div>
     </el-aside>
 
     <el-container>
@@ -34,6 +34,20 @@
         </router-view>
       </el-main>
     </el-container>
+
+    <div class="java-doc" :v-show="!showDrawer" @click="showDrawer = true">
+      <i class="el-icon-d-arrow-left" />
+    </div>
+
+    <el-drawer
+      size="40%"
+      title="说明文档"
+      direction="rtl"
+      destroy-on-close
+      v-model="showDrawer"
+    >
+      <span>我来啦!</span>
+    </el-drawer>
   </el-container>
 </template>
 
@@ -61,6 +75,7 @@ export default defineComponent({
   data() {
     return {
       navList: table,
+      showDrawer: false,
       defaultActive: Object.keys(components)[1],
       includeComp: Object.keys(components).join(", "),
     };
@@ -75,32 +90,57 @@ export default defineComponent({
   height: 100vh;
 }
 
-.el-menu {
-  height: 100%;
+.java-doc {
+  position: fixed;
+  top: 50%;
+  width: 50px;
+  right: -25px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: aliceblue;
+  box-shadow: -1px 0 5px 2px #d4eaec;
+  cursor: pointer;
+  text-align: left;
 
-  li {
-    font-weight: 500;
-    font-size: 15px;
-    text-align: right;
-
-    &.is-active {
-      padding-right: 18px;
-      border-right: 2px solid #409eff;
-      background-color: #ecf5ff;
-    }
+  i {
+    font-size: 1em;
+    line-height: 50px;
+    color: #409eff;
   }
+}
 
+.java-sidebar {
   .java-sidebar-title {
     font-weight: bolder;
     font-size: 1.4em;
     cursor: pointer;
     height: 60px;
     line-height: 60px;
+    border-right: solid 1px #e6e6e6;
+  }
+
+  .el-menu {
+    height: calc(100% - 60px - 60px);
+    overflow-y: auto;
+
+    li {
+      font-weight: 500;
+      font-size: 15px;
+      text-align: right;
+
+      &.is-active {
+        padding-right: 18px;
+        border-right: 2px solid #409eff;
+        background-color: #ecf5ff;
+      }
+    }
   }
 
   .java-sidebar-record {
     position: absolute;
-    bottom: 1em;
+    padding-bottom: 1em;
+    width: calc(160px - 1px);
+    border-right: solid 1px #e6e6e6;
   }
 }
 
