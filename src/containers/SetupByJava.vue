@@ -15,7 +15,7 @@
       :label="item.title"
     >
       <el-row :gutter="20">
-        <el-col :span="5">
+        <el-col :span="6">
           <el-input
             v-model="item.code"
             placeholder="Java 代码"
@@ -38,15 +38,18 @@
           </el-form>
         </el-col>
 
-        <el-col :span="5">
+        <el-col :span="1">
+          <el-divider direction="vertical" />
+        </el-col>
+
+        <el-col :span="12">
           <el-tabs
             closable
             editable
-            type="card"
             tab-position="left"
             v-model="item.active"
             @tab-add="addOperateTab(idx)"
-            @tab-remove="removeOperateTab(idx)"
+            @tab-remove="removeOperateTab(idx, $event)"
           >
             <el-tab-pane
               v-for="op in item.operateList"
@@ -61,6 +64,7 @@
       </el-row>
     </el-tab-pane>
   </el-tabs>
+  <el-button type="primary" size="mini">提 交</el-button>
 </template>
 
 <script lang="ts">
@@ -159,7 +163,15 @@ export default defineComponent({
       });
     }
 
-    function removeOperateTab(idx: number) {}
+    function removeOperateTab(idx: number, tname: string) {
+      const list = seriesList.value[idx].operateList;
+      for (let i = 0; i < list.length; i++) {
+        if (list[i].key === tname) {
+          list.splice(i, 1);
+          break;
+        }
+      }
+    }
 
     return {
       activeTabName,
@@ -177,8 +189,9 @@ export default defineComponent({
 
 <style scoped lang="less">
 .java-series {
-  height: calc(100% - 6px);
+  height: calc(100% - 6px - 20px - 40px);
   position: relative;
+  margin: 10px;
 
   ::v-deep(.el-tabs__content) {
     margin: 0 30px;
@@ -191,5 +204,13 @@ export default defineComponent({
 .el-row,
 ::v-deep(.el-textarea__inner) {
   height: 100%;
+}
+
+.el-divider {
+  height: 100%;
+}
+
+.el-button {
+  font-size: initial;
 }
 </style>

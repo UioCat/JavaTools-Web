@@ -76,7 +76,7 @@ export default defineComponent({
     return {
       navList: table,
       showDrawer: false,
-      defaultActive: Object.keys(components)[1],
+      defaultActive: Object.keys(components)[0],
       includeComp: Object.keys(components).join(", "),
     };
   },
