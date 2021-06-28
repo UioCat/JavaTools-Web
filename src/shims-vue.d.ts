@@ -4,12 +4,7 @@ declare module "*.vue" {
   export default component;
 }
 
-declare enum ESQLType {
-  DELETE = "DELETE",
-  INSERT = "INSERT",
-  UPDATE = "UPDATE",
-  SELECT = "SELECT",
-}
+type ESQLType = "DELETE" | "INSERT" | "UPDATE" | "SELECT";
 
 declare interface IMybaitsParameterItem {
   type: ESQLType;
