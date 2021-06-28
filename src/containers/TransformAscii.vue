@@ -5,6 +5,7 @@
         <label>输入字符：</label>
         <el-input
           :rows="5"
+          autofocus
           type="textarea"
           placeholder="输入字符"
           v-model="stringVal"

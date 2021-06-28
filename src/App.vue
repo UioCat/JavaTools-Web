@@ -18,7 +18,7 @@
     <el-container>
       <el-header>
         <div class="java-header">
-          <i class="el-icon-takeaway-box" />
+          <i class="el-icon-coffee-cup" style="margin-right: 0.5em" />
           JavaTools
         </div>
       </el-header>
@@ -152,6 +152,10 @@ export default defineComponent({
     font-weight: bolder;
     font-size: 1.4em;
     height: 100%;
+  }
+
+  i {
+    font-weight: bolder;
   }
 }
 </style>

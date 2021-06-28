@@ -18,10 +18,11 @@
         <el-col :span="7">
           <el-input
             v-model="item.code"
-            placeholder="Java 代码"
+            placeholder="代码"
             type="textarea"
             spellcheck="false"
             resize="none"
+            autofocus
             :rows="10"
             @change="parseCode(idx, $event)"
           />
@@ -67,7 +68,7 @@
                     @change="updateTabTitle(idx, i)"
                   >
                     <el-option
-                      v-for="item in typeList"
+                      v-for="item in ['INSERT', 'DELETE', 'UPDATE', 'SELECT']"
                       :key="item"
                       :label="item"
                       :value="item"
@@ -135,7 +136,7 @@ import { defineComponent, ref } from "vue";
 import { get, post } from "@/services/request";
 
 export default defineComponent({
-  name: "setup-by-java",
+  name: "setup-by-code",
   props: {
     parsePath: { type: String, required: true },
     genPath: { type: String, required: true },
@@ -166,13 +167,6 @@ export default defineComponent({
     ]);
 
     const activeTabName = ref("0");
-
-    function updateTabTitle(sIdx: number, tIdx: number) {
-      seriesList.value[sIdx].operateList[tIdx].title =
-        seriesList.value[sIdx].operateList[tIdx].type +
-          " " +
-          seriesList.value[sIdx].operateList[tIdx].parameterList[0] || "";
-    }
 
     function addSeriesTab() {
       let newTabName = ++seriesCnt.value + "";
@@ -247,14 +241,21 @@ export default defineComponent({
       }
     }
 
+    function updateTabTitle(sIdx: number, tIdx: number) {
+      seriesList.value[sIdx].operateList[tIdx].title =
+        seriesList.value[sIdx].operateList[tIdx].type +
+        " " +
+        seriesList.value[sIdx].operateList[tIdx].parameterList[0];
+    }
+
     const paraList = ref<string[]>([]);
 
     function parseCode(idx: number, code: string) {
       // post(props.parsePath, { data: code })
-      get("/mock/parseJava.json")
+      get(props.parsePath)
         .then((res) => res.json())
         .then((res) => {
-          if (res.code === "200") {
+          if (res.code === 200) {
             ElMessage.success({
               type: "success",
               message: res.message,
@@ -281,21 +282,26 @@ export default defineComponent({
         });
     }
 
+    function generateCode() {
+      post(props.genPath, {});
+    }
+
     return {
       seriesList,
       activeTabName,
 
       paraList,
-      typeList: ["INSERT", "DELETE", "UPDATE", "SELECT"],
 
       addSeriesTab,
       removeSeriesTab,
 
-      updateTabTitle,
       addOperateTab,
       removeOperateTab,
 
+      updateTabTitle,
+
       parseCode,
+      generateCode,
     };
   },
 });

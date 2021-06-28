@@ -1,14 +1,14 @@
 <template>
   <el-row>
     <el-col :span="20" :push="2">
-      <el-card>
+      <div>
         <label>选择输入的进制：</label>
         <el-radio-group v-model="desc" size="small">
           <el-radio-button label="2" />
           <el-radio-button label="10" />
           <el-radio-button label="16" />
         </el-radio-group>
-      </el-card>
+      </div>
 
       <el-divider />
 
@@ -18,6 +18,7 @@
           placeholder="请输入"
           v-model="input"
           clearable
+          autofocus
           @keyup="handleChange($event)"
         />
       </el-card>
