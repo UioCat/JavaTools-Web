@@ -1,10 +1,17 @@
-<template></template>
+<template>
+  <SetupByCode parsePath="/parseSQL" genPath="/generatorFileBySQL" />
+</template>
 
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
+
+import SetupByCode from "@/components/SetupByCode.vue";
 
 export default defineComponent({
-  name: "setup-by-sql",
+  name: "SetupBySql",
+  components: {
+    SetupByCode,
+  },
   setup() {},
 });
 </script>

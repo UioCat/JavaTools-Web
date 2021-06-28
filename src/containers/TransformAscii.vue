@@ -50,6 +50,7 @@ export default defineComponent({
         ElMessage({
           message: "转换失败",
           type: "error",
+          offset: 65,
         });
       }
     }
@@ -67,6 +68,7 @@ export default defineComponent({
       ElMessage({
         message: "成功复制到剪贴板",
         type: "success",
+        offset: 65,
       });
     }
 

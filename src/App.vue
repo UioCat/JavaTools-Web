@@ -1,10 +1,7 @@
 <template>
   <el-container class="java-wrapper">
     <el-aside width="160px" class="java-sidebar">
-      <div class="java-sidebar-title">
-        <i class="el-icon-takeaway-box" />
-        JavaTools
-      </div>
+      <div class="java-sidebar-title"></div>
 
       <el-menu mode="vertical" :default-active="`/${defaultActive}`" router>
         <el-menu-item v-for="(i, k) in navList" :key="k" :index="i.index">
@@ -21,14 +18,14 @@
     <el-container>
       <el-header>
         <div class="java-header">
-          <i class="el-icon-s-platform"></i>
+          <i class="el-icon-takeaway-box" />
           JavaTools
         </div>
       </el-header>
 
       <el-main>
         <router-view v-slot="{ Component }">
-          <keep-alive :include="includeComp">
+          <keep-alive>
             <component :is="Component" />
           </keep-alive>
         </router-view>
@@ -77,7 +74,6 @@ export default defineComponent({
       navList: table,
       showDrawer: false,
       defaultActive: Object.keys(components)[0],
-      includeComp: Object.keys(components).join(", "),
     };
   },
 });
@@ -127,6 +123,7 @@ export default defineComponent({
       font-weight: 500;
       font-size: 15px;
       text-align: right;
+      user-select: none;
 
       &.is-active {
         padding-right: 18px;
