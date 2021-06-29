@@ -4,6 +4,12 @@ declare module "*.vue" {
   export default component;
 }
 
+declare module "markdown-it";
+declare module "markdown-it-sup";
+declare module "markdown-it-sub";
+declare module "markdown-it-mark";
+declare module "markdown-it-task-lists";
+
 type ESQLType = "DELETE" | "INSERT" | "UPDATE" | "SELECT";
 
 declare interface IMybaitsParameterItem {

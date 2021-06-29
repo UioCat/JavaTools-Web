@@ -38,12 +38,12 @@
 
     <el-drawer
       size="40%"
-      title="说明文档"
+      title="JavaTools 说明文档"
       direction="rtl"
       destroy-on-close
       v-model="showDrawer"
     >
-      <span>我来啦!</span>
+      <Documentation :markdown="docData" />
     </el-drawer>
   </el-container>
 </template>
@@ -52,6 +52,8 @@
 import { defineComponent } from "vue";
 
 import { table } from "@/router";
+import { get } from "@/services/request";
+import Documentation from "@/components/Documentation.vue";
 import TransformDecimal from "@/containers/TransformDecimal.vue";
 import TransformAscii from "@/containers/TransformAscii.vue";
 import GenerateMybatis from "@/containers/GenerateMybatis.vue";
@@ -68,13 +70,25 @@ const components = {
 
 export default defineComponent({
   name: "App",
-  components,
+  components: {
+    ...components,
+    Documentation,
+  },
   data() {
     return {
+      docData: "",
       navList: table,
       showDrawer: false,
       defaultActive: Object.keys(components)[0],
     };
+  },
+  mounted() {
+    get("/mock/document.md")
+      .then((res) => res.text())
+      .then((res) => {
+        this.docData = res;
+      })
+      .catch((err) => {});
   },
 });
 </script>
