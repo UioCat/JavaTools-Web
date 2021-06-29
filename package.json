@@ -2,6 +2,7 @@
   "name": "javatools-fe",
   "version": "0.0.1",
   "license": "MIT",
+  "private": true,
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -15,17 +16,11 @@
   },
   "devDependencies": {
     "@rollup/plugin-alias": "^3.1.2",
-    "@types/node": "^15.12.4",
-    "@typescript-eslint/parser": "^4.28.0",
     "@vitejs/plugin-vue": "^1.2.3",
     "@vue/compiler-sfc": "^3.1.2",
-    "eslint": "^7.29.0",
-    "eslint-plugin-vue": "^7.12.1",
     "less": "^4.1.1",
-    "sass": "^1.35.1",
     "typescript": "^4.3.4",
     "vite": "^2.3.8",
-    "vite-plugin-style-import": "^1.0.1",
     "vue-tsc": "^0.2.0"
   }
 }
