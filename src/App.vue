@@ -98,6 +98,7 @@ export default defineComponent({
 
 .java-wrapper {
   height: 100vh;
+  min-height: 600px;
 }
 
 .java-doc {

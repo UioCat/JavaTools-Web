@@ -15,7 +15,7 @@
       :label="item.title"
     >
       <el-row :gutter="20">
-        <el-col :span="7">
+        <el-col :span="6">
           <el-input
             v-model="item.code"
             placeholder="代码"
@@ -46,7 +46,7 @@
           <el-divider direction="vertical" />
         </el-col>
 
-        <el-col :span="10" class="java-operate">
+        <el-col :span="12" class="java-operate">
           <el-tabs
             closable
             tab-position="left"
@@ -58,9 +58,9 @@
               v-for="(op, i) in item.operateList"
               :key="op.key"
               :name="op.key"
-              :label="op.title"
+              :label="omit(op.title)"
             >
-              <el-form label-position="right" label-width="100px" :model="op">
+              <el-form label-position="right" label-width="80px" :model="op">
                 <el-form-item label="操作">
                   <el-select
                     v-model="op.type"
@@ -96,7 +96,7 @@
                   <el-select
                     v-model="op.keyParameterList"
                     multiple
-                    placeholder="选择关键字段"
+                    placeholder="选择字段"
                     :disabled="op.type === 'INSERT'"
                     @change="updateTabTitle(idx, i)"
                   >
@@ -302,6 +302,11 @@ export default defineComponent({
 
       parseCode,
       generateCode,
+
+      omit: (raw: string) => {
+        const str = raw.replace(/\s[a-zA-Z\_]+\s/g, " ");
+        return str.length < 15 ? str : str.slice(0, 12) + "...";
+      },
     };
   },
 });
@@ -331,10 +336,12 @@ export default defineComponent({
 
     .el-tabs {
       height: 100%;
-    }
 
-    ::v-deep(.el-tabs__header) {
-      width: 14em;
+      ::v-deep(.el-tabs__item) {
+        width: 12em;
+        padding-left: 0;
+        font-family: monospace;
+      }
     }
 
     ::v-deep(.el-tabs__nav-wrap) > span {
@@ -372,6 +379,6 @@ export default defineComponent({
 }
 
 .el-button {
-  font-size: initial;
+  font-size: 14px;
 }
 </style>

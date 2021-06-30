@@ -75,7 +75,7 @@
             type="textarea"
             spellcheck="false"
             resize="none"
-            :autosize="{ minRows: 5, maxRows: 15 }"
+            :autosize="{ minRows: 10, maxRows: 15 }"
             @focus="handleCopy($event)"
           />
         </el-form-item>
