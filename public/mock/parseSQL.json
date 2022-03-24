@@ -1,0 +1,9 @@
+{
+  "code": 200,
+  "message": "请求成功",
+  "info": {
+    "fieldList": ["Integer id", "String title", "String keyword", "String articleUid"],
+    "className": "News",
+    "tableName": "tb_news"
+  }
+}

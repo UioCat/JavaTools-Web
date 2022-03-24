@@ -19,7 +19,7 @@
           v-model="input"
           clearable
           autofocus
-          @keyup="handleChange($event)"
+          @keyup="handleChange()"
         />
       </el-card>
 

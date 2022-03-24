@@ -3,7 +3,7 @@
   <SetupByCode parsePath="/mock/parseJava.json" genPath="/generatorFileByJava" />
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from "vue";
 
 import SetupByCode from "@/components/SetupByCode.vue";

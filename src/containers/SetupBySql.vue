@@ -3,7 +3,7 @@
   <SetupByCode parsePath="/mock/parseSQL.json" genPath="/generatorFileBySQL" />
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from "vue";
 
 import SetupByCode from "@/components/SetupByCode.vue";

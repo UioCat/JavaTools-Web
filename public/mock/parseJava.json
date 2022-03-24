@@ -1,0 +1,10 @@
+{
+  "code": 200,
+  "message": "请求成功",
+  "info": {
+    "fieldList": ["Integer id", "String title", "String keyword", "String articleUid"],
+    "tableName": "tb_news",
+    "className": "News",
+    "packageName": "com.uio.java_tools"
+  }
+}
