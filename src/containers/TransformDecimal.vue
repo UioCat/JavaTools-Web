@@ -1,9 +1,9 @@
 <template>
   <el-row>
     <el-col :span="20" :push="2">
-      <div>
+      <div class="decimal-title">
         <label>选择输入的进制：</label>
-        <el-radio-group v-model="desc" size="small">
+        <el-radio-group v-model="desc">
           <el-radio-button label="2" />
           <el-radio-button label="10" />
           <el-radio-button label="16" />
@@ -173,5 +173,11 @@ export default defineComponent({
 
 .el-input {
   margin-top: 5px;
+}
+
+.decimal-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

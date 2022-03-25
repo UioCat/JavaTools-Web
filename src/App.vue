@@ -3,15 +3,15 @@
     <el-aside width="160px" class="java-sidebar">
       <div class="java-sidebar-title"></div>
 
-      <el-menu mode="vertical" :default-active="`/${defaultActive}`" router>
+      <el-menu mode="vertical" :default-active="`${basePath}/${defaultActive}`" router>
         <el-menu-item v-for="(i, k) in navList" :key="k" :index="i.index">
           {{ i.title }}
         </el-menu-item>
       </el-menu>
 
       <div class="java-sidebar-record">
-        <el-tag size="mini">浙 ICP 备 20005026 号</el-tag>
-        <el-tag size="mini">33060202000774</el-tag>
+        <el-tag>浙 ICP 备 20005026 号</el-tag>
+        <el-tag>33060202000774</el-tag>
       </div>
     </el-aside>
 
@@ -19,7 +19,7 @@
       <el-header>
         <div class="java-header">
           <i class="el-icon-coffee-cup" style="margin-right: 0.5em" />
-          JavaTools
+          {{ appName }}
         </div>
       </el-header>
 
@@ -38,7 +38,7 @@
 
     <el-drawer
       size="40%"
-      title="JavaTools 说明文档"
+      :title="`${appName} 说明文档`"
       direction="rtl"
       destroy-on-close
       v-model="showDrawer"
@@ -52,7 +52,7 @@
 import { defineComponent } from "vue";
 
 import { table } from "@/router";
-import { get } from "@/services/request";
+import { get } from "@/services/network";
 import Documentation from "@/components/Documentation.vue";
 import TransformDecimal from "@/containers/TransformDecimal.vue";
 import TransformAscii from "@/containers/TransformAscii.vue";
@@ -83,12 +83,20 @@ export default defineComponent({
     };
   },
   mounted() {
-    get("/mock/document.md")
+    get("/mock/document.md", true)
       .then((res) => res.text())
       .then((res) => {
         this.docData = res;
       })
       .catch((err) => {});
+  },
+  computed: {
+    appName() {
+      return import.meta.env.VITE_APP_NAME;
+    },
+    basePath() {
+      return import.meta.env.VITE_BASE_PATH;
+    },
   },
 });
 </script>
@@ -131,7 +139,7 @@ export default defineComponent({
   }
 
   .el-menu {
-    height: calc(100% - 60px - 60px);
+    height: calc(100% - 60px - 76px);
     overflow-y: auto;
 
     li {
@@ -153,6 +161,10 @@ export default defineComponent({
     padding-bottom: 1em;
     width: calc(160px - 1px);
     border-right: solid 1px #e6e6e6;
+
+    .el-tag + .el-tag {
+      margin-top: 1em;
+    }
   }
 }
 

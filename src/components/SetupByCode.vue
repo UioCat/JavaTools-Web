@@ -110,14 +110,7 @@
                 </el-form-item>
 
                 <el-form-item>
-                  <el-button
-                    size="mini"
-                    type="primary"
-                    icon="el-icon-plus"
-                    @click="addOperateTab(idx)"
-                  >
-                    下一项
-                  </el-button>
+                  <el-button type="primary" @click="addOperateTab(idx)">下一项</el-button>
                 </el-form-item>
               </el-form>
             </el-tab-pane>
@@ -126,14 +119,14 @@
       </el-row>
     </el-tab-pane>
   </el-tabs>
-  <el-button size="mini" type="primary" icon="el-icon-check">提 交</el-button>
+  <el-button type="primary">提 交</el-button>
 </template>
 
 <script lang="ts">
 import { ElMessage } from "element-plus";
 import { defineComponent, ref } from "vue";
 
-import { get, post } from "@/services/request";
+import { get, post } from "@/services/network";
 
 export default defineComponent({
   name: "setup-by-code",
@@ -252,7 +245,7 @@ export default defineComponent({
 
     function parseCode(idx: number, code: string) {
       // post(props.parsePath, { data: code })
-      get(props.parsePath)
+      get(props.parsePath, true)
         .then((res) => res.json())
         .then((res) => {
           if (res.code === 200) {

@@ -84,7 +84,7 @@ import { defineComponent, ref } from "vue";
 import { post } from "@/services/network";
 
 export default defineComponent({
-  name: "generate-mybatis",
+  name: "generate-mysql",
   setup() {
     const code = ref("");
     const form = ref<{
