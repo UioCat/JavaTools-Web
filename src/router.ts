@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import TransformAscii from "@/containers/TransformAscii.vue";
 import TransformDecimal from "@/containers/TransformDecimal.vue";
-import GenerateMysql from "@/containers/GenerateMysql.vue";
+import CreateTable from "@/containers/CreateTable.vue";
 import GenerateMybatis from "@/containers/GenerateMybatis.vue";
 import SetupBySql from "@/containers/SetupBySql.vue";
 import SetupByJava from "@/containers/SetupByJava.vue";
@@ -21,14 +21,14 @@ export const table = [
     title: "ASCII 转换",
   },
   {
+    index: "/CreateTable",
+    icon: "el-icon-discover",
+    title: "创建 Table",
+  },
+  {
     index: "/GenerateMybatis",
     icon: "el-icon-discover",
     title: "生成 MyBatis",
-  },
-  {
-    index: "/GenerateMysql",
-    icon: "el-icon-discover",
-    title: "生成 MySQL",
   },
   {
     index: "/SetupBySql",
@@ -46,10 +46,10 @@ const routes = [
   { path: `${base}/`, redirect: `${base}/TransformAscii` },
   { path: `${base}/TransformAscii`, component: TransformAscii },
   { path: `${base}/TransformDecimal`, component: TransformDecimal },
+  { path: `${base}/CreateTable`, component: CreateTable },
+  { path: `${base}/GenerateMybatis`, component: GenerateMybatis },
   { path: `${base}/SetupBySql`, component: SetupBySql },
   { path: `${base}/SetupByJava`, component: SetupByJava },
-  { path: `${base}/GenerateMybatis`, component: GenerateMybatis },
-  { path: `${base}/GenerateMysql`, component: GenerateMysql },
 ];
 
 export const router = createRouter({

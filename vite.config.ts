@@ -7,7 +7,7 @@ import Components from "unplugin-vue-components/vite";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 
 export default defineConfig({
-  base: "/tools/",
+  base: "/",
   server: {
     port: 7000,
   },

@@ -10,7 +10,7 @@ declare module "markdown-it-sub";
 declare module "markdown-it-mark";
 declare module "markdown-it-task-lists";
 
-type ESQLType = "DELETE" | "INSERT" | "UPDATE" | "SELECT";
+type ESQLType = "CREATE" | "DELETE" | "INSERT" | "UPDATE" | "SELECT";
 
 declare interface IMybaitsParameterItem {
   type: ESQLType;
@@ -23,7 +23,39 @@ declare interface IOperateItem extends IMybaitsParameterItem {
   title: string;
 }
 
-declare interface IParseJavaResponse {
+declare interface IParsedCreateTableResponseParameter {
+  type: string;
+  datatype: string;
+  field: string;
+  fieldInSql: string;
+  comment: string;
+  defaultValue: any;
+}
+
+declare interface IParsedCreateTableResponse {
+  /**
+   * @field 表名
+   */
+  tableName: string;
+  /**
+   * @field 类名
+   */
+  className: string;
+  /**
+   * @field 包名
+   */
+  packageName: string;
+  /**
+   * @field 主键
+   */
+  primaryKey: string;
+  /**
+   * @field 字段列表
+   */
+  parameters: IParsedCreateTableResponseParameter[];
+}
+
+declare interface IParsedJavaResponse {
   /**
    * @field 表名
    */
@@ -42,7 +74,7 @@ declare interface IParseJavaResponse {
   fieldList: string[];
 }
 
-declare interface ISeriesTab extends IParseJavaResponse {
+declare interface ISeriesTab extends IParsedJavaResponse {
   /**
    * @field Tab 的 key
    */
@@ -66,7 +98,7 @@ declare interface ISeriesTab extends IParseJavaResponse {
   operateList: IOperateItem[];
 }
 
-declare interface IGenerateByJavaRequestItem extends IParseJavaResponse {
+declare interface IGenerateByJavaRequestItem extends IParsedJavaResponse {
   generatorMybatisParameterList: IMybaitsParameterItem[];
 }
 

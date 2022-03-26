@@ -141,6 +141,7 @@ export default defineComponent({
         DELETE: "/tools/deleteMsg",
         UPDATE: "/tools/updateTable",
         SELECT: "/tools/selectTable",
+        CREATE: "",
       };
 
       const path = PATH[operate.value.type];

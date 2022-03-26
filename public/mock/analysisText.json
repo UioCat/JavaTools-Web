@@ -1,0 +1,148 @@
+{
+  "code": 200,
+  "message": "请求成功",
+  "info": {
+    "parameters": [
+      {
+        "type": "Long",
+        "datatype": "bigint",
+        "field": "id",
+        "fieldInSql": "id",
+        "comment": "用户id",
+        "defaultValue": null
+      },
+      {
+        "type": "String",
+        "datatype": "varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci",
+        "field": "username",
+        "fieldInSql": "username",
+        "comment": "用户名",
+        "defaultValue": null
+      },
+      {
+        "type": "String",
+        "datatype": "varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci",
+        "field": "password",
+        "fieldInSql": "password",
+        "comment": "密码",
+        "defaultValue": null
+      },
+      {
+        "type": "Integer",
+        "datatype": "int(32)",
+        "field": "counts",
+        "fieldInSql": "counts",
+        "comment": "数量",
+        "defaultValue": null
+      },
+      {
+        "type": "Double",
+        "datatype": "double",
+        "field": "sum",
+        "fieldInSql": "sum",
+        "comment": "求和",
+        "defaultValue": null
+      },
+      {
+        "type": "Float",
+        "datatype": "float",
+        "field": "number",
+        "fieldInSql": "number",
+        "comment": "数字",
+        "defaultValue": null
+      },
+      {
+        "type": "Float",
+        "datatype": "float",
+        "field": "number",
+        "fieldInSql": "number",
+        "comment": "数字",
+        "defaultValue": null
+      },
+      {
+        "type": "Float",
+        "datatype": "float",
+        "field": "number",
+        "fieldInSql": "number",
+        "comment": "数字",
+        "defaultValue": null
+      },
+      {
+        "type": "Float",
+        "datatype": "float",
+        "field": "number",
+        "fieldInSql": "number",
+        "comment": "数字",
+        "defaultValue": null
+      },
+      {
+        "type": "Float",
+        "datatype": "float",
+        "field": "number",
+        "fieldInSql": "number",
+        "comment": "数字",
+        "defaultValue": null
+      },
+      {
+        "type": "Float",
+        "datatype": "float",
+        "field": "number",
+        "fieldInSql": "number",
+        "comment": "数字",
+        "defaultValue": null
+      },
+      {
+        "type": "Float",
+        "datatype": "float",
+        "field": "number",
+        "fieldInSql": "number",
+        "comment": "数字",
+        "defaultValue": null
+      },
+      {
+        "type": "Float",
+        "datatype": "float",
+        "field": "number",
+        "fieldInSql": "number",
+        "comment": "数字",
+        "defaultValue": null
+      },
+      {
+        "type": "Byte",
+        "datatype": "char(1)",
+        "field": "sex",
+        "fieldInSql": "sex",
+        "comment": "性别",
+        "defaultValue": null
+      },
+      {
+        "type": "Character",
+        "datatype": "char(1)",
+        "field": "type",
+        "fieldInSql": "type",
+        "comment": "类型",
+        "defaultValue": null
+      },
+      {
+        "type": "Date",
+        "datatype": "date",
+        "field": "startTime",
+        "fieldInSql": "start_time",
+        "comment": "开始时间",
+        "defaultValue": null
+      },
+      {
+        "type": "boolean",
+        "datatype": "bit(1)",
+        "field": "test",
+        "fieldInSql": "test",
+        "comment": null,
+        "defaultValue": null
+      }
+    ],
+    "tableName": "tb_entity",
+    "className": "Entity",
+    "primaryKey": "id",
+    "packageName": "com.example.java_tools.entity"
+  }
+}

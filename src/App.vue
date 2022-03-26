@@ -23,7 +23,7 @@
         </div>
       </el-header>
 
-      <el-main>
+      <el-main class="java-main">
         <router-view v-slot="{ Component }">
           <keep-alive>
             <component :is="Component" />
@@ -37,6 +37,7 @@
     </div>
 
     <el-drawer
+      modal-class="java-docs"
       size="40%"
       :title="`${appName} 说明文档`"
       direction="rtl"
@@ -184,5 +185,9 @@ export default defineComponent({
   i {
     font-weight: bolder;
   }
+}
+
+.java-docs .el-drawer__body {
+  padding: 0;
 }
 </style>
