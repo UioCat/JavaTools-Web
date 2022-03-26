@@ -44,7 +44,12 @@
         </template>
 
         <el-table-column header-align="center" type="selection" width="40" />
-        <el-table-column align="center" property="type" label="类型" width="80" />
+        <el-table-column
+          align="center"
+          property="type"
+          label="类型"
+          width="80"
+        />
         <el-table-column
           align="center"
           property="datatype"
@@ -84,7 +89,12 @@
       </el-table>
 
       <div class="sql-operate">
-        <el-select v-model="selectdUniqueKey" placeholder="唯一键" clearable multiple>
+        <el-select
+          v-model="selectdUniqueKey"
+          placeholder="唯一键"
+          clearable
+          multiple
+        >
           <el-option
             v-for="(item, index) in uniqueKeyOption"
             :key="index"
@@ -113,11 +123,11 @@
 import { ElMessage } from "element-plus";
 import type { ElTable } from "element-plus";
 import { defineComponent, ref, computed } from "vue";
-
-import { post } from "@/services/network";
+import { post } from "@/utils/network";
 
 export default defineComponent({
   name: "create-table",
+
   setup() {
     const refSqlTable = ref<InstanceType<typeof ElTable>>();
     const code = ref("");
@@ -164,7 +174,9 @@ export default defineComponent({
     const output = ref("");
     const selectdUniqueKey = ref<string[]>([]);
     const selectedParaList = ref<IParsedCreateTableResponseParameter[]>([]);
-    function onSelectionChange(parameters: IParsedCreateTableResponseParameter[]) {
+    function onSelectionChange(
+      parameters: IParsedCreateTableResponseParameter[]
+    ) {
       selectedParaList.value = parameters;
     }
 
@@ -240,7 +252,6 @@ export default defineComponent({
 <style scoped lang="less">
 .create-sql {
   height: calc(100% - 20px);
-  margin: 0 10px;
   padding: 15px;
   border: 1px solid #dcdfe6;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 0 6px 0 rgba(0, 0, 0, 0.04);

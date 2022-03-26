@@ -110,7 +110,9 @@
                 </el-form-item>
 
                 <el-form-item>
-                  <el-button type="primary" @click="addOperateTab(idx)">下一项</el-button>
+                  <el-button type="primary" @click="addOperateTab(idx)"
+                    >下一项</el-button
+                  >
                 </el-form-item>
               </el-form>
             </el-tab-pane>
@@ -119,14 +121,13 @@
       </el-row>
     </el-tab-pane>
   </el-tabs>
-  <el-button type="primary">提 交</el-button>
+  <el-button class="setup-btn" type="primary">提 交</el-button>
 </template>
 
 <script lang="ts">
 import { ElMessage } from "element-plus";
 import { defineComponent, ref } from "vue";
-
-import { get, post } from "@/services/network";
+import { get, post } from "@/utils/network";
 
 export default defineComponent({
   name: "setup-by-code",
@@ -311,7 +312,6 @@ export default defineComponent({
 .java-series {
   height: calc(100% - 6px - 20px - 40px);
   position: relative;
-  margin: 10px;
 
   & > ::v-deep(.el-tabs__header) {
     background-color: aliceblue;
@@ -348,6 +348,10 @@ export default defineComponent({
   ::v-deep(.el-tabs__item) {
     user-select: none;
   }
+}
+
+.setup-btn {
+  margin-top: 2%;
 }
 
 .el-tab-pane,

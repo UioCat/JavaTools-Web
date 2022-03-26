@@ -1,6 +1,6 @@
 <template>
   <el-row>
-    <el-col :span="20" :push="2">
+    <el-col>
       <div class="decimal-title">
         <label>选择输入的进制：</label>
         <el-radio-group v-model="desc">
@@ -61,6 +61,7 @@ import { ElMessage } from "element-plus";
 
 export default defineComponent({
   name: "transform-decimal",
+
   setup() {
     const desc = ref("10");
     const input = ref("");
@@ -118,7 +119,9 @@ export default defineComponent({
         case "16":
           pre = input.value
             .split("")
-            .map((i) => (!((i >= "G" && i <= "Z") || (i >= "g" && i <= "z")) ? i : "N"))
+            .map((i) =>
+              !((i >= "G" && i <= "Z") || (i >= "g" && i <= "z")) ? i : "N"
+            )
             .join("");
           if (pre.search("N") !== -1) {
             ElMessage({

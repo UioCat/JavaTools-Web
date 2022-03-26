@@ -9,7 +9,7 @@ import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 export default defineConfig({
   base: "/",
   server: {
-    port: 7000,
+    port: 10000,
   },
   plugins: [
     alias({

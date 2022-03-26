@@ -1,6 +1,6 @@
 <template>
   <el-row>
-    <el-col :span="9" :push="2">
+    <el-col :span="11">
       <el-card>
         <label>输入字符：</label>
         <el-input
@@ -15,7 +15,7 @@
       </el-card>
     </el-col>
 
-    <el-col :span="9" :push="4">
+    <el-col :span="11" :push="2">
       <el-card>
         <label>输出 ASCII：</label>
         <el-input
@@ -37,6 +37,7 @@ import { ElMessage } from "element-plus";
 
 export default defineComponent({
   name: "transform-ascii",
+
   setup() {
     const stringVal = ref("");
     const numberVal = ref("");

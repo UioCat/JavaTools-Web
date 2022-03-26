@@ -1,6 +1,9 @@
 <template>
-  <!-- <SetupByCode parsePath="/parseSQL" genPath="/generatorFileBySQL" /> -->
-  <SetupByCode parsePath="/mock/parseSQL.json" genPath="/generatorFileBySQL" />
+  <!-- <SetupByCode parsePath="/parseJava" genPath="/generatorFileByJava" /> -->
+  <SetupByCode
+    parsePath="/mock/parseJava.json"
+    genPath="/generatorFileByJava"
+  />
 </template>
 
 <script lang="ts">
@@ -9,10 +12,12 @@ import { defineComponent } from "vue";
 import SetupByCode from "@/components/SetupByCode.vue";
 
 export default defineComponent({
-  name: "setup-by-sql",
+  name: "setup-by-java",
+
   components: {
     SetupByCode,
   },
+
   setup() {},
 });
 </script>

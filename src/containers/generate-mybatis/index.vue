@@ -41,8 +41,17 @@
         </el-form-item>
 
         <el-form-item label="字段">
-          <el-select v-model="operate.parameterList" multiple placeholder="选择字段">
-            <el-option v-for="item in paraList" :key="item" :label="item" :value="item" />
+          <el-select
+            v-model="operate.parameterList"
+            multiple
+            placeholder="选择字段"
+          >
+            <el-option
+              v-for="item in paraList"
+              :key="item"
+              :label="item"
+              :value="item"
+            />
           </el-select>
         </el-form-item>
 
@@ -53,7 +62,12 @@
             placeholder="选择关键字段"
             :disabled="operate.type === 'INSERT'"
           >
-            <el-option v-for="item in paraList" :key="item" :label="item" :value="item" />
+            <el-option
+              v-for="item in paraList"
+              :key="item"
+              :label="item"
+              :value="item"
+            />
           </el-select>
         </el-form-item>
 
@@ -80,11 +94,11 @@
 <script lang="ts">
 import { ElMessage } from "element-plus";
 import { defineComponent, ref } from "vue";
-
-import { post } from "@/services/network";
+import { post } from "@/utils/network";
 
 export default defineComponent({
   name: "generate-mybatis",
+
   setup() {
     const code = ref("");
     const form = ref<{
@@ -207,7 +221,6 @@ export default defineComponent({
 <style scoped lang="less">
 .java-mybatis {
   height: calc(100% - 20px);
-  margin: 0 10px;
   padding: 15px;
   border: 1px solid #dcdfe6;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 0 6px 0 rgba(0, 0, 0, 0.04);
