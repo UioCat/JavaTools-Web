@@ -84,7 +84,7 @@
       </el-table>
 
       <div class="sql-operate">
-        <el-select v-model="selectdUniqueKey" placeholder="唯一键">
+        <el-select v-model="selectdUniqueKey" placeholder="唯一键" clearable multiple>
           <el-option
             v-for="(item, index) in uniqueKeyOption"
             :key="index"
@@ -93,7 +93,7 @@
           />
         </el-select>
         <el-button type="primary" @click="clearSelection()">清空选择</el-button>
-        <el-button type="primary">提交</el-button>
+        <el-button type="primary" @click="onGenerateCode()">提交</el-button>
       </div>
 
       <el-input
@@ -131,8 +131,7 @@ export default defineComponent({
     const paraList = ref<IParsedCreateTableResponseParameter[]>([]);
 
     function onParseCode(code: string) {
-      // post("/tools/analysisText", { data: code, analysisType: "SYNTAX_JAVA" })
-      post("/mock/analysisText.json", { data: code, analysisType: "SYNTAX_JAVA" }, true)
+      post("/tools/analysisText", { data: code, analysisType: "SYNTAX_JAVA" })
         .then((res) => res.json())
         .then((res) => {
           if (res.code === 200) {
@@ -289,7 +288,22 @@ export default defineComponent({
     height: 5%;
     padding: 10px 0;
     display: flex;
+    align-items: center;
     justify-content: space-between;
+
+    ::v-deep(.el-select) {
+      width: 60%;
+
+      .el-select-tags-wrapper {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .el-input {
+        font-family: monospace, Courier;
+      }
+    }
   }
 
   .sql-code {
@@ -312,9 +326,5 @@ export default defineComponent({
     font-weight: bold;
     font-family: monospace, Courier;
   }
-}
-
-.el-button {
-  font-size: initial;
 }
 </style>
