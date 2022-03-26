@@ -32,12 +32,12 @@
       </el-main>
     </el-container>
 
-    <div class="java-doc" :v-show="!showDrawer" @click="showDrawer = true">
-      <i class="el-icon-d-arrow-left" />
-    </div>
+    <el-tooltip effect="dark" content="帮助" placement="left">
+      <div class="java-docs__tips" :v-show="!showDrawer" @click="showDrawer = true"></div>
+    </el-tooltip>
 
     <el-drawer
-      modal-class="java-docs"
+      modal-class="java-docs__drawer"
       size="40%"
       :title="`${appName} 说明文档`"
       direction="rtl"
@@ -110,7 +110,7 @@ export default defineComponent({
   min-height: 600px;
 }
 
-.java-doc {
+.java-docs__tips {
   position: fixed;
   top: 50%;
   width: 50px;
@@ -122,10 +122,13 @@ export default defineComponent({
   cursor: pointer;
   text-align: left;
 
-  i {
-    font-size: 1em;
+  &::before {
+    content: "<";
+    position: absolute;
+    width: 25px;
+    height: 50px;
     line-height: 50px;
-    color: #409eff;
+    text-align: center;
   }
 }
 
@@ -187,7 +190,7 @@ export default defineComponent({
   }
 }
 
-.java-docs .el-drawer__body {
+.java-docs__drawer .el-drawer__body {
   padding: 0;
 }
 </style>

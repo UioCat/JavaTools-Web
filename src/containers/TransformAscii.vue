@@ -52,6 +52,7 @@ export default defineComponent({
           message: "转换失败",
           type: "error",
           offset: 65,
+          showClose: true,
         });
       }
     }
@@ -70,6 +71,7 @@ export default defineComponent({
         message: "成功复制到剪贴板",
         type: "success",
         offset: 65,
+        showClose: true,
       });
     }
 

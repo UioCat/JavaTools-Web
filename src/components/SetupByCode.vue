@@ -249,17 +249,18 @@ export default defineComponent({
         .then((res) => res.json())
         .then((res) => {
           if (res.code === 200) {
-            ElMessage.success({
+            ElMessage({
               type: "success",
               message: res.message,
               offset: 65,
+              showClose: true,
             });
             return res.info;
           } else {
             throw new Error(res.message);
           }
         })
-        .then((res: IParseJavaResponse) => {
+        .then((res: IParsedJavaResponse) => {
           seriesList.value[idx].tableName = res.tableName;
           seriesList.value[idx].className = res.className;
           seriesList.value[idx].packageName = res.packageName;
@@ -271,6 +272,7 @@ export default defineComponent({
             type: "error",
             message: err,
             offset: 65,
+            showClose: true,
           });
         });
     }

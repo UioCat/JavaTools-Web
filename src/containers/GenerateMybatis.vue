@@ -112,17 +112,18 @@ export default defineComponent({
         .then((res) => res.json())
         .then((res) => {
           if (res.code === 200) {
-            ElMessage.success({
+            ElMessage({
               type: "success",
               message: res.message,
               offset: 65,
+              showClose: true,
             });
             return res.info;
           } else {
             throw new Error(res.message);
           }
         })
-        .then((res: IParseJavaResponse) => {
+        .then((res: IParsedJavaResponse) => {
           paraList.value = res.fieldList;
         })
         .catch((err) => {
@@ -130,6 +131,7 @@ export default defineComponent({
             type: "error",
             message: err,
             offset: 65,
+            showClose: true,
           });
         });
     }
@@ -154,10 +156,11 @@ export default defineComponent({
         .then((res) => res.json())
         .then((res) => {
           if (res.code === 200) {
-            ElMessage.success({
+            ElMessage({
               type: "success",
               message: res.message,
               offset: 65,
+              showClose: true,
             });
             output.value = res.info;
           } else {
@@ -169,6 +172,7 @@ export default defineComponent({
             type: "error",
             message: err,
             offset: 65,
+            showClose: true,
           });
         });
     }
@@ -181,6 +185,7 @@ export default defineComponent({
         message: "成功复制到剪贴板",
         type: "success",
         offset: 65,
+        showClose: true,
       });
     }
 

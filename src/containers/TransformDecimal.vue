@@ -87,6 +87,7 @@ export default defineComponent({
               message: "输入有误",
               type: "error",
               offset: 65,
+              showClose: true,
             });
             return;
           }
@@ -105,6 +106,7 @@ export default defineComponent({
               message: "输入有误",
               type: "error",
               offset: 65,
+              showClose: true,
             });
             return;
           }
@@ -123,6 +125,7 @@ export default defineComponent({
               message: "输入有误",
               type: "error",
               offset: 65,
+              showClose: true,
             });
             return;
           }
@@ -139,10 +142,11 @@ export default defineComponent({
 
       e.target.select();
       document.execCommand("Copy");
-      ElMessage.success({
+      ElMessage({
         message: "成功复制到剪贴板",
         type: "success",
         offset: 65,
+        showClose: true,
       });
     }
 
