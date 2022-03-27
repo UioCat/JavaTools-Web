@@ -7,12 +7,12 @@ import Components from "unplugin-vue-components/vite";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 
 export default defineConfig({
-  base: "/",
+  base: "/tools-web-test/",
   server: {
     port: 10000,
     proxy: {
       "/api": {
-        target: "http://47.96.172.216:8080/",
+        target: "https://www.uiofield.top/serve_test/",
         changeOrigin: true,
         rewrite: (path) => path.replace("/api", ""),
       },
