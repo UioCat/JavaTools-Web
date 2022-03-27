@@ -22,5 +22,7 @@ yarn-error.log*
 *.sln
 *.sw*
 
+# custom
 auto-imports.d.ts
 components.d.ts
+*.sh

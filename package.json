@@ -5,8 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "serve": "vite preview"
+    "build-pre": "vite build --mode pre",
+    "build-prod": "vite build --mode prod"
   },
   "dependencies": {
     "axios": "^0.26.1",
