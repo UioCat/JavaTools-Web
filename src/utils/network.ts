@@ -2,9 +2,7 @@ import axios from "axios";
 import { ElMessage } from "element-plus";
 import { router } from "@/router";
 
-const baseURL = import.meta.env.PROD
-  ? import.meta.env.VITE_BASE_URL
-  : import.meta.env.VITE_DEV_URL;
+const baseURL = "/api";
 
 const headers = {
   Accept: "application/json",
@@ -33,7 +31,7 @@ export const post = (path: string, data: object, absolute: boolean = false) => {
   });
 };
 
-const request = axios.create({
+const network = axios.create({
   timeout: 10000,
   withCredentials: true,
   baseURL,
@@ -43,7 +41,7 @@ const request = axios.create({
 /**
  * 响应拦截
  */
-request.interceptors.response.use(
+network.interceptors.response.use(
   (response: any) => {
     const res = response.data;
     const requestUrl = response.request.responseURL;
@@ -67,7 +65,7 @@ request.interceptors.response.use(
 /**
  * 请求拦截
  */
-request.interceptors.request.use(
+network.interceptors.request.use(
   (config: any) => {
     if (localStorage.getItem("token")) {
       config.headers = {
@@ -81,4 +79,4 @@ request.interceptors.request.use(
   }
 );
 
-export default request;
+export default network;

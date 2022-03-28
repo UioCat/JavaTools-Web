@@ -9,7 +9,7 @@ export function AddBill(data: {
   type: string;
 }): AxiosPromise {
   return network({
-    url: "/bill/addBill",
+    url: "/monitor/bill/addBill",
     method: "POST",
     data,
   });
@@ -21,7 +21,7 @@ export function getBillList(params: {
   pageSize: number;
 }): AxiosPromise {
   return network({
-    url: "/bill/getBillList",
+    url: "/monitor/bill/getBillList",
     method: "GET",
     params,
   });
@@ -29,7 +29,7 @@ export function getBillList(params: {
 
 export function getAllConsumptionType(): AxiosPromise {
   return network({
-    url: "/bill/getAllConsumptionType",
+    url: "/monitor/bill/getAllConsumptionType",
     method: "GET",
   });
 }
@@ -39,7 +39,7 @@ export function getConsumptionType(params: {
   desc: string;
 }): AxiosPromise {
   return network({
-    url: "/bill/getConsumptionType",
+    url: "/monitor/bill/getConsumptionType",
     method: "GET",
     params,
   });
@@ -50,7 +50,7 @@ export function AddBillConfig(data: {
   priceScope: string;
 }): AxiosPromise {
   return network({
-    url: "/bill/addBillConfig",
+    url: "/monitor/bill/addBillConfig",
     method: "POST",
     data,
   });
@@ -58,14 +58,14 @@ export function AddBillConfig(data: {
 
 export function getBillConfigList(): AxiosPromise {
   return network({
-    url: "/bill/getBillConfigList",
+    url: "/monitor/bill/getBillConfigList",
     method: "GET",
   });
 }
 
 export function deleteBillConfig(data: { configId: string }): AxiosPromise {
   return network({
-    url: "/bill/deleteBillConfig",
+    url: "/monitor/bill/deleteBillConfig",
     method: "POST",
     data,
   });
@@ -76,7 +76,7 @@ export function GetStatistics(params: {
   endDate: string;
 }): AxiosPromise {
   return network({
-    url: "/bill/getStatistics",
+    url: "/monitor/bill/getStatistics",
     method: "GET",
     params,
   });
@@ -87,7 +87,7 @@ export function UpdateBill(data: {
   billId: string;
 }): AxiosPromise {
   return network({
-    url: "/bill/updateBill",
+    url: "/monitor/bill/updateBill",
     method: "POST",
     data,
   });

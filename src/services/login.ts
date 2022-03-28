@@ -14,7 +14,7 @@ interface RegisterType {
 
 export function Login(data: LoginType): AxiosPromise {
   return network({
-    url: "/user/login",
+    url: "/monitor/user/login",
     method: "POST",
     data,
   });
@@ -22,7 +22,7 @@ export function Login(data: LoginType): AxiosPromise {
 
 export function Register(data: RegisterType): AxiosPromise {
   return network({
-    url: "/user/register",
+    url: "/monitor/user/register",
     method: "POST",
     data,
   });
@@ -30,7 +30,7 @@ export function Register(data: RegisterType): AxiosPromise {
 
 export function GetInfo(): AxiosPromise {
   return network({
-    url: "/user/getInfo",
+    url: "/monitor/user/getInfo",
     method: "GET",
   });
 }

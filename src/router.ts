@@ -89,23 +89,21 @@ export const router = createRouter({
   ],
 });
 
-if (import.meta.env.PROD) {
-  router.beforeEach((to, from, next) => {
-    const isLogin = !!localStorage.getItem("token");
-    if (to.path === "/login") {
-      if (isLogin) {
-        next("/");
-      } else {
-        next();
-      }
+router.beforeEach((to, from, next) => {
+  const isLogin = !!localStorage.getItem("token");
+  if (to.path === "/login") {
+    if (isLogin) {
+      next("/");
+    } else {
+      next();
     }
+  }
 
-    if (to.path !== "/login") {
-      if (!isLogin) {
-        next("/login");
-      } else {
-        next();
-      }
+  if (to.path !== "/login") {
+    if (!isLogin) {
+      next("/login");
+    } else {
+      next();
     }
-  });
-}
+  }
+});

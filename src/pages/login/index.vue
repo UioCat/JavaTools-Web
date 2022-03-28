@@ -114,7 +114,7 @@ import { computed, defineComponent, reactive, ref, toRefs } from "vue";
 import { useRouter } from "vue-router";
 import type { ElForm } from "element-plus";
 import { Login, Register } from "@/services/login";
-import useStore from "@/store";
+import useStore from "@/stores";
 
 export default defineComponent({
   name: "login",

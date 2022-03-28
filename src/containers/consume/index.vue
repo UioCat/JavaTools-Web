@@ -2,7 +2,7 @@
   <el-row :gutter="10">
     <el-col :sm="12" :xs="24">
       <!-- 创建账单 -->
-      <el-card shadow="hover">
+      <el-card shadow="hover" style="height: 100%">
         <template #header>
           <div class="card-header">
             创建账单记录<i class="iconfont icon-bill"></i>
@@ -211,6 +211,7 @@ import {
   UpdateBill,
 } from "@/services/consume";
 import lineChart from "./line-chart.vue";
+import { formatTime } from "@/utils/time";
 
 interface OptionType {
   category: string;
@@ -413,7 +414,7 @@ export default defineComponent({
     const addBill = async () => {
       createBill.billBtnLoading = true;
       const res: any = await AddBill({
-        productTime: moment(createBill.createDate).format("YYYY-MM-DD"),
+        productTime: formatTime(new Date(createBill.createDate)),
         billType: "CONSUME",
         amount: createBill.createMoney,
         desc: createBill.createPurpose,
@@ -710,7 +711,7 @@ export default defineComponent({
 }
 
 @media only screen and (min-width: 768px) {
-  .el-col + .el-col {
+  .el-col {
     margin-bottom: 10px;
   }
   .el-col:nth-of-type(3),
