@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-const { VITE_BASE_PATH: base } = import.meta.env;
+const { VITE_BASE_PATH = "" } = import.meta.env;
 
 export const table = [
   {
@@ -38,10 +38,10 @@ export const table = [
     icon: "el-icon-discover",
     title: "账单",
   },
-].map((item) => ({ ...item, index: `${base}/app/${item.index}` }));
+].map((item) => ({ ...item, index: `/app/${item.index}` }));
 
 export const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(VITE_BASE_PATH),
   routes: [
     {
       path: "/",
@@ -53,7 +53,7 @@ export const router = createRouter({
     },
     {
       path: "/app",
-      redirect: "/app/transform-ascii",
+      redirect: table[0].index,
       component: () => import("@/pages/app/index.vue"),
       children: [
         {
@@ -89,21 +89,18 @@ export const router = createRouter({
   ],
 });
 
+export const authRoutes = ["/app/consume"];
+
 router.beforeEach((to, from, next) => {
   const isLogin = !!localStorage.getItem("token");
-  if (to.path === "/login") {
-    if (isLogin) {
-      next("/");
-    } else {
-      next();
-    }
+
+  if (to.path === "/login" && isLogin) {
+    return next("/app");
   }
 
-  if (to.path !== "/login") {
-    if (!isLogin) {
-      next("/login");
-    } else {
-      next();
-    }
+  if (authRoutes.includes(to.path) && !isLogin) {
+    return next("/login");
   }
+
+  return next();
 });

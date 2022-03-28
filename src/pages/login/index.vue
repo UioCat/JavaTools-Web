@@ -111,7 +111,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, reactive, ref, toRefs } from "vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import type { ElForm } from "element-plus";
 import { Login, Register } from "@/services/login";
 import useStore from "@/stores";
@@ -120,6 +120,7 @@ export default defineComponent({
   name: "login",
 
   setup() {
+    const route = useRoute();
     const router = useRouter();
     const type = ref(true);
     const loginRef = ref<InstanceType<typeof ElForm>>();
@@ -208,7 +209,7 @@ export default defineComponent({
       const { code, info } = res.data;
       if (code === 200) {
         useStore().INIT_TOKEN(info);
-        router.push("/");
+        router.push(route.redirectedFrom?.path ?? "/");
       }
     };
 

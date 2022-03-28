@@ -2,7 +2,7 @@
   <el-header class="java-header">
     <div class="header-logo"></div>
     <div class="header-label">{{ appName }}</div>
-    <el-dropdown class="header-avatar">
+    <el-dropdown class="header-avatar" v-if="showAvatar">
       <img class="avatar__image" :src="avatar" />
       <div class="avatar__label">{{ username }}</div>
       <template #dropdown>
@@ -18,6 +18,8 @@
 <script lang="ts">
 import { defineComponent, computed, onBeforeMount, ref } from "vue";
 import { GetInfo } from "@/services/login";
+import { useRoute, useRouter } from "vue-router";
+import { authRoutes } from "@/router";
 
 export default defineComponent({
   name: "Header",
@@ -30,9 +32,14 @@ export default defineComponent({
       location.href = "/login";
     };
 
+    const showAvatar = computed(() => authRoutes.includes(useRoute().path));
+
     const avatar = ref("");
     const username = ref("");
     onBeforeMount(async () => {
+      if (!showAvatar.value) {
+        return;
+      }
       const res = await GetInfo();
       const { info } = res.data;
       avatar.value = info.headImage ?? "/favicon.ico";
@@ -45,6 +52,7 @@ export default defineComponent({
       onLogout,
       avatar,
       username,
+      showAvatar,
     };
   },
 });

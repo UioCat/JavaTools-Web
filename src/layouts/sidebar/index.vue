@@ -3,7 +3,7 @@
     <el-menu
       class="java-sidebar__menu"
       mode="vertical"
-      :default-active="`${basePath}/${defaultActive}`"
+      :default-active="defaultActive"
       router
     >
       <el-menu-item v-for="(i, k) in navList" :key="k" :index="i.index">
@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from "vue";
+import { defineComponent } from "vue";
 import { table } from "@/router";
 
 export default defineComponent({
@@ -28,8 +28,7 @@ export default defineComponent({
   setup() {
     return {
       navList: table,
-      basePath: computed(() => import.meta.env.VITE_BASE_PATH),
-      defaultActive: "TransformDecimal",
+      defaultActive: table[0].index,
     };
   },
 });
