@@ -2,7 +2,8 @@ import axios from "axios";
 import { ElMessage } from "element-plus";
 import { router } from "@/router";
 
-const baseURL = "/api";
+/* 开发环境代理前缀 */
+const baseURL = import.meta.env.PROD ? "" : "/api";
 
 const headers = {
   Accept: "application/json",
