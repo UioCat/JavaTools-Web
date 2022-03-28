@@ -8,6 +8,11 @@ export const table = [
     icon: "el-icon-aim",
     title: "进制转换",
   },
+  // {
+  //   index: "transform-ascii",
+  //   icon: "el-icon-discover",
+  //   title: "ASCII 转换",
+  // },
   {
     index: "create-table",
     icon: "el-icon-discover",
