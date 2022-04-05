@@ -149,13 +149,21 @@
         <el-table
           :data="table"
           :height="440"
+          @filter-change="filterChange"
+          ref="tableRef"
           v-loading="tableLoading"
           empty-text="暂无数据"
         >
           <el-table-column label="日期" prop="produceTime"></el-table-column>
           <el-table-column label="金额" prop="amount"></el-table-column>
           <el-table-column label="用途" prop="desc"></el-table-column>
-          <el-table-column label="类别" prop="category"></el-table-column>
+          <el-table-column
+            label="类别"
+            prop="category"
+            column-key="filterConsumeType"
+            :filter-multiple="false"
+            :filters="filterConsumeTypeArr">
+          </el-table-column>
           <el-table-column label="操作">
             <template #default="scope">
               <el-button size="small" @click="handleDelete(scope.row)">
@@ -188,6 +196,7 @@
           <line-chart
             :chartDataX="chartDataX"
             :chartDataY="chartDataY"
+            @selectChartType="selectChartType"
           ></line-chart>
         </router-view>
       </el-card>
@@ -199,6 +208,7 @@
 import { defineComponent, reactive, toRefs, ref, onMounted } from "vue";
 import type { ElForm } from "element-plus";
 import { ElMessage } from "element-plus";
+import { CircleCloseFilled } from '@element-plus/icons-vue';
 import { debounce } from "@/utils/index";
 import {
   AddBill,
@@ -209,6 +219,7 @@ import {
   deleteBillConfig,
   GetStatistics,
   UpdateBill,
+  getAllConsumptionType,
 } from "@/services/consume";
 import lineChart from "./line-chart.vue";
 import { formatTime } from "@/utils/time";
@@ -222,6 +233,7 @@ export default defineComponent({
 
   components: {
     lineChart,
+    CircleCloseFilled,
   },
 
   setup() {
@@ -229,6 +241,7 @@ export default defineComponent({
     const formRef = ref<InstanceType<typeof ElForm>>();
     const configFormRef = ref<InstanceType<typeof ElForm>>();
     const moneyRef = ref();
+    const tableRef = ref();
 
     // 表单相关数据
     const createBill = reactive({
@@ -256,6 +269,10 @@ export default defineComponent({
     const tableData = reactive({
       table: [],
       tableLoading: false,
+      filterConsumeTypeArr: [],
+      selectConsumeType: '',
+      startTime: '',
+      endTime: '',
     });
     // 分页器相关数据
     const pagination = reactive({
@@ -270,7 +287,7 @@ export default defineComponent({
       statisticsDate: new Date(),
       showRouter: true,
     });
-    // provide('chartDataInfo', chartDataInfo);
+
     // 自定义 金额 验证方式
     const moneyReg = (rule: any, value: string, callback: CallableFunction) => {
       if (!value) {
@@ -378,6 +395,9 @@ export default defineComponent({
           pageNum: pagination.page,
           pageSize: pagination.pageSize,
           type: "CONSUME",
+          category: tableData.selectConsumeType,
+          startTime: tableData.startTime,
+          endTime: tableData.endTime,
         });
         const { code, info } = res.data;
         if (code === 200) {
@@ -407,6 +427,19 @@ export default defineComponent({
         getTableList();
       }
     };
+
+    /**
+     * 获取所有类别
+     */
+    const getAllConsumption = async () => {
+      const res = await getAllConsumptionType();
+      const { code, info } = res.data;
+      if (code === 200) {
+        tableData.filterConsumeTypeArr = info.map((item: string) => ({
+          text: item, value: item
+        }))
+      }
+    }
 
     /**
      * 创建账单
@@ -492,7 +525,10 @@ export default defineComponent({
       const { code, info } = res.data;
       if (code === 200) {
         if (info) {
-          createBill.createCategory = info;
+          createBill.createCategory = info[0];
+          createBill.fuzzySearchOption = info.map((item: string) => ({
+            value: item
+          }))
         }
       }
     });
@@ -585,19 +621,60 @@ export default defineComponent({
     /**
      * 修改统计图的月份选项后 触发事件
      */
-    const changeStatisticsDate = async () => {
+    const changeStatisticsDate = async (val: string) => {
+      const now = new Date(val)
+      const nowMonth = now.getMonth();
+      const nowYear = now.getFullYear();
+      //本月的开始时间
+      tableData.startTime = formatTime(new Date(nowYear, nowMonth, 1)).slice(0, -4); 
+      //本月的结束时间
+      tableData.endTime = formatTime(new Date(nowYear, nowMonth+1, 0)).slice(0, -4);
+      
       await getStatistics();
     };
+
+    /**
+     * 表格过滤
+     */
+    const filterChange = (item: any) => {
+      tableData.selectConsumeType = item.filterConsumeType[0];
+      if (!item.filterConsumeType[0]) {
+        tableData.selectConsumeType = '';
+        tableData.startTime = '';
+        tableData.endTime = '';
+      }
+      getTableList();
+    }
+
+    /**
+     * 柱形图点击事件
+     */
+    const selectChartType = (selectChartType: string) => {
+      tableRef.value!.clearFilter();
+      if (!tableData.startTime) {
+        const now = new Date()
+        tableData.startTime = formatTime(new Date(now.getFullYear(), now.getMonth(), 1)).slice(0, -4); 
+        tableData.endTime = formatTime(new Date(now.getFullYear(), now.getMonth()+1, 0)).slice(0, -4);
+      }
+      if (selectChartType === '总金额') {
+        tableData.selectConsumeType = '';
+      } else {
+        tableData.selectConsumeType = selectChartType;
+      }
+      getTableList();
+    }
 
     // 页面初始化获取数据
     onMounted(() => {
       getTableList();
       getConfigList();
       getStatistics();
+      getAllConsumption();
     });
 
     return {
       moneyRef,
+      tableRef,
       ...toRefs(createBill),
       ...toRefs(tableData),
       ...toRefs(pagination),
@@ -620,6 +697,9 @@ export default defineComponent({
       delBillConfig,
       changeStatisticsDate,
       handleDelete,
+      getAllConsumption,
+      filterChange,
+      selectChartType,
     };
   },
 });

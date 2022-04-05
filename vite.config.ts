@@ -13,7 +13,7 @@ export default ({ mode }) =>
       port: 10000,
       proxy: {
         "/api": {
-          target: "https://www.uiofield.top/serve_test/",
+          target: "https://www.uiofield.top/server_test/",
           changeOrigin: true,
           rewrite: (path) => path.replace("/api", ""),
         },

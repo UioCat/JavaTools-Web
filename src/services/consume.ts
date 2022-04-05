@@ -19,6 +19,9 @@ export function getBillList(params: {
   type: string;
   pageNum: number;
   pageSize: number;
+  category: string;
+  startTime: string;
+  endTime: string;
 }): AxiosPromise {
   return network({
     url: "/monitor/bill/getBillList",

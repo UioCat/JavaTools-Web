@@ -9,6 +9,7 @@
     "build:prod": "vite build --mode productin"
   },
   "dependencies": {
+    "@element-plus/icons-vue": "^1.1.4",
     "axios": "^0.26.1",
     "echarts": "^5.3.1",
     "element-plus": "^2.1.5",

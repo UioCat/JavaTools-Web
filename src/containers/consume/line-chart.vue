@@ -17,9 +17,11 @@ export default defineComponent({
       default: () => [],
     },
   },
+  emits: ['selectChartType'],
 
-  setup(props) {
+  setup(props, { emit }) {
     const lineChartRef = ref<any>();
+    let chart: any;
     const option = {
       tooltip: {
         trigger: "axis",
@@ -58,22 +60,18 @@ export default defineComponent({
           name: "金额",
           type: "bar",
           barWidth: "60%",
-          itemStyle: {
-            borderRadius: [5, 5, 0, 0],
-            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-              { offset: 0, color: "#89BCFA" },
-              { offset: 0.5, color: "#71AEF9" },
-              { offset: 1, color: "#59A0F8" },
-            ]),
-            normal: {
-              label: {
-                show: true,
-                position: "top",
-                textStyle: {
-                  color: "black",
-                  fontSize: 15,
-                },
-              },
+          borderRadius: [5, 5, 0, 0],
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            { offset: 0, color: "#89BCFA" },
+            { offset: 0.5, color: "#71AEF9" },
+            { offset: 1, color: "#59A0F8" },
+          ]),
+          normal: {
+            show: true,
+            position: "top",
+            textStyle: {
+              color: "black",
+              fontSize: 15,
             },
           },
           emphasis: {
@@ -91,11 +89,28 @@ export default defineComponent({
     };
 
     const drawChart = () => {
-      const chart = echarts.init(lineChartRef.value);
+      if ( chart != null && chart !== "" && chart != undefined ) {
+        chart.dispose();
+      }
+      chart = echarts.init(lineChartRef.value);
       chart.setOption(option);
       window.addEventListener("resize", () => {
         chart.resize();
       });
+      chart.off('click');
+      chart.getZr().on('click', (params: any) => {
+        let pointInPixel = [params.offsetX, params.offsetY];
+        if (chart.containPixel('grid', pointInPixel)) {
+          let pointInGrid = chart.convertFromPixel({
+              seriesIndex: 0
+          }, pointInPixel);
+          let xIndex = pointInGrid[0];
+          let handleIndex = Number(xIndex);
+          const op: any = chart.getOption();
+          const selectChartType = op.xAxis[0].data[handleIndex];
+          emit('selectChartType', selectChartType);
+        };
+      })
     };
 
     watch(

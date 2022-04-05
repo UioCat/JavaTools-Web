@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 
 const { VITE_BASE_PATH = "" } = import.meta.env;
 
@@ -41,7 +41,7 @@ export const table = [
 ].map((item) => ({ ...item, index: `/app/${item.index}` }));
 
 export const router = createRouter({
-  history: createWebHistory(VITE_BASE_PATH),
+  history: createWebHashHistory(VITE_BASE_PATH),
   routes: [
     {
       path: "/",
