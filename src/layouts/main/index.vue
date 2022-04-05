@@ -10,7 +10,6 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import TransformAscii from "@/containers/transform-ascii/index.vue";
 import TransformDecimal from "@/containers/transform-decimal/index.vue";
 import CreateTable from "@/containers/create-table/index.vue";
 import GenerateMybatis from "@/containers/generate-mybatis/index.vue";
@@ -22,7 +21,6 @@ export default defineComponent({
 
   components: {
     TransformDecimal,
-    TransformAscii,
     GenerateMybatis,
     CreateTable,
     SetupByJava,

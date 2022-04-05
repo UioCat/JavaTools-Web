@@ -425,6 +425,7 @@ export default defineComponent({
       const { code } = res.data;
       if (code === 200) {
         getTableList();
+        getStatistics();
       }
     };
 
@@ -460,6 +461,7 @@ export default defineComponent({
         getTableList().then(() => {
           createBill.billBtnLoading = false;
         });
+        getStatistics();
         ElMessage({
           type: "success",
           message: "创建成功",
@@ -618,6 +620,7 @@ export default defineComponent({
         });
       }
     };
+
     /**
      * 修改统计图的月份选项后 触发事件
      */
@@ -626,10 +629,9 @@ export default defineComponent({
       const nowMonth = now.getMonth();
       const nowYear = now.getFullYear();
       //本月的开始时间
-      tableData.startTime = formatTime(new Date(nowYear, nowMonth, 1)).slice(0, -4); 
+      tableData.startTime = formatTime(new Date(nowYear, nowMonth, 1)).slice(0, -4);
       //本月的结束时间
       tableData.endTime = formatTime(new Date(nowYear, nowMonth+1, 0)).slice(0, -4);
-      
       await getStatistics();
     };
 
@@ -650,12 +652,15 @@ export default defineComponent({
      * 柱形图点击事件
      */
     const selectChartType = (selectChartType: string) => {
+      const now = new Date(chartDataInfo.statisticsDate)
+      const nowMonth = now.getMonth();
+      const nowYear = now.getFullYear();
+      //本月的开始时间
+      tableData.startTime = formatTime(new Date(nowYear, nowMonth, 1)).slice(0, -4);
+      //本月的结束时间
+      tableData.endTime = formatTime(new Date(nowYear, nowMonth+1, 0)).slice(0, -4);
+
       tableRef.value!.clearFilter();
-      if (!tableData.startTime) {
-        const now = new Date()
-        tableData.startTime = formatTime(new Date(now.getFullYear(), now.getMonth(), 1)).slice(0, -4); 
-        tableData.endTime = formatTime(new Date(now.getFullYear(), now.getMonth()+1, 0)).slice(0, -4);
-      }
       if (selectChartType === '总金额') {
         tableData.selectConsumeType = '';
       } else {

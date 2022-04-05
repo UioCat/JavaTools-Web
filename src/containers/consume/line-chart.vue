@@ -66,13 +66,15 @@ export default defineComponent({
             { offset: 0.5, color: "#71AEF9" },
             { offset: 1, color: "#59A0F8" },
           ]),
-          normal: {
-            show: true,
-            position: "top",
-            textStyle: {
-              color: "black",
-              fontSize: 15,
-            },
+          label: {
+            normal: {
+              show: true,
+              position: "top",
+              textStyle: {
+                color: "black",
+                fontSize: 15,
+              }
+            }
           },
           emphasis: {
             itemStyle: {
