@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build:pre": "vite build --mode prerelease",
-    "build:prod": "vite build --mode productin"
+    "build:prod": "vite build --mode production"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^1.1.4",

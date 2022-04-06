@@ -6,9 +6,10 @@ import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 
+// @ts-ignore
 export default ({ mode }) =>
   defineConfig({
-    base: `${loadEnv(mode, "").VITE_BASE_PATH}/`,
+    base: `${loadEnv(mode, "").VITE_BASE_PATH}`,
     server: {
       port: 10000,
       proxy: {
