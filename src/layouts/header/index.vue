@@ -25,11 +25,14 @@ export default defineComponent({
   name: "Header",
 
   setup() {
-    const onLogin = () => {};
+    const onLogin = () => {
+      router.push({ path: '/login' });
+    };
+    const router = useRouter();
 
     const onLogout = () => {
-      localStorage.setItem("token", "");
-      location.href = "/login";
+      localStorage.removeItem("token");
+      router.push({ path: '/login' });
     };
 
     const showAvatar = computed(() => authRoutes.includes(useRoute().path));
