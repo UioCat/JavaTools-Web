@@ -460,7 +460,7 @@ export default defineComponent({
       const { code } = res.data;
       if (code === 200) {
         getTableList();
-        // getStatistics();
+        getStatistics();
       }
     }
 
@@ -633,10 +633,13 @@ export default defineComponent({
       endDateTemp.setMonth(currentDate.getMonth() + 1);
       endDateTemp.setDate(1);
       endDateTemp.setTime(endDateTemp.getTime() - 1000 * 60 * 60 * 24);
-
+      const startDate = chartDataInfo.showLargeItemStatistics ?
+        '' :  startDateTemp.toLocaleDateString().replaceAll("/", "-");
+      const endDate = chartDataInfo.showLargeItemStatistics ?
+        '' : endDateTemp.toLocaleDateString().replaceAll("/", "-");
       const res: any = await GetStatistics({
-        startDate: startDateTemp.toLocaleDateString().replaceAll("/", "-"),
-        endDate: endDateTemp.toLocaleDateString().replaceAll("/", "-"),
+        startDate,
+        endDate,
         largeItem: chartDataInfo.showLargeItemStatistics
       });
       const { code, info } = res.data;
@@ -697,6 +700,8 @@ export default defineComponent({
     const selectChartType = (selectChartType: string) => {
       if (chartDataInfo.showLargeItemStatistics) {
         tableData.selectConsumeType = '';
+        tableData.startTime = '';
+        tableData.endTime = '';
       } else {
         const now = new Date(chartDataInfo.statisticsDate)
         const nowMonth = now.getMonth();
