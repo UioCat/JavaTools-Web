@@ -3,7 +3,7 @@ import { ElMessage } from "element-plus";
 import { router } from "@/router";
 
 /* 开发环境代理前缀 */
-const baseURL = import.meta.env.development ? "/api" : import.meta.env.VITE_API_URL;
+const baseURL = import.meta.env.MODE === 'development' ? "/api" : import.meta.env.VITE_API_URL;
 
 const headers = {
   "Accept": "application/json",

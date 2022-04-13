@@ -4,7 +4,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --mode development",
     "build:pre": "vite build --mode prerelease",
     "build:prod": "vite build --mode production"
   },
