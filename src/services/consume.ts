@@ -22,6 +22,7 @@ export function getBillList(params: {
   category: string;
   startTime: string;
   endTime: string;
+  largeItem: any;
 }): AxiosPromise {
   return network({
     url: "/monitor/bill/getBillList",
@@ -77,6 +78,7 @@ export function deleteBillConfig(data: { configId: string }): AxiosPromise {
 export function GetStatistics(params: {
   startDate: string;
   endDate: string;
+  largeItem: boolean;
 }): AxiosPromise {
   return network({
     url: "/monitor/bill/getStatistics",
@@ -88,6 +90,8 @@ export function GetStatistics(params: {
 export function UpdateBill(data: {
   deleted: boolean;
   billId: string;
+  largeItem: boolean;
+  billType: string;
 }): AxiosPromise {
   return network({
     url: "/monitor/bill/updateBill",

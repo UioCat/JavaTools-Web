@@ -148,7 +148,7 @@
       <el-card shadow="hover" style="height: 560px">
         <el-table
           :data="table"
-          :height="440"
+          :height="460"
           @filter-change="filterChange"
           ref="tableRef"
           v-loading="tableLoading"
@@ -164,10 +164,13 @@
             :filter-multiple="false"
             :filters="filterConsumeTypeArr">
           </el-table-column>
-          <el-table-column label="操作">
+          <el-table-column label="操作" prop="largeItem" width="150">
             <template #default="scope">
               <el-button size="small" @click="handleDelete(scope.row)">
                 删除
+              </el-button>
+              <el-button size="small" @click="setLargeItem(scope.row)">
+                {{scope.row.largeItem === true ? '非大件' : '大件'}}
               </el-button>
             </template>
           </el-table-column>
@@ -185,13 +188,20 @@
       <!-- 统计图 -->
       <el-card shadow="hover">
         <el-date-picker
+          v-if="!showLargeItemStatistics"
           v-model="statisticsDate"
           type="month"
           @change="changeStatisticsDate"
           placeholder="请选择月份"
           :clearable="false"
+          style="width: 150px"
         >
         </el-date-picker>
+        <el-switch class="showLargeItemStatistics-switch"
+          v-model="showLargeItemStatistics"
+          inactive-text="查看大件统计数据"
+                   @change="showLargeItemStatisticsEvent"
+        />
         <router-view v-if="showRouter">
           <line-chart
             :chartDataX="chartDataX"
@@ -286,6 +296,7 @@ export default defineComponent({
       chartDataY: [0, 0],
       statisticsDate: new Date(),
       showRouter: true,
+      showLargeItemStatistics: false,
     });
 
     // 自定义 金额 验证方式
@@ -398,6 +409,8 @@ export default defineComponent({
           category: tableData.selectConsumeType,
           startTime: tableData.startTime,
           endTime: tableData.endTime,
+          largeItem: chartDataInfo.showLargeItemStatistics ?
+            chartDataInfo.showLargeItemStatistics : null
         });
         const { code, info } = res.data;
         if (code === 200) {
@@ -414,10 +427,12 @@ export default defineComponent({
      * 删除表格的一条数据
      */
     const handleDelete = async (row: any) => {
-      const { billId } = row;
+      const { billId, largeItem, billType } = row;
       const updateBillUpdate = {
         billId: "",
+        largeItem,
         deleted: false,
+        billType,
       };
       updateBillUpdate.billId = billId;
       updateBillUpdate.deleted = true;
@@ -428,6 +443,26 @@ export default defineComponent({
         getStatistics();
       }
     };
+
+    /**
+     * 设置账单为大件类型
+     */
+    const setLargeItem = async (row: any) => {
+      const { billId, largeItem, deleted, billType } = row;
+      const updateBillUpdate = {
+        billId,
+        largeItem,
+        deleted,
+        billType,
+      };
+      updateBillUpdate.largeItem = !largeItem;
+      const res: any = await UpdateBill(updateBillUpdate);
+      const { code } = res.data;
+      if (code === 200) {
+        getTableList();
+        // getStatistics();
+      }
+    }
 
     /**
      * 获取所有类别
@@ -602,6 +637,7 @@ export default defineComponent({
       const res: any = await GetStatistics({
         startDate: startDateTemp.toLocaleDateString().replaceAll("/", "-"),
         endDate: endDateTemp.toLocaleDateString().replaceAll("/", "-"),
+        largeItem: chartDataInfo.showLargeItemStatistics
       });
       const { code, info } = res.data;
       if (code === 200) {
@@ -649,22 +685,33 @@ export default defineComponent({
     }
 
     /**
+     * 大件统计数据查看开关
+     */
+    const showLargeItemStatisticsEvent = async () => {
+      getStatistics();
+    }
+
+    /**
      * 柱形图点击事件
      */
     const selectChartType = (selectChartType: string) => {
-      const now = new Date(chartDataInfo.statisticsDate)
-      const nowMonth = now.getMonth();
-      const nowYear = now.getFullYear();
-      //本月的开始时间
-      tableData.startTime = formatTime(new Date(nowYear, nowMonth, 1)).slice(0, -4);
-      //本月的结束时间
-      tableData.endTime = formatTime(new Date(nowYear, nowMonth+1, 0)).slice(0, -4);
-
-      tableRef.value!.clearFilter();
-      if (selectChartType === '总金额') {
+      if (chartDataInfo.showLargeItemStatistics) {
         tableData.selectConsumeType = '';
       } else {
-        tableData.selectConsumeType = selectChartType;
+        const now = new Date(chartDataInfo.statisticsDate)
+        const nowMonth = now.getMonth();
+        const nowYear = now.getFullYear();
+        //本月的开始时间
+        tableData.startTime = formatTime(new Date(nowYear, nowMonth, 1)).slice(0, -4);
+        //本月的结束时间
+        tableData.endTime = formatTime(new Date(nowYear, nowMonth+1, 0)).slice(0, -4);
+
+        tableRef.value!.clearFilter();
+        if (selectChartType === '总金额') {
+          tableData.selectConsumeType = '';
+        } else {
+          tableData.selectConsumeType = selectChartType;
+        }
       }
       getTableList();
     }
@@ -705,6 +752,8 @@ export default defineComponent({
       getAllConsumption,
       filterChange,
       selectChartType,
+      setLargeItem,
+      showLargeItemStatisticsEvent
     };
   },
 });
@@ -793,6 +842,10 @@ export default defineComponent({
 
 .el-pagination {
   margin-top: 20px;
+}
+
+.showLargeItemStatistics-switch {
+  margin-left: 20px;
 }
 
 @media only screen and (min-width: 768px) {
