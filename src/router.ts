@@ -5,32 +5,17 @@ const { VITE_BASE_PATH = "" } = import.meta.env;
 export const table = [
   {
     index: "transform-decimal",
-    icon: "el-icon-aim",
+    // icon: "el-icon-aim",
     title: "进制转换",
   },
   {
     index: "create-table",
-    icon: "el-icon-discover",
+    // icon: "el-icon-discover",
     title: "创建 Table",
   },
-  // {
-  //   index: "generate-mybatis",
-  //   icon: "el-icon-discover",
-  //   title: "生成 MyBatis",
-  // },
-  // {
-  //   index: "setup-by-sql",
-  //   icon: "el-icon-discover",
-  //   title: "Setup By SQL",
-  // },
-  // {
-  //   index: "setup-by-java",
-  //   icon: "el-icon-discover",
-  //   title: "Setup By Java",
-  // },
   {
     index: "consume",
-    icon: "el-icon-discover",
+    // icon: "el-icon-discover",
     title: "账单",
   },
 ].map((item) => ({ ...item, index: `/app/${item.index}` }));
@@ -51,10 +36,6 @@ export const router = createRouter({
       redirect: table[0].index,
       component: () => import("@/pages/app/index.vue"),
       children: [
-        // {
-        //   path: "transform-ascii",
-        //   component: () => import("@/containers/transform-ascii/index.vue"),
-        // },
         {
           path: "transform-decimal",
           component: () => import("@/containers/transform-decimal/index.vue"),

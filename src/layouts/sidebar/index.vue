@@ -19,16 +19,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { table } from "@/router";
+import {defineComponent} from "vue";
+import {router, table} from "@/router";
 
 export default defineComponent({
   name: "Sidebar",
 
   setup() {
+    const urlParam =  router.currentRoute.value.path as string;
     return {
       navList: table,
-      defaultActive: table[0].index,
+      defaultActive: urlParam
     };
   },
 });
