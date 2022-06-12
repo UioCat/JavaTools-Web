@@ -5,65 +5,142 @@
       <el-card shadow="hover" style="height: 100%">
         <template #header>
           <div class="card-header">
-            创建账单记录<i class="iconfont icon-bill"></i>
+            创建账单记录&nbsp;&nbsp;&nbsp;
+            <el-select v-model="bookKeepingType.choseBookKeepingType"
+                       class="m-2" placeholder="选择记录账单类型" size="large"
+                       @change="changeBookKeepingTypeValue">
+              <el-option
+                v-for="item in bookKeepingType.bookKeepingTypeList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
           </div>
         </template>
-        <el-form
-          ref="formRef"
-          :rules="rules"
-          :model="createBill"
-          :hide-required-asterisk="true"
-          status-icon
-        >
-          <el-form-item label="日期" prop="createDate">
-            <el-date-picker
-              v-model="createDate"
-              type="date"
-              placeholder="请选择日期"
-              :clearable="false"
-            >
-            </el-date-picker>
-          </el-form-item>
-          <el-form-item label="金额" prop="createMoney">
-            <el-input
-              v-model="createMoney"
-              placeholder="请输入金额"
-              @input="getConsumeType"
-              @keyup.enter="submitForm(formRef, addBill)"
-              ref="moneyRef"
-              clearable
-            >
-            </el-input>
-          </el-form-item>
-          <el-form-item label="用途" prop="createPurpose">
-            <el-input
-              v-model="createPurpose"
-              placeholder="请输入用途"
-              @input="getConsumeType"
-              @keyup.enter="submitForm(formRef, addBill)"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="类别" prop="createCategory">
-            <el-autocomplete
-              v-model="createCategory"
-              placeholder="请输入类别"
-              :fetch-suggestions="configTypeSearch"
-              :trigger-on-focus="false"
-              @keyup.enter="submitForm(formRef, addBill)"
-              style="flex: 1"
-            >
-            </el-autocomplete>
-          </el-form-item>
-          <el-form-item class="control">
-            <el-button @click="resetForm(formRef)">清空</el-button>
-            <el-button
-              type="primary"
-              @click="submitForm(formRef, addBill)"
-              :loading="billBtnLoading"
+        <div v-if="bookKeepingType.choseBookKeepingType === 'onceBill'">
+          <el-form
+            ref="formRef"
+            :rules="rules"
+            :model="createBill"
+            :hide-required-asterisk="true"
+            status-icon
+          >
+            <el-form-item label="日期" prop="createDate">
+              <el-date-picker
+                v-model="createDate"
+                type="date"
+                placeholder="请选择日期"
+                :clearable="false"
+              >
+              </el-date-picker>
+            </el-form-item>
+            <el-form-item label="金额" prop="createMoney">
+              <el-input
+                v-model="createMoney"
+                placeholder="请输入金额"
+                @input="getConsumeType"
+                @keyup.enter="submitForm(formRef, addBill)"
+                ref="moneyRef"
+                clearable
+              >
+              </el-input>
+            </el-form-item>
+            <el-form-item label="用途" prop="createPurpose">
+              <el-input
+                v-model="createPurpose"
+                placeholder="请输入用途"
+                @input="getConsumeType"
+                @keyup.enter="submitForm(formRef, addBill)"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="类别" prop="createCategory">
+              <el-autocomplete
+                v-model="createCategory"
+                placeholder="请输入类别"
+                :fetch-suggestions="configTypeSearch"
+                :trigger-on-focus="false"
+                @keyup.enter="submitForm(formRef, addBill)"
+                style="flex: 1"
+              >
+              </el-autocomplete>
+            </el-form-item>
+            <el-form-item class="control">
+              <el-button @click="resetForm(formRef)">清空</el-button>
+              <el-button
+                type="primary"
+                @click="submitForm(formRef, addBill)"
+                :loading="billBtnLoading"
+                >提交
+              </el-button>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div v-if="bookKeepingType.choseBookKeepingType === 'periodBill'">
+          <el-form
+            ref="formRef"
+            :rules="rules"
+            :model="createBill"
+            :hide-required-asterisk="true"
+            status-icon
+          >
+            <el-form-item label="每月日期" prop="DateByTheMonth">
+              <el-input
+                v-model="dayOfMonth"
+                placeholder="请输入每月产生账单的日期（1-28）"
+                ref="moneyRef"
+                clearable
+              >
+              </el-input>
+            </el-form-item>
+            <el-form-item label="持续月份" prop="holdTimes">
+              <el-input
+                v-model="holdTimes"
+                placeholder="请输入金额"
+                ref="moneyRef"
+                clearable
+              >
+              </el-input>
+            </el-form-item>
+            <el-form-item label="金额" prop="createMoney">
+              <el-input
+                v-model="createMoney"
+                placeholder="请输入金额"
+                ref="moneyRef"
+                clearable
+              >
+              </el-input>
+            </el-form-item>
+            <el-form-item label="用途" prop="createPurpose">
+              <el-input
+                v-model="createPurpose"
+                placeholder="请输入用途"
+                @input="getConsumeType"
+                @keyup.enter="submitForm(formRef, addBill)"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="类别" prop="createCategory">
+              <el-autocomplete
+                v-model="createCategory"
+                placeholder="请输入类别"
+                :fetch-suggestions="configTypeSearch"
+                :trigger-on-focus="false"
+                @keyup.enter="submitForm(formRef, addBill)"
+                style="flex: 1"
+              >
+              </el-autocomplete>
+            </el-form-item>
+            <el-form-item class="control">
+              <el-button @click="resetForm(formRef)">清空</el-button>
+              <el-button
+                type="primary"
+                @click="submitForm(formRef, addBill)"
+                :loading="billBtnLoading"
               >提交
-            </el-button>
-          </el-form-item>
-        </el-form>
+              </el-button>
+            </el-form-item>
+          </el-form>
+        </div>
       </el-card>
     </el-col>
 
@@ -253,6 +330,23 @@ export default defineComponent({
     const moneyRef = ref();
     const tableRef = ref();
 
+    // 记账类型
+    const bookKeepingType = reactive({
+      bookKeepingTypeList: [
+        {
+          label: "普通账单",
+          value: "onceBill"
+        },
+        {
+          label: "周期账单",
+          value: "periodBill"
+        }
+      ],
+      // 默认记录单条账单
+      choseBookKeepingType: "onceBill",
+      bookKeepingTypeOnLoading: true
+    })
+
     // 表单相关数据
     const createBill = reactive({
       createDate: "",
@@ -386,6 +480,9 @@ export default defineComponent({
         },
       ],
     });
+
+    const changeBookKeepingTypeValue = (value: string) => {
+    }
 
     /**
      * 清空表单
@@ -758,7 +855,9 @@ export default defineComponent({
       filterChange,
       selectChartType,
       setLargeItem,
-      showLargeItemStatisticsEvent
+      showLargeItemStatisticsEvent,
+      bookKeepingType,
+      changeBookKeepingTypeValue
     };
   },
 });
