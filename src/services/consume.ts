@@ -15,6 +15,22 @@ export function AddBill(data: {
   });
 }
 
+export function AddPeriodBill(data: {
+  generateDay: number,
+  generateCount: number,
+  billType: string,
+  produceWayType: string,
+  amount: string,
+  desc: string,
+  type: string
+}): AxiosPromise {
+  return network({
+    url: "/monitor/bill/addPeriodBill",
+    method: "POST",
+    data
+  });
+}
+
 export function getBillList(params: {
   type: string;
   pageNum: number;

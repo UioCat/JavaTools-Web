@@ -80,23 +80,23 @@
           <el-form
             ref="formRef"
             :rules="rules"
-            :model="createBill"
+            :model="createPeriodBill"
             :hide-required-asterisk="true"
             status-icon
           >
-            <el-form-item label="每月日期" prop="DateByTheMonth">
+            <el-form-item label="每月日期" prop="generateDay">
               <el-input
-                v-model="dayOfMonth"
-                placeholder="请输入每月产生账单的日期（1-28）"
+                v-model="generateDay"
+                placeholder="请输入每月产生账单的日期（1-28），超过28默认为每月最后一天"
                 ref="moneyRef"
                 clearable
               >
               </el-input>
             </el-form-item>
-            <el-form-item label="持续月份" prop="holdTimes">
+            <el-form-item label="持续月份" prop="generateCount">
               <el-input
-                v-model="holdTimes"
-                placeholder="请输入金额"
+                v-model="generateCount"
+                placeholder="请输入持续月份"
                 ref="moneyRef"
                 clearable
               >
@@ -116,7 +116,7 @@
                 v-model="createPurpose"
                 placeholder="请输入用途"
                 @input="getConsumeType"
-                @keyup.enter="submitForm(formRef, addBill)"
+                @keyup.enter="submitForm(formRef, addPeriodBill)"
               ></el-input>
             </el-form-item>
             <el-form-item label="类别" prop="createCategory">
@@ -125,7 +125,7 @@
                 placeholder="请输入类别"
                 :fetch-suggestions="configTypeSearch"
                 :trigger-on-focus="false"
-                @keyup.enter="submitForm(formRef, addBill)"
+                @keyup.enter="submitForm(formRef, addPeriodBill)"
                 style="flex: 1"
               >
               </el-autocomplete>
@@ -134,7 +134,7 @@
               <el-button @click="resetForm(formRef)">清空</el-button>
               <el-button
                 type="primary"
-                @click="submitForm(formRef, addBill)"
+                @click="submitForm(formRef, addPeriodBill)"
                 :loading="billBtnLoading"
               >提交
               </el-button>
@@ -306,7 +306,7 @@ import {
   deleteBillConfig,
   GetStatistics,
   UpdateBill,
-  getAllConsumptionType,
+  getAllConsumptionType, AddPeriodBill,
 } from "@/services/consume";
 import lineChart from "./line-chart.vue";
 import { formatTime } from "@/utils/time";
@@ -356,6 +356,16 @@ export default defineComponent({
       fuzzySearchOption: [],
       billBtnLoading: false,
     });
+
+    const createPeriodBill = reactive({
+      generateDay: "",
+      generateCount: "",
+      createMoney: "",
+      createPurpose: "",
+      createCategory: "",
+      fuzzySearchOption: [],
+      billBtnLoading: false,
+    })
 
     // 配置相关数据
     const addConfig = reactive({
@@ -602,6 +612,39 @@ export default defineComponent({
     };
 
     /**
+     * 创建周期账单
+     */
+    const addPeriodBill = async () => {
+      // createBill.billBtnLoading = true;
+      const res: any = await AddPeriodBill({
+        generateDay: parseInt(createPeriodBill.generateDay),
+        generateCount: parseInt(createPeriodBill.generateCount),
+        // 先默认写死支持，后续支持收入记录
+        billType: "CONSUME",
+        // 暂不做途径，后续等待前端扩展
+        produceWayType: "ALI_PAY",
+        amount: createPeriodBill.createMoney,
+        desc: createPeriodBill.createPurpose,
+        type: createPeriodBill.createCategory
+      });
+      if (res.data.code === 200) {
+        createPeriodBill.generateDay = "";
+        createPeriodBill.generateCount = "";
+        createPeriodBill.createMoney = "";
+        createPeriodBill.createPurpose = "";
+        createPeriodBill.createCategory = "";
+        getTableList().then(() => {
+          createPeriodBill.billBtnLoading = false;
+        });
+        getStatistics();
+        ElMessage({
+          type: "success",
+          message: "创建成功",
+        });
+      }
+    }
+
+    /**
      * 获取账单配置数据列表
      */
     const getConfigList = async () => {
@@ -830,12 +873,14 @@ export default defineComponent({
       moneyRef,
       tableRef,
       ...toRefs(createBill),
+      ...toRefs(createPeriodBill),
       ...toRefs(tableData),
       ...toRefs(pagination),
       ...toRefs(addConfig),
       ...toRefs(configData),
       ...toRefs(chartDataInfo),
       createBill,
+      createPeriodBill,
       addConfig,
       formRef,
       configFormRef,
@@ -846,6 +891,7 @@ export default defineComponent({
       pageChange,
       getConsumeType,
       addBill,
+      addPeriodBill,
       addBillConfig,
       configTypeSearch,
       delBillConfig,
