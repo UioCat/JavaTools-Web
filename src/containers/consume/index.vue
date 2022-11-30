@@ -6,11 +6,11 @@
         <template #header>
           <div class="card-header">
             创建账单记录&nbsp;&nbsp;&nbsp;
-            <el-select v-model="bookKeepingType.choseBookKeepingType"
+            <el-select v-model="choseBookKeepingType"
                        class="m-2" placeholder="选择记录账单类型" size="large"
                        @change="changeBookKeepingTypeValue">
               <el-option
-                v-for="item in bookKeepingType.bookKeepingTypeList"
+                v-for="item in bookKeepingTypeList"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
@@ -18,14 +18,16 @@
             </el-select>
           </div>
         </template>
-        <div v-if="bookKeepingType.choseBookKeepingType === 'onceBill'">
+        <!-- <div v-if="bookKeepingType.choseBookKeepingType === 'onceBill'"> -->
           <el-form
             ref="formRef"
             :rules="rules"
             :model="createBill"
             :hide-required-asterisk="true"
+            :label-width="70"
             status-icon
           >
+          <template v-if="choseBookKeepingType === 'onceBill'">
             <el-form-item label="日期" prop="createDate">
               <el-date-picker
                 v-model="createDate"
@@ -35,12 +37,34 @@
               >
               </el-date-picker>
             </el-form-item>
+          </template>
+          <template v-else>
+            <el-form-item label="每月日期" prop="generateDay">
+              <el-input-number
+                v-model="generateDay"
+                placeholder="请输入持续月份"
+                controls-position="right"
+                :min="1"
+                :max="28"
+                style="width: 100%"
+              />
+            </el-form-item>
+            <el-form-item label="持续月份" prop="generateCount">
+              <el-input-number
+                v-model="generateCount"
+                placeholder="请输入持续月份"
+                controls-position="right"
+                :min="1"
+                style="width: 100%"
+              />
+            </el-form-item>
+          </template>
             <el-form-item label="金额" prop="createMoney">
               <el-input
                 v-model="createMoney"
                 placeholder="请输入金额"
                 @input="getConsumeType"
-                @keyup.enter="submitForm(formRef, addBill)"
+                @keyup.enter="submitForm(formRef, choseBookKeepingType === 'onceBill' ? addBill : addPeriodBill)"
                 ref="moneyRef"
                 clearable
               >
@@ -51,7 +75,7 @@
                 v-model="createPurpose"
                 placeholder="请输入用途"
                 @input="getConsumeType"
-                @keyup.enter="submitForm(formRef, addBill)"
+                @keyup.enter="submitForm(formRef, choseBookKeepingType === 'onceBill' ? addBill : addPeriodBill)"
               ></el-input>
             </el-form-item>
             <el-form-item label="类别" prop="createCategory">
@@ -60,7 +84,7 @@
                 placeholder="请输入类别"
                 :fetch-suggestions="configTypeSearch"
                 :trigger-on-focus="false"
-                @keyup.enter="submitForm(formRef, addBill)"
+                @keyup.enter="submitForm(formRef, choseBookKeepingType === 'onceBill' ? addBill : addPeriodBill)"
                 style="flex: 1"
               >
               </el-autocomplete>
@@ -69,14 +93,14 @@
               <el-button @click="resetForm(formRef)">清空</el-button>
               <el-button
                 type="primary"
-                @click="submitForm(formRef, addBill)"
+                @click="submitForm(formRef, choseBookKeepingType === 'onceBill' ? addBill : addPeriodBill)"
                 :loading="billBtnLoading"
                 >提交
               </el-button>
             </el-form-item>
           </el-form>
-        </div>
-        <div v-if="bookKeepingType.choseBookKeepingType === 'periodBill'">
+        <!-- </div> -->
+        <!-- <div v-if="bookKeepingType.choseBookKeepingType === 'periodBill'">
           <el-form
             ref="formRef"
             :rules="rules"
@@ -140,7 +164,7 @@
               </el-button>
             </el-form-item>
           </el-form>
-        </div>
+        </div> -->
       </el-card>
     </el-col>
 
@@ -267,11 +291,14 @@
         <el-date-picker
           v-if="!showLargeItemStatistics"
           v-model="statisticsDate"
-          type="month"
-          @change="changeStatisticsDate"
+          type="daterange"
           placeholder="请选择月份"
+          start-placeholder="开始时间"
+          end-placeholder="结束时间"
+          style="width: 300px"
           :clearable="false"
-          style="width: 150px"
+          :shortcuts="shortcuts"
+          @change="changeStatisticsDate"
         >
         </el-date-picker>
         <el-switch class="showLargeItemStatistics-switch"
@@ -279,11 +306,15 @@
           inactive-text="查看大件统计数据"
                    @change="showLargeItemStatisticsEvent"
         />
+
         <router-view v-if="showRouter">
           <line-chart
+            ref="chartRef"
             :chartDataX="chartDataX"
             :chartDataY="chartDataY"
             @selectChartType="selectChartType"
+            @remove="handleRemove"
+            @reload="() => getStatistics()"
           ></line-chart>
         </router-view>
       </el-card>
@@ -310,6 +341,7 @@ import {
 } from "@/services/consume";
 import lineChart from "./line-chart.vue";
 import { formatTime } from "@/utils/time";
+import dayjs from 'dayjs'
 
 interface OptionType {
   category: string;
@@ -329,6 +361,7 @@ export default defineComponent({
     const configFormRef = ref<InstanceType<typeof ElForm>>();
     const moneyRef = ref();
     const tableRef = ref();
+    const chartRef = ref()
 
     // 记账类型
     const bookKeepingType = reactive({
@@ -349,7 +382,12 @@ export default defineComponent({
 
     // 表单相关数据
     const createBill = reactive({
+      // 普通账单日期
       createDate: "",
+      // 周期账单日期
+      generateDay: 1,
+      // 周期账单持续时间
+      generateCount: 1,
       createMoney: "",
       createPurpose: "",
       createCategory: "",
@@ -385,8 +423,8 @@ export default defineComponent({
       tableLoading: false,
       filterConsumeTypeArr: [],
       selectConsumeType: '',
-      startTime: '',
-      endTime: '',
+      startTime: dayjs().startOf('M').format('YYYY-MM-DD'),
+      endTime: dayjs().endOf('M').format('YYYY-MM-DD'),
     });
     // 分页器相关数据
     const pagination = reactive({
@@ -398,7 +436,7 @@ export default defineComponent({
     const chartDataInfo = reactive({
       chartDataX: ["", ""],
       chartDataY: [0, 0],
-      statisticsDate: new Date(),
+      statisticsDate: [],
       showRouter: true,
       showLargeItemStatistics: false,
     });
@@ -451,6 +489,18 @@ export default defineComponent({
           trigger: "change",
         },
       ],
+      generateDay: [
+        {
+          required: true,
+          message: '请输入日期',
+        }
+      ],
+      generateCount: [
+        {
+          required: true,
+          message: '请输入持续月份',
+        }
+      ],
       createMoney: [
         {
           validator: moneyReg,
@@ -492,7 +542,37 @@ export default defineComponent({
     });
 
     const changeBookKeepingTypeValue = (value: string) => {
+      formRef.value?.resetFields()
     }
+
+    //  格式化日期
+    const formatDate = (date: Date) => {
+      return dayjs(date).format('YYYY-MM-DD')
+    }
+    
+    // 日期快速选择
+    const shortcuts = [
+      {
+        text: '本周',
+        value: [dayjs().startOf('w').add(1, 'd'), dayjs().endOf('week').add(1, 'd')],
+      },
+      {
+        text: '当月',
+        value: [dayjs().startOf('M'), dayjs().endOf('M')],
+      },
+      {
+        text: '近3月',
+        value: [dayjs().startOf('M').subtract(2, 'M'), dayjs().endOf('M')],
+      },
+      {
+        text: '近半年',
+        value: [dayjs().startOf('M').subtract(5, 'M'), dayjs().endOf('M')],
+      },
+      {
+        text: '今年',
+        value: [dayjs().startOf('y'), dayjs().endOf('y')],
+      }
+    ]
 
     /**
      * 清空表单
@@ -529,6 +609,16 @@ export default defineComponent({
         tableData.tableLoading = false;
       }
     };
+
+    const handleRemove = (params: any) => {
+      if (params.dataIndex === 0) {
+        return
+      }
+      chartDataInfo.chartDataX.splice(params.dataIndex, 1)
+      chartDataInfo.chartDataY[0] = (chartDataInfo.chartDataY[0] * 100 - chartDataInfo.chartDataY[params.dataIndex] * 100) / 100
+      chartDataInfo.chartDataY.splice(params.dataIndex, 1)
+      chartRef.value.drawChart()
+    }
 
     /**
      * 删除表格的一条数据
@@ -617,22 +707,23 @@ export default defineComponent({
     const addPeriodBill = async () => {
       // createBill.billBtnLoading = true;
       const res: any = await AddPeriodBill({
-        generateDay: parseInt(createPeriodBill.generateDay),
-        generateCount: parseInt(createPeriodBill.generateCount),
+        generateDay: createBill.generateDay,
+        generateCount: createBill.generateCount,
         // 先默认写死支持，后续支持收入记录
         billType: "CONSUME",
         // 暂不做途径，后续等待前端扩展
         produceWayType: "ALI_PAY",
-        amount: createPeriodBill.createMoney,
-        desc: createPeriodBill.createPurpose,
-        type: createPeriodBill.createCategory
+        amount: createBill.createMoney,
+        desc: createBill.createPurpose,
+        type: createBill.createCategory
       });
       if (res.data.code === 200) {
-        createPeriodBill.generateDay = "";
-        createPeriodBill.generateCount = "";
-        createPeriodBill.createMoney = "";
-        createPeriodBill.createPurpose = "";
-        createPeriodBill.createCategory = "";
+        // createPeriodBill.generateDay = "";
+        // createPeriodBill.generateCount = "";
+        // createPeriodBill.createMoney = "";
+        // createPeriodBill.createPurpose = "";
+        // createPeriodBill.createCategory = "";
+        formRef.value?.resetFields()
         getTableList().then(() => {
           createPeriodBill.billBtnLoading = false;
         });
@@ -766,20 +857,20 @@ export default defineComponent({
      */
     const getStatistics = async () => {
       // 取chartDataInfo.statisticsDate所在月份的第一天和最后一天
-      const currentDate = new Date(chartDataInfo.statisticsDate.valueOf());
-      const startDateTemp = new Date(chartDataInfo.statisticsDate.valueOf());
-      const endDateTemp = new Date(chartDataInfo.statisticsDate.valueOf());
-      startDateTemp.setDate(1);
-      endDateTemp.setMonth(currentDate.getMonth() + 1);
-      endDateTemp.setDate(1);
-      endDateTemp.setTime(endDateTemp.getTime() - 1000 * 60 * 60 * 24);
-      const startDate = chartDataInfo.showLargeItemStatistics ?
-        '' :  startDateTemp.toLocaleDateString().replaceAll("/", "-");
-      const endDate = chartDataInfo.showLargeItemStatistics ?
-        '' : endDateTemp.toLocaleDateString().replaceAll("/", "-");
+      // const currentDate = new Date(chartDataInfo.statisticsDate.valueOf());
+      // const startDateTemp = new Date(chartDataInfo.statisticsDate.valueOf());
+      // const endDateTemp = new Date(chartDataInfo.statisticsDate.valueOf());
+      // startDateTemp.setDate(1);
+      // endDateTemp.setMonth(currentDate.getMonth() + 1);
+      // endDateTemp.setDate(1);
+      // endDateTemp.setTime(endDateTemp.getTime() - 1000 * 60 * 60 * 24);
+      // const startDate = chartDataInfo.showLargeItemStatistics ?
+      //   '' :  startDateTemp.toLocaleDateString().replaceAll("/", "-");
+      // const endDate = chartDataInfo.showLargeItemStatistics ?
+      //   '' : endDateTemp.toLocaleDateString().replaceAll("/", "-");
       const res: any = await GetStatistics({
-        startDate,
-        endDate,
+        startDate: tableData.startTime,
+        endDate: tableData.endTime,
         largeItem: chartDataInfo.showLargeItemStatistics
       });
       const { code, info } = res.data;
@@ -797,20 +888,24 @@ export default defineComponent({
           chartDataInfo.chartDataX.push(category);
           chartDataInfo.chartDataY.push(amount);
         });
+        chartRef.value.drawChart()
       }
     };
 
     /**
      * 修改统计图的月份选项后 触发事件
      */
-    const changeStatisticsDate = async (val: string) => {
-      const now = new Date(val)
-      const nowMonth = now.getMonth();
-      const nowYear = now.getFullYear();
+    const changeStatisticsDate = async ([startDate, endDate]: any[]) => {
+      
+      // const now = new Date(val)
+      // const nowMonth = now.getMonth();
+      // const nowYear = now.getFullYear();
       //本月的开始时间
-      tableData.startTime = formatTime(new Date(nowYear, nowMonth, 1)).slice(0, -4);
+      // tableData.startTime = formatTime(new Date(nowYear, nowMonth, 1)).slice(0, -4);
+      tableData.startTime = formatDate(startDate)
       //本月的结束时间
-      tableData.endTime = formatTime(new Date(nowYear, nowMonth+1, 0)).slice(0, -4);
+      // tableData.endTime = formatTime(new Date(nowYear, nowMonth+1, 0)).slice(0, -4);
+      tableData.endTime = formatDate(endDate)
       await getStatistics();
     };
 
@@ -843,13 +938,15 @@ export default defineComponent({
         tableData.startTime = '';
         tableData.endTime = '';
       } else {
-        const now = new Date(chartDataInfo.statisticsDate)
-        const nowMonth = now.getMonth();
-        const nowYear = now.getFullYear();
-        //本月的开始时间
-        tableData.startTime = formatTime(new Date(nowYear, nowMonth, 1)).slice(0, -4);
-        //本月的结束时间
-        tableData.endTime = formatTime(new Date(nowYear, nowMonth+1, 0)).slice(0, -4);
+        // const now = new Date(chartDataInfo.statisticsDate)
+        // const nowMonth = now.getMonth();
+        // const nowYear = now.getFullYear();
+        // 本月的开始时间
+        // tableData.startTime = formatTime(new Date(nowYear, nowMonth, 1)).slice(0, -4);
+        tableData.startTime = formatDate(chartDataInfo.statisticsDate[0])
+        // 本月的结束时间
+        // tableData.endTime = formatTime(new Date(nowYear, nowMonth+1, 0)).slice(0, -4);
+        tableData.endTime = formatDate(chartDataInfo.statisticsDate[1])
 
         tableRef.value!.clearFilter();
         if (selectChartType === '总金额') {
@@ -870,15 +967,18 @@ export default defineComponent({
     });
 
     return {
+      shortcuts,
       moneyRef,
       tableRef,
+      chartRef,
       ...toRefs(createBill),
-      ...toRefs(createPeriodBill),
+      // ...toRefs(createPeriodBill),
       ...toRefs(tableData),
       ...toRefs(pagination),
       ...toRefs(addConfig),
       ...toRefs(configData),
       ...toRefs(chartDataInfo),
+      ...toRefs(bookKeepingType),
       createBill,
       createPeriodBill,
       addConfig,
@@ -902,8 +1002,9 @@ export default defineComponent({
       selectChartType,
       setLargeItem,
       showLargeItemStatisticsEvent,
-      bookKeepingType,
-      changeBookKeepingTypeValue
+      changeBookKeepingTypeValue,
+      handleRemove,
+      getStatistics
     };
   },
 });
