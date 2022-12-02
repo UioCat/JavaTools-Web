@@ -549,7 +549,7 @@ export default defineComponent({
     const formatDate = (date: Date) => {
       return dayjs(date).format('YYYY-MM-DD')
     }
-    
+
     // 日期快速选择
     const shortcuts = [
       {
@@ -615,7 +615,7 @@ export default defineComponent({
         return
       }
       chartDataInfo.chartDataX.splice(params.dataIndex, 1)
-      chartDataInfo.chartDataY[0] = (chartDataInfo.chartDataY[0] * 100 - chartDataInfo.chartDataY[params.dataIndex] * 100) / 100
+      chartDataInfo.chartDataY[0] = (Math.ceil(chartDataInfo.chartDataY[0] * 100) - Math.ceil(chartDataInfo.chartDataY[params.dataIndex] * 100)) / 100
       chartDataInfo.chartDataY.splice(params.dataIndex, 1)
       chartRef.value.drawChart()
     }
@@ -896,7 +896,7 @@ export default defineComponent({
      * 修改统计图的月份选项后 触发事件
      */
     const changeStatisticsDate = async ([startDate, endDate]: any[]) => {
-      
+
       // const now = new Date(val)
       // const nowMonth = now.getMonth();
       // const nowYear = now.getFullYear();

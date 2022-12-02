@@ -14,7 +14,7 @@ export default ({ mode }) =>
       port: 10000,
       proxy: {
         "/api": {
-          target: "https://www.uiofield.top/server_test/",
+          target: "http://localhost:8080",
           changeOrigin: true,
           rewrite: (path) => path.replace("/api", ""),
         },
