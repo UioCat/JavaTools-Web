@@ -247,9 +247,13 @@
     <el-col :sm="12" :xs="24">
       <!-- 表格 -->
       <el-card shadow="hover" style="height: 560px">
+        <el-tabs>
+          <el-tab-pane label="普通账单" name="first"></el-tab-pane>
+          <el-tab-pane label="周期账单" name="second"></el-tab-pane>
+        </el-tabs>
         <el-table
           :data="table"
-          :height="460"
+          :height="420"
           @filter-change="filterChange"
           ref="tableRef"
           v-loading="tableLoading"
@@ -337,7 +341,9 @@ import {
   deleteBillConfig,
   GetStatistics,
   UpdateBill,
-  getAllConsumptionType, AddPeriodBill,
+  getAllConsumptionType,
+  AddPeriodBill,
+  queryPeriodBillList
 } from "@/services/consume";
 import lineChart from "./line-chart.vue";
 import { formatTime } from "@/utils/time";
@@ -436,7 +442,7 @@ export default defineComponent({
     const chartDataInfo = reactive({
       chartDataX: ["", ""],
       chartDataY: [0, 0],
-      statisticsDate: [],
+      statisticsDate: [dayjs().startOf('M'), dayjs().endOf('M')],
       showRouter: true,
       showLargeItemStatistics: false,
     });
@@ -546,7 +552,7 @@ export default defineComponent({
     }
 
     //  格式化日期
-    const formatDate = (date: Date) => {
+    const formatDate = (date: Date | any) => {
       return dayjs(date).format('YYYY-MM-DD')
     }
 
@@ -958,12 +964,27 @@ export default defineComponent({
       getTableList();
     }
 
+    // 获取周期账单列表
+    const queryPeriodBillListRequest = async () => {
+      try {
+        const res = await queryPeriodBillList();
+        const { code, info } = res.data;
+        if (code === 200) {
+          console.log(info);
+          
+        }
+      } catch (error) {
+       console.log(error);
+      }
+    }
+
     // 页面初始化获取数据
     onMounted(() => {
       getTableList();
       getConfigList();
       getStatistics();
       getAllConsumption();
+      queryPeriodBillListRequest()
     });
 
     return {

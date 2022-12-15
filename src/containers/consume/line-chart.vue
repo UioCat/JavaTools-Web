@@ -55,6 +55,9 @@ export default defineComponent({
           axisTick: {
             alignWithLabel: true,
           },
+          axisLabel: {
+            interval: 0,
+          },
         },
       ],
       yAxis: [
