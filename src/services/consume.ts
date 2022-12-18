@@ -15,6 +15,19 @@ export function AddBill(data: {
   });
 }
 
+/*
+[
+    {
+        "amount": "11.00",
+        "billType": "CONSUME", // 支出
+        "category": "交通", // 支出类型
+        "description": "11", // 描述
+        "generateCount": 2, // 次数
+        "generateDay": 1, // 每月的第几天
+        "produceWayType": "支付宝" // 支出途径
+    }
+]
+ */
 export function queryPeriodBillList(): AxiosPromise {
   return network({
     url: "/monitor/bill/queryPeriodBillList",
