@@ -161,7 +161,7 @@
 
         <router-view v-if="showRouter">
           <line-chart ref="chartRef" :chartDataX="chartDataX" :chartDataY="chartDataY"
-            @selectChartType="selectChartType" @remove="handleRemove" @reload="() => reloadListAndStatistics()"></line-chart>
+            @selectChartType="selectChartType" @remove="handleRemove" @reload="() => getStatistics()"></line-chart>
         </router-view>
       </el-card>
     </el-col>
