@@ -267,12 +267,13 @@ export default defineComponent({
 
     // table相关数据
     const tableData = reactive({
-      tableTypeTab: 'periodBill',
+      tableTypeTab: 'onceBill',
       periodBillTable: [],
       table: [],
       tableLoading: false,
       filterConsumeTypeArr: [],
       selectConsumeType: '',
+      filterQueryList: false, // 是否根据右侧数据来过滤左侧列表,点击柱状图后为true
       startTime: dayjs().startOf('M').format('YYYY-MM-DD'),
       endTime: dayjs().endOf('M').format('YYYY-MM-DD'),
     });
@@ -438,14 +439,20 @@ export default defineComponent({
      */
     const getTableList = async () => {
       try {
+        let startTime = "";
+        let endTime = "";
+        if (tableData.filterQueryList) {
+          startTime = tableData.startTime;
+          endTime = tableData.endTime;
+        }
         tableData.tableLoading = true;
         const res: any = await getBillList({
           pageNum: pagination.page,
           pageSize: pagination.pageSize,
           type: "CONSUME",
           category: tableData.selectConsumeType,
-          startTime: tableData.startTime,
-          endTime: tableData.endTime,
+          startTime,
+          endTime,
           largeItem: chartDataInfo.showLargeItemStatistics ?
             chartDataInfo.showLargeItemStatistics : null
         });
@@ -616,7 +623,7 @@ export default defineComponent({
         });
       } catch (error) {
         console.log(error);
-        
+
       }
     };
 
@@ -767,7 +774,8 @@ export default defineComponent({
      * 柱形图点击事件
      */
     const selectChartType = (selectChartType: string) => {
-      tableData.tableTypeTab = 'onceBill'
+      tableData.tableTypeTab = 'onceBill';
+      tableData.filterQueryList = true;
       if (chartDataInfo.showLargeItemStatistics) {
         tableData.selectConsumeType = '';
         tableData.startTime = '';
