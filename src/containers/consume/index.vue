@@ -127,9 +127,9 @@
                   <el-button size="small" @click="handleDelete(scope.row)">
                     删除
                   </el-button>
-                  <el-button size="small" @click="setLargeItem(scope.row)">
-                    {{ scope.row.largeItem === true ? '非大件' : '大件' }}
-                  </el-button>
+<!--                  <el-button size="small" @click="setLargeItem(scope.row)">-->
+<!--                    {{ scope.row.largeItem === true ? '非大件' : '大件' }}-->
+<!--                  </el-button>-->
                 </template>
               </el-table-column>
             </el-table>
@@ -152,16 +152,16 @@
     <el-col :sm="12" :xs="24">
       <!-- 统计图 -->
       <el-card shadow="hover">
-        <el-date-picker v-if="!showLargeItemStatistics" v-model="statisticsDate" type="daterange" placeholder="请选择月份"
-          start-placeholder="开始时间" end-placeholder="结束时间" style="width: 300px" :clearable="false" :shortcuts="shortcuts"
-          @change="changeStatisticsDate">
+        <el-date-picker v-if="!showPeriodItemStatistics" v-model="statisticsDate" type="daterange" placeholder="请选择月份"
+                        start-placeholder="开始时间" end-placeholder="结束时间" style="width: 300px" :clearable="false" :shortcuts="shortcuts"
+                        @change="changeStatisticsDate">
         </el-date-picker>
-        <el-switch class="showLargeItemStatistics-switch" v-model="showLargeItemStatistics" inactive-text="查看大件统计数据"
-          @change="showLargeItemStatisticsEvent" />
+        <el-switch class="showLargeItemStatistics-switch" v-model="showPeriodItemStatistics" inactive-text="查看周期账单统计"
+                   @change="showPeriodItemStatisticsEvent" />
 
         <router-view v-if="showRouter">
           <line-chart ref="chartRef" :chartDataX="chartDataX" :chartDataY="chartDataY"
-            @selectChartType="selectChartType" @remove="handleRemove" @reload="() => getStatistics()"></line-chart>
+            @selectChartType="selectChartType" @remove="handleRemove" @reload="() => reloadListAndStatistics()"></line-chart>
         </router-view>
       </el-card>
     </el-col>
@@ -289,7 +289,7 @@ export default defineComponent({
       chartDataY: [0, 0],
       statisticsDate: [dayjs().startOf('M'), dayjs().endOf('M')],
       showRouter: true,
-      showLargeItemStatistics: false,
+      showPeriodItemStatistics: false,
     });
 
     // 自定义 金额 验证方式
@@ -453,8 +453,8 @@ export default defineComponent({
           category: tableData.selectConsumeType,
           startTime,
           endTime,
-          largeItem: chartDataInfo.showLargeItemStatistics ?
-            chartDataInfo.showLargeItemStatistics : null
+          largeItem: chartDataInfo.showPeriodItemStatistics ?
+            chartDataInfo.showPeriodItemStatistics : null
         });
         const { code, info } = res.data;
         if (code === 200) {
@@ -498,25 +498,25 @@ export default defineComponent({
       }
     };
 
-    /**
-     * 设置账单为大件类型
-     */
-    const setLargeItem = async (row: any) => {
-      const { billId, largeItem, deleted, billType } = row;
-      const updateBillUpdate = {
-        billId,
-        largeItem,
-        deleted,
-        billType,
-      };
-      updateBillUpdate.largeItem = !largeItem;
-      const res: any = await UpdateBill(updateBillUpdate);
-      const { code } = res.data;
-      if (code === 200) {
-        getTableList();
-        getStatistics();
-      }
-    }
+    // /**
+    //  * 设置账单为大件类型
+    //  */
+    // const setLargeItem = async (row: any) => {
+    //   const { billId, largeItem, deleted, billType } = row;
+    //   const updateBillUpdate = {
+    //     billId,
+    //     largeItem,
+    //     deleted,
+    //     billType,
+    //   };
+    //   updateBillUpdate.largeItem = !largeItem;
+    //   const res: any = await UpdateBill(updateBillUpdate);
+    //   const { code } = res.data;
+    //   if (code === 200) {
+    //     getTableList();
+    //     getStatistics();
+    //   }
+    // }
 
     /**
      * 获取所有类别
@@ -718,7 +718,8 @@ export default defineComponent({
       const res: any = await GetStatistics({
         startDate: tableData.startTime,
         endDate: tableData.endTime,
-        largeItem: chartDataInfo.showLargeItemStatistics
+        largeItem: false,
+        periodBill: chartDataInfo.showPeriodItemStatistics
       });
       const { code, info } = res.data;
       if (code === 200) {
@@ -766,8 +767,10 @@ export default defineComponent({
     /**
      * 大件统计数据查看开关
      */
-    const showLargeItemStatisticsEvent = async () => {
-      getStatistics();
+    const showPeriodItemStatisticsEvent = async () => {
+      // chartDataInfo.showPeriodItemStatistics = !chartDataInfo.showPeriodItemStatistics;
+      console.log("11111")
+      await getStatistics();
     }
 
     /**
@@ -776,10 +779,10 @@ export default defineComponent({
     const selectChartType = (selectChartType: string) => {
       tableData.tableTypeTab = 'onceBill';
       tableData.filterQueryList = true;
-      if (chartDataInfo.showLargeItemStatistics) {
+      if (chartDataInfo.showPeriodItemStatistics) {
         tableData.selectConsumeType = '';
-        tableData.startTime = '';
-        tableData.endTime = '';
+        // tableData.startTime = '';
+        // tableData.endTime = '';
       } else {
         // 本月的开始时间
         tableData.startTime = formatDate(chartDataInfo.statisticsDate[0])
@@ -796,7 +799,9 @@ export default defineComponent({
       getTableList();
     }
 
-    // 获取周期账单列表
+    /**
+     * 获取周期账单列表
+     */
     const queryPeriodBillListRequest = async () => {
       try {
         tableData.tableLoading = true
@@ -852,8 +857,7 @@ export default defineComponent({
       getAllConsumption,
       filterChange,
       selectChartType,
-      setLargeItem,
-      showLargeItemStatisticsEvent,
+      showPeriodItemStatisticsEvent,
       changeBookKeepingTypeValue,
       handleRemove,
       getStatistics,

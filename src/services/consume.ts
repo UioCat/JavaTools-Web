@@ -115,6 +115,7 @@ export function GetStatistics(params: {
   startDate: string;
   endDate: string;
   largeItem: boolean;
+  periodBill: boolean;
 }): AxiosPromise {
   return network({
     url: "/monitor/bill/getStatistics",
