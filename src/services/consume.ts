@@ -59,6 +59,7 @@ export function getBillList(params: {
   startTime: string;
   endTime: string;
   largeItem: any;
+  orderBy: string;
 }): AxiosPromise {
   return network({
     url: "/monitor/bill/getBillList",

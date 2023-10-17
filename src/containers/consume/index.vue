@@ -6,53 +6,62 @@
         <template #header>
           <div class="card-header">
             创建账单记录&nbsp;&nbsp;&nbsp;
-            <el-select v-model="choseBookKeepingType" class="m-2" placeholder="选择记录账单类型" size="large"
-              @change="changeBookKeepingTypeValue">
-              <el-option v-for="item in bookKeepingTypeList" :key="item.value" :label="item.label"
-                :value="item.value" />
+            <el-select v-model="choseBookKeepingType" class="m-2"
+                       placeholder="选择记录账单类型" size="large"
+                       @change="changeBookKeepingTypeValue">
+              <el-option v-for="item in bookKeepingTypeList" :key="item.value"
+                         :label="item.label"
+                         :value="item.value"/>
             </el-select>
           </div>
         </template>
-        <el-form ref="formRef" :rules="rules" :model="createBill" :hide-required-asterisk="true" :label-width="70"
-          status-icon>
+        <el-form ref="formRef" :rules="rules" :model="createBill"
+                 :hide-required-asterisk="true" :label-width="70"
+                 status-icon>
           <template v-if="choseBookKeepingType === 'onceBill'">
             <el-form-item label="日期" prop="createDate">
-              <el-date-picker v-model="createDate" type="date" placeholder="请选择日期" :clearable="false">
+              <el-date-picker v-model="createDate" type="date"
+                              placeholder="请选择日期" :clearable="false">
               </el-date-picker>
             </el-form-item>
           </template>
           <template v-else>
             <el-form-item label="每月日期" prop="generateDay">
-              <el-input-number v-model="generateDay" placeholder="请输入持续月份" controls-position="right" :min="1" :max="28"
-                style="width: 100%" />
+              <el-input-number v-model="generateDay" placeholder="请输入持续月份"
+                               controls-position="right" :min="1" :max="28"
+                               style="width: 100%"/>
             </el-form-item>
             <el-form-item label="持续月份" prop="generateCount">
-              <el-input-number v-model="generateCount" placeholder="请输入持续月份" controls-position="right" :min="1"
-                style="width: 100%" />
+              <el-input-number v-model="generateCount" placeholder="请输入持续月份"
+                               controls-position="right" :min="1"
+                               style="width: 100%"/>
             </el-form-item>
           </template>
           <el-form-item label="金额" prop="createMoney">
-            <el-input v-model="createMoney" placeholder="请输入金额" @input="getConsumeType"
-              @keyup.enter="submitForm(formRef, choseBookKeepingType === 'onceBill' ? addBill : addPeriodBill)"
-              ref="moneyRef" clearable>
+            <el-input v-model="createMoney" placeholder="请输入金额"
+                      @input="getConsumeType"
+                      @keyup.enter="submitForm(formRef, choseBookKeepingType === 'onceBill' ? addBill : addPeriodBill)"
+                      ref="moneyRef" clearable>
             </el-input>
           </el-form-item>
           <el-form-item label="用途" prop="createPurpose">
-            <el-input v-model="createPurpose" placeholder="请输入用途" @input="getConsumeType"
-              @keyup.enter="submitForm(formRef, choseBookKeepingType === 'onceBill' ? addBill : addPeriodBill)"></el-input>
+            <el-input v-model="createPurpose" placeholder="请输入用途"
+                      @input="getConsumeType"
+                      @keyup.enter="submitForm(formRef, choseBookKeepingType === 'onceBill' ? addBill : addPeriodBill)"></el-input>
           </el-form-item>
           <el-form-item label="类别" prop="createCategory">
-            <el-autocomplete v-model="createCategory" placeholder="请输入类别" :fetch-suggestions="configTypeSearch"
-              :trigger-on-focus="false"
-              @keyup.enter="submitForm(formRef, choseBookKeepingType === 'onceBill' ? addBill : addPeriodBill)"
-              style="flex: 1">
+            <el-autocomplete v-model="createCategory" placeholder="请输入类别"
+                             :fetch-suggestions="configTypeSearch"
+                             :trigger-on-focus="false"
+                             @keyup.enter="submitForm(formRef, choseBookKeepingType === 'onceBill' ? addBill : addPeriodBill)"
+                             style="flex: 1">
             </el-autocomplete>
           </el-form-item>
           <el-form-item class="control">
             <el-button @click="resetForm(formRef)">清空</el-button>
             <el-button type="primary"
-              @click="submitForm(formRef, choseBookKeepingType === 'onceBill' ? addBill : addPeriodBill)"
-              :loading="billBtnLoading">提交
+                       @click="submitForm(formRef, choseBookKeepingType === 'onceBill' ? addBill : addPeriodBill)"
+                       :loading="billBtnLoading">提交
             </el-button>
           </el-form-item>
         </el-form>
@@ -69,39 +78,49 @@
         </template>
         <div class="config-wrapper">
           <div class="config-menu">
-            <div class="config-menu-items" v-for="item in configList" :key="item">
+            <div class="config-menu-items" v-for="item in configList"
+                 :key="item">
               <div>
                 <span>类型：</span>
                 <span style="margin-right: 20px">{{ item.category }}</span>
                 <span>价格区间：</span>
                 <span>{{ item.priceScope }}</span>
               </div>
-              <el-popconfirm confirm-button-text="是" cancel-button-text="否" title="是否删除此条配置?"
-                @confirm="delBillConfig(item.configId)">
+              <el-popconfirm confirm-button-text="是" cancel-button-text="否"
+                             title="是否删除此条配置?"
+                             @confirm="delBillConfig(item.configId)">
                 <template #reference>
-                  <el-icon><circle-close-filled /></el-icon>
+                  <el-icon>
+                    <circle-close-filled/>
+                  </el-icon>
                 </template>
               </el-popconfirm>
             </div>
           </div>
-          <el-form ref="configFormRef" :rules="configRules" :model="addConfig" :hide-required-asterisk="true"
-            status-icon>
+          <el-form ref="configFormRef" :rules="configRules" :model="addConfig"
+                   :hide-required-asterisk="true"
+                   status-icon>
             <el-form-item label="类别名称" prop="configName">
-              <el-input v-model="configName" @keyup.enter="submitForm(configFormRef, addBillConfig)"></el-input>
+              <el-input v-model="configName"
+                        @keyup.enter="submitForm(configFormRef, addBillConfig)"></el-input>
             </el-form-item>
             <el-form-item label="价格区间" prop="minPriceRange">
               <div style="display: flex; flex: 1">
-                <el-input v-model="minPriceRange" @keyup.enter="submitForm(configFormRef, addBillConfig)"
-                  style="flex: 1"></el-input>
+                <el-input v-model="minPriceRange"
+                          @keyup.enter="submitForm(configFormRef, addBillConfig)"
+                          style="flex: 1"></el-input>
                 <div style="margin: 0 10px">-</div>
                 <el-form-item prop="maxPriceRange" style="flex: 1">
-                  <el-input v-model="maxPriceRange" @keyup.enter="submitForm(configFormRef, addBillConfig)"></el-input>
+                  <el-input v-model="maxPriceRange"
+                            @keyup.enter="submitForm(configFormRef, addBillConfig)"></el-input>
                 </el-form-item>
               </div>
             </el-form-item>
             <el-form-item class="control">
               <el-button @click="resetForm(configFormRef)">清空</el-button>
-              <el-button type="primary" @click="submitForm(configFormRef, addBillConfig)" :loading="configBtnLoading">提交
+              <el-button type="primary"
+                         @click="submitForm(configFormRef, addBillConfig)"
+                         :loading="configBtnLoading">提交
               </el-button>
             </el-form-item>
           </el-form>
@@ -111,57 +130,71 @@
 
     <el-col :sm="12" :xs="24">
       <!-- 表格 -->
-      <el-card shadow="hover" style="height: 560px">
+      <el-card shadow="hover" style="height: 650px">
         <el-tabs v-model="tableTypeTab">
           <el-tab-pane label="普通账单" name="onceBill">
-            <el-table :data="table" :height="420" @filter-change="filterChange" ref="tableRef" v-loading="tableLoading"
-              empty-text="暂无数据">
+            <el-table :data="table" style="width: 100%"
+                      @sort-change='tableSortChange'
+                      max-height="500" @filter-change="filterChange"
+                      ref="tableRef" v-loading="tableLoading"
+                      empty-text="暂无数据">
               <el-table-column label="日期" prop="produceTime"></el-table-column>
-              <el-table-column label="金额" prop="amount"></el-table-column>
+              <el-table-column label="金额" prop="amount" sortable='custom'></el-table-column>
               <el-table-column label="用途" prop="desc"></el-table-column>
-              <el-table-column label="类别" prop="category" column-key="filterConsumeType" :filter-multiple="false"
-                :filters="filterConsumeTypeArr">
+              <el-table-column label="类别" prop="category"
+                               column-key="filterConsumeType"
+                               :filter-multiple="false"
+                               :filters="filterConsumeTypeArr">
               </el-table-column>
               <el-table-column label="操作" prop="largeItem" width="150">
                 <template #default="scope">
                   <el-button size="small" @click="handleDelete(scope.row)">
                     删除
                   </el-button>
-<!--                  <el-button size="small" @click="setLargeItem(scope.row)">-->
-<!--                    {{ scope.row.largeItem === true ? '非大件' : '大件' }}-->
-<!--                  </el-button>-->
+                  <!--                  <el-button size="small" @click="setLargeItem(scope.row)">-->
+                  <!--                    {{ scope.row.largeItem === true ? '非大件' : '大件' }}-->
+                  <!--                  </el-button>-->
                 </template>
               </el-table-column>
             </el-table>
           </el-tab-pane>
           <el-tab-pane label="周期账单" name="periodBill">
-            <el-table :data="periodBillTable" :height="420"  v-loading="tableLoading">
-              <el-table-column label="每月日期" prop="generateDay" />
-              <el-table-column label="持续月份" prop="generateCount" />
-              <el-table-column label="金额" prop="amount" />
-              <el-table-column label="用途" prop="description" />
-              <el-table-column label="类别" prop="category" />
+            <el-table :data="periodBillTable" :height="420"
+                      v-loading="tableLoading">
+              <el-table-column label="每月日期" prop="generateDay"/>
+              <el-table-column label="持续月份" prop="generateCount"/>
+              <el-table-column label="金额" prop="amount"/>
+              <el-table-column label="用途" prop="description"/>
+              <el-table-column label="类别" prop="category"/>
             </el-table>
           </el-tab-pane>
         </el-tabs>
-        <el-pagination small layout="total, prev, pager, next, jumper" :total="total"
-          @current-change="pageChange"></el-pagination>
+        <el-pagination small layout="total, prev, pager, next, jumper"
+                       :total="total"
+                       @current-change="pageChange"></el-pagination>
       </el-card>
     </el-col>
 
     <el-col :sm="12" :xs="24">
       <!-- 统计图 -->
       <el-card shadow="hover">
-        <el-date-picker v-if="!showPeriodItemStatistics" v-model="statisticsDate" type="daterange" placeholder="请选择月份"
-                        start-placeholder="开始时间" end-placeholder="结束时间" style="width: 300px" :clearable="false" :shortcuts="shortcuts"
+        <el-date-picker v-if="!showPeriodItemStatistics"
+                        v-model="statisticsDate" type="daterange"
+                        placeholder="请选择月份"
+                        start-placeholder="开始时间" end-placeholder="结束时间"
+                        style="width: 300px" :clearable="false"
+                        :shortcuts="shortcuts"
                         @change="changeStatisticsDate">
         </el-date-picker>
-        <el-switch class="showLargeItemStatistics-switch" v-model="showPeriodItemStatistics" inactive-text="查看周期账单统计"
-                   @change="showPeriodItemStatisticsEvent" />
+        <el-switch class="showLargeItemStatistics-switch"
+                   v-model="showPeriodItemStatistics" inactive-text="查看周期账单统计"
+                   @change="showPeriodItemStatisticsEvent"/>
 
         <router-view v-if="showRouter">
-          <line-chart ref="chartRef" :chartDataX="chartDataX" :chartDataY="chartDataY"
-            @selectChartType="selectChartType" @remove="handleRemove" @reload="() => getStatistics()"></line-chart>
+          <line-chart ref="chartRef" :chartDataX="chartDataX"
+                      :chartDataY="chartDataY"
+                      @selectChartType="selectChartType" @remove="handleRemove"
+                      @reload="() => getStatistics()"></line-chart>
         </router-view>
       </el-card>
     </el-col>
@@ -169,11 +202,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs, ref, onMounted } from "vue";
-import type { ElForm } from "element-plus";
-import { ElMessage } from "element-plus";
-import { CircleCloseFilled } from '@element-plus/icons-vue';
-import { debounce } from "@/utils/index";
+import {defineComponent, reactive, toRefs, ref, onMounted} from "vue";
+import type {ElForm} from "element-plus";
+import {ElMessage} from "element-plus";
+import {CircleCloseFilled} from '@element-plus/icons-vue';
+import {debounce} from "@/utils/index";
 import {
   AddBill,
   getBillList,
@@ -188,7 +221,7 @@ import {
   queryPeriodBillList
 } from "@/services/consume";
 import lineChart from "./line-chart.vue";
-import { formatTime } from "@/utils/time";
+import {formatTime} from "@/utils/time";
 import dayjs from 'dayjs'
 
 interface OptionType {
@@ -276,6 +309,7 @@ export default defineComponent({
       filterQueryList: false, // 是否根据右侧数据来过滤左侧列表,点击柱状图后为true
       startTime: dayjs().startOf('M').format('YYYY-MM-DD'),
       endTime: dayjs().endOf('M').format('YYYY-MM-DD'),
+      orderBy: '',
     });
     // 分页器相关数据
     const pagination = reactive({
@@ -404,12 +438,12 @@ export default defineComponent({
     // 日期快速选择
     const shortcuts = [
       {
-        text: '本周',
-        value: [dayjs().startOf('w').add(1, 'd'), dayjs().endOf('week').add(1, 'd')],
-      },
-      {
         text: '当月',
         value: [dayjs().startOf('M'), dayjs().endOf('M')],
+      },
+      {
+        text: '近两个月',
+        value: [dayjs().startOf('M').subtract(1, 'M'), dayjs().endOf('M')],
       },
       {
         text: '近3月',
@@ -454,9 +488,10 @@ export default defineComponent({
           startTime,
           endTime,
           largeItem: chartDataInfo.showPeriodItemStatistics ?
-            chartDataInfo.showPeriodItemStatistics : null
+            chartDataInfo.showPeriodItemStatistics : null,
+          orderBy: tableData.orderBy
         });
-        const { code, info } = res.data;
+        const {code, info} = res.data;
         if (code === 200) {
           pagination.total = info.total;
           tableData.table = info.list;
@@ -481,7 +516,7 @@ export default defineComponent({
      * 删除表格的一条数据
      */
     const handleDelete = async (row: any) => {
-      const { billId, largeItem, billType } = row;
+      const {billId, largeItem, billType} = row;
       const updateBillUpdate = {
         billId: "",
         largeItem,
@@ -491,7 +526,7 @@ export default defineComponent({
       updateBillUpdate.billId = billId;
       updateBillUpdate.deleted = true;
       const res: any = await UpdateBill(updateBillUpdate);
-      const { code } = res.data;
+      const {code} = res.data;
       if (code === 200) {
         getTableList();
         getStatistics();
@@ -523,7 +558,7 @@ export default defineComponent({
      */
     const getAllConsumption = async () => {
       const res = await getAllConsumptionType();
-      const { code, info } = res.data;
+      const {code, info} = res.data;
       if (code === 200) {
         tableData.filterConsumeTypeArr = info.map((item: string) => ({
           text: item, value: item
@@ -591,7 +626,7 @@ export default defineComponent({
      */
     const getConfigList = async () => {
       const res: any = await getBillConfigList();
-      const { code, info } = res.data;
+      const {code, info} = res.data;
       if (code === 200) {
         configData.configList = info;
         createBill.fuzzySearchOption = info.map((item: OptionType) => ({
@@ -610,7 +645,7 @@ export default defineComponent({
       // eslint-disable-next-line no-useless-return
       try {
         if (!formEl) return;
-        formEl.validate(async(valid) => {
+        formEl.validate(async (valid) => {
           if (valid) {
             await cb();
             if (cb === addBill) {
@@ -649,7 +684,7 @@ export default defineComponent({
         amount: createBill.createMoney,
         desc: createBill.createPurpose,
       });
-      const { code, info } = res.data;
+      const {code, info} = res.data;
       if (code === 200) {
         if (info) {
           createBill.createCategory = info[0];
@@ -669,7 +704,7 @@ export default defineComponent({
         category: addConfig.configName,
         priceScope: `${addConfig.minPriceRange}-${addConfig.maxPriceRange}`,
       });
-      const { code } = res.data;
+      const {code} = res.data;
       if (code === 200) {
         getConfigList().then(() => {
           addConfig.configBtnLoading = false;
@@ -705,7 +740,7 @@ export default defineComponent({
       const res: any = await deleteBillConfig({
         configId,
       });
-      const { code } = res.data;
+      const {code} = res.data;
       if (code === 200) {
         getConfigList();
       }
@@ -721,7 +756,7 @@ export default defineComponent({
         largeItem: false,
         periodBill: chartDataInfo.showPeriodItemStatistics
       });
-      const { code, info } = res.data;
+      const {code, info} = res.data;
       if (code === 200) {
         // 清空数据
         chartDataInfo.chartDataX.length = 0;
@@ -732,7 +767,7 @@ export default defineComponent({
           chartDataInfo.chartDataY.push(0);
         }
         info.forEach((item: any) => {
-          const { category, amount } = item;
+          const {category, amount} = item;
           chartDataInfo.chartDataX.push(category);
           chartDataInfo.chartDataY.push(amount);
         });
@@ -769,7 +804,6 @@ export default defineComponent({
      */
     const showPeriodItemStatisticsEvent = async () => {
       // chartDataInfo.showPeriodItemStatistics = !chartDataInfo.showPeriodItemStatistics;
-      console.log("11111")
       await getStatistics();
     }
 
@@ -795,6 +829,24 @@ export default defineComponent({
         } else {
           tableData.selectConsumeType = selectChartType;
         }
+      }
+      getTableList();
+    }
+
+    const tableSortChange = ({column, prop, order}) => {
+      console.log("tableSortChange touched, " + order);
+      console.log("tableSortChange touched, " + prop);
+      if (prop === 'amount') {
+        if (order === 'ascending') {
+          tableData.orderBy = 'amount ASC'
+        } else if (order === 'descending') {
+          tableData.orderBy = 'amount DESC'
+        } else {
+          console.log("CANCEL")
+          tableData.orderBy = ''
+        }
+      } else {
+        tableData.orderBy = ''
       }
       getTableList();
     }
@@ -861,6 +913,7 @@ export default defineComponent({
       changeBookKeepingTypeValue,
       handleRemove,
       getStatistics,
+      tableSortChange,
     };
   },
 });
@@ -974,7 +1027,7 @@ export default defineComponent({
 }
 
 @media only screen and (max-width: 768px) {
-  .el-col+.el-col {
+  .el-col + .el-col {
     margin-top: 10px;
   }
 }
