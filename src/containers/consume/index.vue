@@ -58,6 +58,7 @@
             </el-autocomplete>
           </el-form-item>
           <el-form-item class="control">
+            <el-button @click="nextDay(formRef)">Next Day</el-button>
             <el-button @click="resetForm(formRef)">清空</el-button>
             <el-button type="primary"
                        @click="submitForm(formRef, choseBookKeepingType === 'onceBill' ? addBill : addPeriodBill)"
@@ -139,7 +140,8 @@
                       ref="tableRef" v-loading="tableLoading"
                       empty-text="暂无数据">
               <el-table-column label="日期" prop="produceTime"></el-table-column>
-              <el-table-column label="金额" prop="amount" sortable='custom'></el-table-column>
+              <el-table-column label="金额" prop="amount"
+                               sortable='custom'></el-table-column>
               <el-table-column label="用途" prop="desc"></el-table-column>
               <el-table-column label="类别" prop="category"
                                column-key="filterConsumeType"
@@ -458,6 +460,21 @@ export default defineComponent({
         value: [dayjs().startOf('y'), dayjs().endOf('y')],
       }
     ]
+
+
+    /**
+     * 下一天
+     * @param formEl
+     */
+    const nextDay = (formEl: InstanceType<typeof ElForm> | undefined) => {
+      if (createBill.createDate !== '') {
+        let chooseDate = new Date(createBill.createDate)
+        let nextDay = +chooseDate + 24 * 60 * 60 * 1000
+        let newDate = new Date(nextDay)
+        createBill.createDate = formatTime(newDate);
+      }
+    };
+
 
     /**
      * 清空表单
@@ -896,6 +913,7 @@ export default defineComponent({
       rules,
       configRules,
       resetForm,
+      nextDay,
       submitForm,
       pageChange,
       getConsumeType,
