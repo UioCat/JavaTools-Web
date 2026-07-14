@@ -13,11 +13,6 @@ export const table = [
     // icon: "el-icon-discover",
     title: "创建 Table",
   },
-  {
-    index: "consume",
-    // icon: "el-icon-discover",
-    title: "账单",
-  },
 ].map((item) => ({ ...item, index: `/app/${item.index}` }));
 
 export const router = createRouter({

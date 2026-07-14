@@ -10,11 +10,6 @@
         {{ i.title }}
       </el-menu-item>
     </el-menu>
-
-    <div class="java-sidebar__record">
-      <el-tag>浙 ICP 备 20005026 号</el-tag>
-      <el-tag>33060202000774</el-tag>
-    </div>
   </el-aside>
 </template>
 
@@ -40,7 +35,7 @@ export default defineComponent({
   width: 160px;
 
   &__menu {
-    height: calc(100% - 76px);
+    height: 100%;
     overflow-y: auto;
 
     li {
@@ -54,16 +49,6 @@ export default defineComponent({
         border-right: 2px solid #409eff;
         background-color: #ecf5ff;
       }
-    }
-  }
-
-  &__record {
-    padding-bottom: 1em;
-    width: calc(160px - 1px);
-    border-right: solid 1px #e6e6e6;
-
-    .el-tag + .el-tag {
-      margin-top: 1em;
     }
   }
 }

@@ -9,6 +9,8 @@ import App from "./App.vue";
 import "element-plus/dist/index.css";
 import "./styles/index.less";
 
+document.title = import.meta.env.VITE_APP_NAME;
+
 const app = createApp(App);
 
 app.use(ElementPlus, {
