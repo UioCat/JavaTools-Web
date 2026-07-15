@@ -28,10 +28,13 @@ test("the bill feature is not exposed in the sidebar navigation", () => {
 });
 
 test("the browser title uses the same configured website name as the header", () => {
+  const environment = readSource(".env");
   const document = readSource("index.html");
   const header = readSource("src/layouts/header/index.vue");
   const main = readSource("src/main.ts");
 
+  assert.match(environment, /^VITE_APP_NAME="UioCat-工具箱"$/m);
+  assert.match(document, /<title>UioCat-工具箱<\/title>/);
   assert.doesNotMatch(document, /%VITE_APP_NAME%/);
   assert.match(header, /import\.meta\.env\.VITE_APP_NAME/);
   assert.match(
