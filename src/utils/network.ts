@@ -11,6 +11,9 @@ const headers = {
   "Access-Control-Allow-Origin": "*",
 };
 
+export const withBasePath = (path: string) =>
+  `${import.meta.env.BASE_URL}${path.replace(/^\/+/, "")}`;
+
 export const get = (path: string, absolute: boolean = false) => {
   const url = absolute ? path : baseURL + path;
   return fetch(url, {

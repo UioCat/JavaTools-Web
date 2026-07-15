@@ -42,3 +42,22 @@ test("the browser title uses the same configured website name as the header", ()
     /document\.title\s*=\s*import\.meta\.env\.VITE_APP_NAME/
   );
 });
+
+test("bundled public assets respect the configured deployment base path", () => {
+  const network = readSource("src/utils/network.ts");
+  const drawer = readSource("src/layouts/drawer/index.vue");
+  const setupByCode = readSource("src/components/SetupByCode.vue");
+
+  assert.match(
+    network,
+    /export const withBasePath[\s\S]*import\.meta\.env\.BASE_URL/
+  );
+  assert.match(
+    drawer,
+    /get\(withBasePath\("\/mock\/document\.md"\), true\)/
+  );
+  assert.match(
+    setupByCode,
+    /get\(withBasePath\(props\.parsePath\), true\)/
+  );
+});

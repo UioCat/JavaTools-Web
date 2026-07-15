@@ -35,7 +35,7 @@ import MarkdownItSup from "markdown-it-sup";
 import MarkdownItSub from "markdown-it-sub";
 import MarkdownItMark from "markdown-it-mark";
 import MarkdownItTaskLists from "markdown-it-task-lists";
-import { get } from "@/utils/network";
+import { get, withBasePath } from "@/utils/network";
 
 const markdownEngine = new MarkdownIt({
   html: true,
@@ -66,7 +66,7 @@ export default defineComponent({
     const markdownText = ref("");
 
     onMounted(() => {
-      get("/mock/document.md", true)
+      get(withBasePath("/mock/document.md"), true)
         .then((res) => res.text())
         .then((res) => {
           markdownText.value = markdownEngine.render(res);

@@ -127,7 +127,7 @@
 <script lang="ts">
 import { ElMessage } from "element-plus";
 import { defineComponent, ref } from "vue";
-import { get, post } from "@/utils/network";
+import { get, post, withBasePath } from "@/utils/network";
 
 export default defineComponent({
   name: "setup-by-code",
@@ -246,7 +246,7 @@ export default defineComponent({
 
     function parseCode(idx: number, code: string) {
       // post(props.parsePath, { data: code })
-      get(props.parsePath, true)
+      get(withBasePath(props.parsePath), true)
         .then((res) => res.json())
         .then((res) => {
           if (res.code === 200) {
